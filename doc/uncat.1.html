@@ -1,79 +1,80 @@
 
 
 
-<HTML>
-<HEAD>
-<TITLE>uncat(1) manual page</TITLE>
-</HEAD>
-<BODY bgcolor=white>
-<a href="http://smarden.org/pape/">G. Pape</a><br><A HREF="index.html">socklog</A><hr><P>
+<html>
+<head>
+<title>uncat(1) manual page</title>
+</head>
+<body bgcolor='white'>
+<a href='#toc'>Table of Contents</a><p>
 
-<H2><A NAME="sect0">Name</A></H2>
+<h2><a name='sect0' href='#toc0'>Name</a></h2>
 uncat - continuously reads stdin, splits up the data either by timeout
 or number of bytes read to process it 
-<H2><A NAME="sect1">Synopsis</A></H2>
-<B>uncat</B> [ <B>-v</B> ] [ <B>-o</B> ] [ <B>-t</B> <I>seconds</I>
-] [ <B>-s</B> <I>size</I> ] <I>prog</I> 
-<H2><A NAME="sect2">Description</A></H2>
-<B>uncat</B> continuously reads stdin and repeatedly
-processes the data either after <I>seconds</I> timeout or maximal number of bytes
-<I>size</I> read. To process the data, <B>uncat</B> starts <I>prog</I> and feeds the data into
-<I>prog</I>'s standard input. <I>prog</I>'s standard output is redirected to standard error.
-<B>uncat</B> never writes to standard output. <P>
-<I>prog</I> consist of one or more arguments.
-<P>
-If <I>prog</I> exits non-zero, <B>uncat</B> prints an error message, discards the data
-and continues to read stdin. <P>
-Note that <B>uncat</B> is not crash proof. <P>
-<B>uncat</B> is
-used to run the <I>socklog-notify</I> service. 
-<H2><A NAME="sect3">Options</A></H2>
+<h2><a name='sect1' href='#toc1'>Synopsis</a></h2>
+<b>uncat</b> [ <b>-v</b> ] [ <b>-o</b> ] [ <b>-t</b> <i>seconds</i>
+] [ <b>-s</b> <i>size</i> ] <i>prog</i> 
+<h2><a name='sect2' href='#toc2'>Description</a></h2>
+<b>uncat</b> continuously reads stdin and repeatedly
+processes the data either after <i>seconds</i> timeout or maximal number of bytes
+<i>size</i> read. To process the data, <b>uncat</b> starts <i>prog</i> and feeds the data into
+<i>prog</i>&rsquo;s standard input. <i>prog</i>&rsquo;s standard output is redirected to standard error.
+<b>uncat</b> never writes to standard output. <p>
+<i>prog</i> consist of one or more arguments.
+<p>
+If <i>prog</i> exits non-zero, <b>uncat</b> prints an error message, discards the data
+and continues to read stdin. <p>
+Note that <b>uncat</b> is not crash proof. <p>
+<b>uncat</b> is
+used to run the <i>socklog-notify</i> service. 
+<h2><a name='sect3' href='#toc3'>Options</a></h2>
 
-<DL>
+<dl>
 
-<DT><B>-v</B> </DT>
-<DD>verbose. Print verbose messages
-to stderr. </DD>
+<dt><b>-v</b> </dt>
+<dd>verbose. Print verbose messages
+to stderr. </dd>
 
-<DT><B>-o</B> </DT>
-<DD>once. Exit on end of input. Normally <B>uncat</B> continues waiting
-for data on standard input, even on end of file. </DD>
+<dt><b>-o</b> </dt>
+<dd>once. Exit on end of input. Normally <b>uncat</b> continues waiting
+for data on standard input, even on end of file. </dd>
 
-<DT><B>-t <I>seconds</B> </I></DT>
-<DD>timeout. Set the
-timeout to <I>seconds</I> seconds. Default is 300. </DD>
+<dt><b>-t <i>seconds</b> </i></dt>
+<dd>timeout. Set the
+timeout to <i>seconds</i> seconds. Default is 300. </dd>
 
-<DT><B>-s <I>size</B> </I></DT>
-<DD>Set the maximal number
-of bytes to <I>size</I>. Default is 1024. </DD>
-</DL>
+<dt><b>-s <i>size</b> </i></dt>
+<dd>Set the maximal number
+of bytes to <i>size</i>. Default is 1024. </dd>
+</dl>
 
-<H2><A NAME="sect4">Signals</A></H2>
-If <B>uncat</B> receives a TERM signal,
-it starts to process the data in memory and exits as soon as possible. <P>
-<B>uncat</B>
-also does this on end of input if the <B>-o</B> option was given. 
-<H2><A NAME="sect5">Exit Codes</A></H2>
-<B>uncat</B>
-returns 0 after receiving a TERM signal. <B>uncat</B> returns 111 on error. 
-<H2><A NAME="sect6">See
-Also</A></H2>
-<I>socklog(8)</I>, <I>socklog-conf(8)</I>, <I>runsv(8)</I>, <I>svlogd(8)</I>, <I>tryto(1)</I> <P>
-<I>http://smarden.org/socklog/</I>
+<h2><a name='sect4' href='#toc4'>Signals</a></h2>
+If <b>uncat</b> receives a TERM signal,
+it starts to process the data in memory and exits as soon as possible. <p>
+<b>uncat</b>
+also does this on end of input if the <b>-o</b> option was given. 
+<h2><a name='sect5' href='#toc5'>Exit Codes</a></h2>
+<b>uncat</b>
+returns 0 after receiving a TERM signal. <b>uncat</b> returns 111 on error. 
+<h2><a name='sect6' href='#toc6'>See
+Also</a></h2>
+<i>socklog(8)</i>, <i>socklog-conf(8)</i>, <i>runsv(8)</i>, <i>svlogd(8)</i>, <i>tryto(1)</i> <p>
+<i>http://smarden.org/socklog/</i>
 
-<H2><A NAME="sect7">Author</A></H2>
-Gerrit Pape &lt;pape@smarden.org&gt; <P>
+<h2><a name='sect7' href='#toc7'>Author</a></h2>
+Gerrit Pape &lt;pape@smarden.org&gt; <p>
 
-<HR><P>
-<A NAME="toc"><B>Table of Contents</B></A><P>
-<UL>
-<LI><A NAME="toc0" HREF="#sect0">Name</A></LI>
-<LI><A NAME="toc1" HREF="#sect1">Synopsis</A></LI>
-<LI><A NAME="toc2" HREF="#sect2">Description</A></LI>
-<LI><A NAME="toc3" HREF="#sect3">Options</A></LI>
-<LI><A NAME="toc4" HREF="#sect4">Signals</A></LI>
-<LI><A NAME="toc5" HREF="#sect5">Exit Codes</A></LI>
-<LI><A NAME="toc6" HREF="#sect6">See Also</A></LI>
-<LI><A NAME="toc7" HREF="#sect7">Author</A></LI>
-</UL>
-</BODY></HTML>
+<hr><p>
+<a name='toc'><b>Table of Contents</b></a><p>
+<ul>
+<li><a name='toc0' href='#sect0'>Name</a></li>
+<li><a name='toc1' href='#sect1'>Synopsis</a></li>
+<li><a name='toc2' href='#sect2'>Description</a></li>
+<li><a name='toc3' href='#sect3'>Options</a></li>
+<li><a name='toc4' href='#sect4'>Signals</a></li>
+<li><a name='toc5' href='#sect5'>Exit Codes</a></li>
+<li><a name='toc6' href='#sect6'>See Also</a></li>
+<li><a name='toc7' href='#sect7'>Author</a></li>
+</ul>
+</body>
+</html>

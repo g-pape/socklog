@@ -1,104 +1,105 @@
 
 
 
-<HTML>
-<HEAD>
-<TITLE>tryto(1) manual page</TITLE>
-</HEAD>
-<BODY bgcolor=white>
-<a href="http://smarden.org/pape/">G. Pape</a><br><A HREF="index.html">socklog</A><hr><P>
+<html>
+<head>
+<title>tryto(1) manual page</title>
+</head>
+<body bgcolor='white'>
+<a href='#toc'>Table of Contents</a><p>
 
-<H2><A NAME="sect0">Name</A></H2>
+<h2><a name='sect0' href='#toc0'>Name</a></h2>
 tryto - tries to run a command limited by a timeout or number of tries,
-can be used to run as <I>svlogd(8)</I> processor. 
-<H2><A NAME="sect1">Synopsis</A></H2>
-<B>tryto</B> [ <B>-pv</B> ] [ <B>-t</B> <I>sec</I>
-] [ <B>-k</B> <I>ksec</I> ] [ <B>-n</B> <I>tries</I> ] <I>prog</I> 
-<H2><A NAME="sect2">Description</A></H2>
-<I>prog</I> consist of one or more arguments.
-<P>
-<B>tryto</B> runs and watches <I>prog</I>, feeding its standard input to <I>prog</I>'s standard
-input. If <I>prog</I> exits with an error code other then 0, <B>tryto</B> runs <I>prog</I> again
-after sleeping one second. <P>
+can be used to run as <i>svlogd(8)</i> processor. 
+<h2><a name='sect1' href='#toc1'>Synopsis</a></h2>
+<b>tryto</b> [ <b>-pv</b> ] [ <b>-t</b> <i>sec</i>
+] [ <b>-k</b> <i>ksec</i> ] [ <b>-n</b> <i>tries</i> ] <i>prog</i> 
+<h2><a name='sect2' href='#toc2'>Description</a></h2>
+<i>prog</i> consist of one or more arguments.
+<p>
+<b>tryto</b> runs and watches <i>prog</i>, feeding its standard input to <i>prog</i>&rsquo;s standard
+input. If <i>prog</i> exits with an error code other then 0, <b>tryto</b> runs <i>prog</i> again
+after sleeping one second. <p>
 If the number of retries reaches the maximal
-number of <I>tries</I>, <B>tryto</B> prints an error message and gives up. <P>
+number of <i>tries</i>, <b>tryto</b> prints an error message and gives up. <p>
 If the timeout
-<I>sec</I> seconds is reached and <I>prog</I> is still running, <B>tryto</B> sends a TERM signal
-to <I>prog</I>, waits <I>ksec</I> seconds for <I>prog</I> to terminate, then sends a KILL signal
-if <I>prog</I> still is there, and exits as soon as possible. <P>
+<i>sec</i> seconds is reached and <i>prog</i> is still running, <b>tryto</b> sends a TERM signal
+to <i>prog</i>, waits <i>ksec</i> seconds for <i>prog</i> to terminate, then sends a KILL signal
+if <i>prog</i> still is there, and exits as soon as possible. <p>
 The main purpose
-of <B>tryto</B> is to run as <B><I>svlogd</B>(8)</I> or <B><I>multilog</B>(8)</I> processor (see below). Without
-the <B>-p</B> option, <B>tryto</B> does just a subset of what <B><I>timelimit</B>(8)</I> from Peter
+of <b>tryto</b> is to run as <i><b>svlogd</b>(8)</i> or <i><b>multilog</b>(8)</i> processor (see below). Without
+the <b>-p</b> option, <b>tryto</b> does just a subset of what <i><b>timelimit</b>(8)</i> from Peter
 Pentchev provides. 
-<H2><A NAME="sect3">Options</A></H2>
+<h2><a name='sect3' href='#toc3'>Options</a></h2>
 
-<DL>
+<dl>
 
-<DT><B>-v</B> </DT>
-<DD>verbose. Print verbose messages to stderr. </DD>
+<dt><b>-v</b> </dt>
+<dd>verbose. Print verbose messages to stderr. </dd>
 
-<DT><B>-p</B> </DT>
-<DD>processor.
-Use this option if you run <B>tryto</B> as a <B><I>svlogd</B>(8)</I> processor (see below). </DD>
+<dt><b>-p</b> </dt>
+<dd>processor.
+Use this option if you run <b>tryto</b> as a <i><b>svlogd</b>(8)</i> processor (see below). </dd>
 
-<DT><B>-t
-<I>sec</B> </I></DT>
-<DD>timeout. Set the timeout to send TERM to <I>prog</I> to <I>sec</I> seconds. Default
-is 180. </DD>
+<dt><b>-t
+<i>sec</b> </i></dt>
+<dd>timeout. Set the timeout to send TERM to <i>prog</i> to <i>sec</i> seconds. Default
+is 180. </dd>
 
-<DT><B>-k <I>ksec</B> </I></DT>
-<DD>kill timeout. Set the timeout to send KILL to <I>prog</I> to <I>ksec</I>
-seconds. Default is 5. </DD>
+<dt><b>-k <i>ksec</b> </i></dt>
+<dd>kill timeout. Set the timeout to send KILL to <i>prog</i> to <i>ksec</i>
+seconds. Default is 5. </dd>
 
-<DT><B>-n <I>tries</B> </I></DT>
-<DD>Set the maximal number of tries to <I>tries</I>. If
-<I>prog</I> has crashed, <B>tryto</B> tries to rewind stdin to the beginning using <I><I>lseek</I>(2)</I>
-before starting <I>prog</I> again. Default is 5. </DD>
-</DL>
+<dt><b>-n <i>tries</b> </i></dt>
+<dd>Set the maximal number of tries to <i>tries</i>. If
+<i>prog</i> has crashed, <b>tryto</b> tries to rewind stdin to the beginning using <i><i>lseek</i>(2)</i>
+before starting <i>prog</i> again. Default is 5. </dd>
+</dl>
 
-<H2><A NAME="sect4">Processor</A></H2>
-If <B>tryto</B> sees the <B>-p</B> option,
-<B>tryto</B> runs as a <B><I>svlogd</B>(8)</I> or <B><I>multilog</B>(8)</I> processor, making use of filedescriptors
-4 and 5: <P>
-Before starting <I>prog</I>, <B>tryto</B> moves the filedescriptor 5 to 2, so
-all error messages from <B>tryto</B> and <I>prog</I> will be saved in <B><I>svlogd</B>(8)</I>'s <I>state</I>
-to be processed on the next run of <B>tryto </B> <B>-p</B>. <P>
-After starting <I>prog</I>, <B>tryto</B>
-first feeds all data it reads from filedescriptor 4 into <I>prog</I>'s standard
-input, then all data from filedescriptor 0. <P>
-If <I>prog</I> fails by timeout <I>sec</I>
-seconds or maximal number of <I>tries</I>, <B>tryto</B> prints all data from standard
+<h2><a name='sect4' href='#toc4'>Processor</a></h2>
+If <b>tryto</b> sees the <b>-p</b> option,
+<b>tryto</b> runs as a <i><b>svlogd</b>(8)</i> or <i><b>multilog</b>(8)</i> processor, making use of filedescriptors
+4 and 5: <p>
+Before starting <i>prog</i>, <b>tryto</b> moves the filedescriptor 5 to 2, so
+all error messages from <b>tryto</b> and <i>prog</i> will be saved in <i><b>svlogd</b>(8)</i>&rsquo;s <i>state</i>
+to be processed on the next run of <b>tryto </b> <b>-p</b>. <p>
+After starting <i>prog</i>, <b>tryto</b>
+first feeds all data it reads from filedescriptor 4 into <i>prog</i>&rsquo;s standard
+input, then all data from filedescriptor 0. <p>
+If <i>prog</i> fails by timeout <i>sec</i>
+seconds or maximal number of <i>tries</i>, <b>tryto</b> prints all data from standard
 input to standard output, an error message to standard error and exits
 with 0. 
-<H2><A NAME="sect5">Exit Codes</A></H2>
-If <B>tryto</B> itself fails, it returns 111. <P>
-If <B>tryto</B> runs as
-a <B><I>svlogd</B>(8)</I> processor, <B>tryto</B> returns 0 in all other cases. <P>
-If <I>prog</I> was run
-successfully, <B>tryto</B> returns 0. <P>
-If <I>prog</I> failed by timeout, <B>tryto</B> returns
-100. <P>
-If <I>prog</I> failed by maximal number of <I>tries</I>, <B>tryto</B> returns the last exit
-code from <I>prog</I>. <P>
+<h2><a name='sect5' href='#toc5'>Exit Codes</a></h2>
+If <b>tryto</b> itself fails, it returns 111. <p>
+If <b>tryto</b> runs as
+a <i><b>svlogd</b>(8)</i> processor, <b>tryto</b> returns 0 in all other cases. <p>
+If <i>prog</i> was run
+successfully, <b>tryto</b> returns 0. <p>
+If <i>prog</i> failed by timeout, <b>tryto</b> returns
+100. <p>
+If <i>prog</i> failed by maximal number of <i>tries</i>, <b>tryto</b> returns the last exit
+code from <i>prog</i>. <p>
 
-<H2><A NAME="sect6">See Also</A></H2>
-<I>socklog(8)</I>, <I>uncat(1)</I>, <I>svlogd(8)</I>, <I>multilog(8)</I>, <I>lseek(2)</I>,
-<I>timelimit(8)</I> <P>
-<I>http://smarden.org/socklog/</I> 
-<H2><A NAME="sect7">Author</A></H2>
+<h2><a name='sect6' href='#toc6'>See Also</a></h2>
+<i>socklog(8)</i>, <i>uncat(1)</i>, <i>svlogd(8)</i>, <i>multilog(8)</i>, <i>lseek(2)</i>,
+<i>timelimit(8)</i> <p>
+<i>http://smarden.org/socklog/</i> 
+<h2><a name='sect7' href='#toc7'>Author</a></h2>
 Gerrit Pape &lt;pape@smarden.org&gt;
-<P>
+<p>
 
-<HR><P>
-<A NAME="toc"><B>Table of Contents</B></A><P>
-<UL>
-<LI><A NAME="toc0" HREF="#sect0">Name</A></LI>
-<LI><A NAME="toc1" HREF="#sect1">Synopsis</A></LI>
-<LI><A NAME="toc2" HREF="#sect2">Description</A></LI>
-<LI><A NAME="toc3" HREF="#sect3">Options</A></LI>
-<LI><A NAME="toc4" HREF="#sect4">Processor</A></LI>
-<LI><A NAME="toc5" HREF="#sect5">Exit Codes</A></LI>
-<LI><A NAME="toc6" HREF="#sect6">See Also</A></LI>
-<LI><A NAME="toc7" HREF="#sect7">Author</A></LI>
-</UL>
-</BODY></HTML>
+<hr><p>
+<a name='toc'><b>Table of Contents</b></a><p>
+<ul>
+<li><a name='toc0' href='#sect0'>Name</a></li>
+<li><a name='toc1' href='#sect1'>Synopsis</a></li>
+<li><a name='toc2' href='#sect2'>Description</a></li>
+<li><a name='toc3' href='#sect3'>Options</a></li>
+<li><a name='toc4' href='#sect4'>Processor</a></li>
+<li><a name='toc5' href='#sect5'>Exit Codes</a></li>
+<li><a name='toc6' href='#sect6'>See Also</a></li>
+<li><a name='toc7' href='#sect7'>Author</a></li>
+</ul>
+</body>
+</html>

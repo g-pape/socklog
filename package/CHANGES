@@ -5,6 +5,8 @@ Mon, 12 Jan 2004 19:06:56 +0000
   * man/socklog.8: adapt.
   * doc/network.html: document old-style syslog network logging through UDP.
   * doc/index.html: change short description.
+  * package/compile, package/install-man, package/upgrade: exit 1 on
+    sub-shell failures.
 
 socklog 1.2.0
 Sat, 09 Aug 2003 18:08:20 +0200

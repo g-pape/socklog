@@ -1,83 +1,99 @@
 
 
 
-<HTML>
-<HEAD>
-<TITLE>socklog(8) manual page</TITLE>
-</HEAD>
-<BODY bgcolor=white>
-<a href="http://smarden.org/pape/">G. Pape</a><br><A HREF="index.html">socklog</A><hr><P>
+<html>
+<head>
+<title>socklog(8) manual page</title>
+</head>
+<body bgcolor='white'>
+<a href='#toc'>Table of Contents</a><p>
 
-<H2><A NAME="sect0">Name</A></H2>
+<h2><a name='sect0' href='#toc0'>Name</a></h2>
 socklog - small and secure syslogd replacement for use with runit 
-<H2><A NAME="sect1">Synopsis</A></H2>
-<B>socklog</B>
-[ unix ] [ <I>path</I> ] <BR>
-<B>socklog</B> inet [ <I>ip</I> ] [ <I>port</I> ] <BR>
-<B>socklog</B> ucspi [ <I>args</I> ] 
-<H2><A NAME="sect2">Description</A></H2>
-<B>socklog</B> is run under runit's <B><I>runsv</B>(8)</I>,
-writing syslog messages it receives from unix domain socket <I>path</I> or an
-inet udp socket <I>ip:<I>port</I></I> through a pipe provided by <B><I>runsv</B>(8)</I> to a <B><I>svlogd</B>(8)</I>
-process. <P>
-<B>socklog</B> can be run as an ucspi application to listen to an unix
-domain stream socket and for more flexible distributed logging. <P>
+<h2><a name='sect1' href='#toc1'>Synopsis</a></h2>
+<b>socklog</b>
+[ <b>-rR</b> ] [ unix ] [ <i>path</i> ] <br>
+<b>socklog</b> [ <b>-rR</b> ] inet [ <i>ip</i> ] [ <i>port</i> ] <br>
+<b>socklog</b> [ <b>-rR</b> ] ucspi [ <i>args</i> ] 
+<h2><a name='sect2' href='#toc2'>Description</a></h2>
+<b>socklog</b> is run under runit&rsquo;s <i><b>runsv</b>(8)</i>,
+writing syslog messages it receives from unix domain socket <i>path</i> or an
+inet udp socket <i>ip:<i>port</i></i> through a pipe provided by <i><b>runsv</b>(8)</i> to a <i><b>svlogd</b>(8)</i>
+process. <p>
+<b>socklog</b> can be run as an ucspi application to listen to an unix
+domain stream socket and for more flexible distributed logging. <p>
 If the environment
-variables $UID and/or $GID are present, <B>socklog</B> drops permissions to those
-ids after creating and binding the socket (not in <I>ucspi</I> mode). <P>
-<B>socklog</B> converts
-syslog facility and priority information to names (<I>facility</I>.<I>priority</I>:) as
-found in <I>/usr/include/syslog.h</I> at compile time if present. <P>
-On solaris <B>socklog</B>
-also accepts <I>sun_stream</I> as first argument. Please see the web page for details.
+variables $UID and/or $GID are present, <b>socklog</b> drops permissions to those
+ids after creating and binding the socket (not in <i>ucspi</i> mode). <p>
+<b>socklog</b> converts
+syslog facility and priority information to names (<i>facility</i>.<i>priority</i>:) as
+found in <i>/usr/include/syslog.h</i> at compile time if present. <p>
+On solaris <b>socklog</b>
+also accepts <i>sun_stream</i> as first argument. Please see the web page for details.
 
-<H2><A NAME="sect3">Unix Socket</A></H2>
-<B>socklog</B> [ unix ] [ <I>path</I> ] <P>
-Starting <B>socklog</B> with the 1st argument
-<I>unix</I>, <B>socklog</B> will listen to the unix domain socket <I>path</I>. If <I>path</I> is omitted,
-the default <I>/dev/log</I> is used. <P>
+<h2><a name='sect3' href='#toc3'>UNIX Socket</a></h2>
+<b>socklog</b> [ unix ] [ <i>path</i> ] <p>
+Starting <b>socklog</b> with the 1st argument
+<i>unix</i>, <b>socklog</b> will listen to the unix domain socket <i>path</i>. If <i>path</i> is omitted,
+the default <i>/dev/log</i> is used. <p>
 The 1st argument may be omitted, default is
-<I>unix</I>. 
-<H2><A NAME="sect4">Inet Socket</A></H2>
-<B>socklog</B> inet [ <I>ip</I> ] [ <I>port</I> ] <P>
-Starting <B>socklog</B> with the
-1st argument <I>inet</I>, <B>socklog</B> will listen to the inet udp socket <I>ip:<I>port</I>.</I> <P>
+<i>unix</i>. 
+<h2><a name='sect4' href='#toc4'>Inet Socket</a></h2>
+<b>socklog</b> inet [ <i>ip</i> ] [ <i>port</i> ] <p>
+Starting <b>socklog</b> with the
+1st argument <i>inet</i>, <b>socklog</b> will listen to the inet udp socket <i>ip:<i>port</i>.</i> <p>
 If
-<I>ip</I> starts with 0, <B>socklog</B> will bind to all local interfaces. <P>
-If <I>port</I> is
-less or equal 1024, <B>socklog</B> must be run by root. <P>
-<I>port</I> may be omitted, default
-is 514. <I>ip</I> may be omitted, default is 0. <P>
-<B>socklog</B> prepends <I>a.b.c.d:</I> to each syslog
-message it receives, where <I>a.b.c.d</I> is the ip address of the connecting system.
+<i>ip</i> starts with 0, <b>socklog</b> will bind to all local interfaces. <p>
+If <i>port</i> is
+less or equal 1024, <b>socklog</b> must be run by root. <p>
+<i>port</i> may be omitted, default
+is 514. <i>ip</i> may be omitted, default is 0. <p>
+<b>socklog</b> prepends <i>a.b.c.d:</i> to each syslog
+message it receives, where <i>a.b.c.d</i> is the ip address of the connecting system.
 
-<H2><A NAME="sect5">Ucspi Mode</A></H2>
-<B>socklog</B> ucspi [ <I>args</I> ] <P>
-Starting <B>socklog</B> with the 1st argument
-<I>ucspi</I>, <B>socklog</B> will run as an ucspi application. Normally <B>socklog</B> will only
-be started in <I>ucspi</I> mode by an ucspi server tool, such as <B><I>tcpsvd</B>(8)</I>, <B><I>tcpserver</B>(1)</I>
-or <B>unixserver</B>. <P>
-For each <I>arg</I>, <B>socklog</B> will prepend $<I>arg</I>: to each syslog message,
-if the environment variable $<I>arg</I> is present (maximum is 8). <P>
- 
-<H2><A NAME="sect6">See Also</A></H2>
-<I>runsvdir(8)</I>,
-<I>runsv(8)</I>, <I>svlogd(8)</I>, <I>tryto(1)</I>, <I>uncat(1)</I>, <I>tcpsvd(8)</I>, <I>nc(1)</I> <P>
- <I>http://smarden.org/socklog/</I><BR>
- 
-<H2><A NAME="sect7">Author</A></H2>
-Gerrit Pape &lt;pape@smarden.org&gt; <P>
+<h2><a name='sect5' href='#toc5'>Ucspi Mode</a></h2>
+<b>socklog</b> ucspi [ <i>args</i> ] <p>
+Starting <b>socklog</b> with the 1st argument
+<i>ucspi</i>, <b>socklog</b> will run as an ucspi application. Normally <b>socklog</b> will only
+be started in <i>ucspi</i> mode by an ucspi server tool, such as <i><b>tcpsvd</b>(8)</i>, <i><b>tcpserver</b>(1)</i>
+or <b>unixserver</b>. <p>
+For each <i>arg</i>, <b>socklog</b> will prepend $<i>arg</i>: to each syslog message,
+if the environment variable $<i>arg</i> is present (maximum is 8). 
+<h2><a name='sect6' href='#toc6'>Options</a></h2>
 
-<HR><P>
-<A NAME="toc"><B>Table of Contents</B></A><P>
-<UL>
-<LI><A NAME="toc0" HREF="#sect0">Name</A></LI>
-<LI><A NAME="toc1" HREF="#sect1">Synopsis</A></LI>
-<LI><A NAME="toc2" HREF="#sect2">Description</A></LI>
-<LI><A NAME="toc3" HREF="#sect3">Unix Socket</A></LI>
-<LI><A NAME="toc4" HREF="#sect4">Inet Socket</A></LI>
-<LI><A NAME="toc5" HREF="#sect5">Ucspi Mode</A></LI>
-<LI><A NAME="toc6" HREF="#sect6">See Also</A></LI>
-<LI><A NAME="toc7" HREF="#sect7">Author</A></LI>
-</UL>
-</BODY></HTML>
+<dl>
+
+<dt><b>-r</b> </dt>
+<dd>raw.
+Write the raw syslog messages (no conversion of facility and priority),
+additionally to the usual log messages with syslog facility and priority
+converted to names, to the pipe. </dd>
+
+<dt><b>-R</b> </dt>
+<dd>raw only. Same as -r above, but write the
+raw syslog messages only. </dd>
+</dl>
+
+<h2><a name='sect7' href='#toc7'>See Also</a></h2>
+<i>runsvdir(8)</i>, <i>runsv(8)</i>, <i>svlogd(8)</i>, <i>tryto(1)</i>,
+<i>uncat(1)</i>, <i>tcpsvd(8)</i>, <i>nc(1)</i> <p>
+ <i>http://smarden.org/socklog/</i><br>
+ 
+<h2><a name='sect8' href='#toc8'>Author</a></h2>
+Gerrit Pape &lt;pape@smarden.org&gt; <p>
+
+<hr><p>
+<a name='toc'><b>Table of Contents</b></a><p>
+<ul>
+<li><a name='toc0' href='#sect0'>Name</a></li>
+<li><a name='toc1' href='#sect1'>Synopsis</a></li>
+<li><a name='toc2' href='#sect2'>Description</a></li>
+<li><a name='toc3' href='#sect3'>UNIX Socket</a></li>
+<li><a name='toc4' href='#sect4'>Inet Socket</a></li>
+<li><a name='toc5' href='#sect5'>Ucspi Mode</a></li>
+<li><a name='toc6' href='#sect6'>Options</a></li>
+<li><a name='toc7' href='#sect7'>See Also</a></li>
+<li><a name='toc8' href='#sect8'>Author</a></li>
+</ul>
+</body>
+</html>

@@ -302,6 +302,7 @@ uint64.h
 	grep sysdep hasmkffo.h >> sysdeps
 	grep sysdep hasflock.h >> sysdeps
 	grep sysdep hasshsgr.h >> sysdeps
+	cat sysdeps
 
 systype: find-systype.sh trycpp.c x86cpuid.c
 	sh find-systype.sh > systype
