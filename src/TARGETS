@@ -31,6 +31,7 @@ byte_copy.o
 byte_cr.o
 byte_diff.o
 byte_rchr.o
+byte_zero.o
 chkshsgr
 chkshsgr.o
 choose
