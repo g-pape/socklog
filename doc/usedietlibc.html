@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>socklog - use dietlibc</title>
+</head>
+<body>
+<a href="http://smarden.org/pape/">G. Pape</a><br>
+<a href="index.html">socklog</a><br>
+<hr>
+<h1>socklog - use dietlibc</h1>
+<hr>
+To recompile the <i>socklog</i> programs with the
+<a href="http://www.fefe.de/dietlibc/">dietlibc</a>, check that you have
+the recent version of
+<a href="http://www.fefe.de/dietlibc/">dietlibc</a> installed.
+<p>
+Change to the package directory of <i>socklog</i>:
+<pre>
+  # cd /package/admin/socklog/
+</pre>
+Change the <tt>conf-cc</tt> and <tt>conf-ld</tt> to use <tt>diet</tt>:
+<pre>
+  # echo 'diet gcc -O2 -Wall' &gt; conf-cc
+  # echo 'diet gcc -s -Os -pipe' &gt; conf-ld
+</pre>
+Rebuild and install the <i>socklog</i> programs:
+<pre>
+  # rm -rf compile
+  # package/install
+</pre>
+<hr>
+<address><a href="mailto:pape@smarden.org">
+Gerrit Pape &lt;pape@smarden.org&gt;
+</a></address>
+<small>$Id$</small>
+</body>
+</html>
