@@ -20,7 +20,6 @@ archive:
 	rm -rf TEMP
 	mkdir -p TEMP/admin/$(PACKAGE)
 	make -C src clean
-	make -C doc/man
 	cp -a $(DIRS) TEMP/admin/$(PACKAGE)/
 	chmod -R g-ws TEMP/admin
 	chmod +t TEMP/admin
@@ -33,6 +32,8 @@ clean:
 	find . -name \*~ -exec rm -f {} \;
 	find . -name .??*~ -exec rm -f {} \;
 	find . -name \#?* -exec rm -f {} \;
+	for i in $(MANPAGES); do rm -f doc/`basename $$i`.html; done
+	rm -f .manpages
 
 install-manpages:
 	install -m 0644 doc/socklog.8 /usr/local/man/man8/socklog.8
