@@ -12,15 +12,4 @@ var/log/socklog/ftp
 var/log/socklog/local
 var/log/socklog/debug
 var/log/socklog-remote/main
-var/log/socklog-remote/kern
-var/log/socklog-remote/user
-var/log/socklog-remote/mail  
-var/log/socklog-remote/daemon
-var/log/socklog-remote/auth  
-var/log/socklog-remote/syslog
-var/log/socklog-remote/news
-var/log/socklog-remote/cron
-var/log/socklog-remote/ftp  
-var/log/socklog-remote/local
-var/log/socklog-remote/debug
 var/log/socklog/klog

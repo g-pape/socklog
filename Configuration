@@ -1,7 +1,7 @@
 socklog - configuration
 
 -------------------------------------------------------------------------------
-the installation of socklog provides two service directories for the use with 
+the installation of socklog provides two service directories for the use with
 svscan:
 
   * /etc/socklog/unix/
@@ -25,15 +25,57 @@ edit the corresponding run scripts once for configuration, e.g. for the unix
 domain socket service:
   # vi /etc/socklog/unix/run
   # vi /etc/socklog/unix/log/run
-    
-check carefully that all log directories you stated in /etc/socklog/unix/log/
-run exist and are writable to the uid running the multilog process.
+create the user you chose to run multilog if not yet done and check carefully
+that all log directories you stated in /etc/socklog/unix/log/run exist and are
+writable to this user.
 
 then link the directory to daemontools' service directory, e.g. for the unix
 domain socket service:
   # ln -s /etc/socklog/unix /var/service/socklog-unix
-    
 wait five seconds for the service to start and then check the log directories.
+-------------------------------------------------------------------------------
+it is possible to replace the unix domain dgram socket listener socklog-unix
+with a unix domain stream socket listener using the ucspi mode of socklog and
+ucspi tools such as ucspi-unix and ucspi-icp.
+
+create a service directory /etc/socklog/ucspi-unix with a subdirectory log an
+the correspnding run scripts:
+
+  * a sample socklog-ucspi-unix/run script:
+      #!/bin/sh
+      exec 2>&1
+      exec unixserver -U `id -u nobody` /dev/log -- \
+        socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
+
+  * a sample socklog-ucspi-unix/log/run script:
+      #!/bin/sh
+      LOGDIR=/var/log/socklog
+      exec setuidgid log multilog ${LOGDIR}/main \
+        -* +'*: *: kern.*' ${LOGDIR}/kern \
+        -* +'*: *: user.*' ${LOGDIR}/user \
+        -* +'*: *: mail.*' ${LOGDIR}/mail \
+        -* +'*: *: daemon.*' ${LOGDIR}/daemon \
+        -* +'*: *: auth.*' +authpriv.* ${LOGDIR}/auth \
+        -* +'*: *: syslog.*' ${LOGDIR}/syslog \
+        -* +'*: *: news.*' ${LOGDIR}/news \
+        -* +'*: *: cron.*' ${LOGDIR}/cron \
+        -* +'*: *: ftp.*' ${LOGDIR}/ftp \
+        -* +'*: *: local*.*' ${LOGDIR}/local \
+        -* +'*: *: *.debug*' ${LOGDIR}/debug
+
+
+disable the service socklog-unix if it is running
+  # cd /service/socklog-unix
+  # rm /service/socklog-unix
+  # svc -dx . log
+check carefully that all log directories you stated in /etc/socklog/ucspi-unix/
+log/run exist and are writable the corresponding user.
+
+then link the directory to daemontools' service directory:
+  # ln -s /etc/socklog/ucspi-unix /var/service/socklog-ucspi-unix
+wait five seconds for the service to start and then check the log directories.
+-------------------------------------------------------------------------------
+See Examples for more sample run and log/run scripts.
 -------------------------------------------------------------------------------
 
 G. Pape

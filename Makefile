@@ -2,21 +2,24 @@ DESTDIR=
 
 CC=gcc
 CFLAGS=-Wall -O3
-#LDFLAGS=-s
+LDFLAGS=-Wall -O3 -s
 
 TARGET=socklog
-OBJECTS=$(TARGET).o
-DOCS=README INSTALL Configuration
+OBJECTS=$(TARGET).o fdbuffer.o
+DOCS=README INSTALL Configuration Examples
 SERVICES=unix inet klog
 
 all: docs $(TARGET)
 
 $(TARGET): $(OBJECTS)
+	$(CC) $(LDFLAGS) -o $(TARGET) $(OBJECTS)
 
 $(TARGET).o: $(TARGET).c
 
+fdbuffer.o: fdbuffer.c fdbuffer.h
+
 clean:
-	find . -name *~ -exec rm -f {} \;
+	find . -name \*~ -exec rm -f {} \;
 	find . -name .??*~ -exec rm -f {} \;
 	find . -name \#?* -exec rm -f {} \;
 	rm -f $(OBJECTS) $(TARGET)
@@ -49,4 +52,6 @@ INSTALL: doc/install.html
 
 Configuration: doc/configuration.html
 	w3m -dump doc/configuration.html > Configuration
-	
+
+Examples: doc/examples.html
+	w3m -dump doc/examples.html > Examples

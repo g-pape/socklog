@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<title>socklog - examples</title>
+</head>
+
+<body>
+<h1>socklog - examples</h1>
+<hr>
+<h2>
+listening on unix domain dgram socket <tt>/dev/log</tt>:
+</h2>
+<ul>
+  <li>a sample <tt>socklog-unix/run</tt> script:
+      <pre>
+  #!/bin/sh
+  exec 2>&1
+  exec envuidgid nobody socklog unix /dev/log
+      </pre>
+  <li>a sample <tt>socklog-unix/log/run</tt> script:
+      <pre>
+  #!/bin/sh
+  LOGDIR=/var/log/socklog
+  exec setuidgid log multilog ${LOGDIR}/main \
+    -* +kern.* ${LOGDIR}/kern \
+    -* +user.* ${LOGDIR}/user \
+    -* +mail.* ${LOGDIR}/mail \
+    -* +daemon.* ${LOGDIR}/daemon \
+    -* +auth.* +authpriv.* ${LOGDIR}/auth \
+    -* +syslog.* ${LOGDIR}/syslog \
+    -* +news.* ${LOGDIR}/news \
+    -* +cron.* ${LOGDIR}/cron \
+    -* +ftp.* ${LOGDIR}/ftp \
+    -* +local*.* ${LOGDIR}/local \
+    -* +*.debug* ${LOGDIR}/debug
+      </pre>
+  <li>if you want additional
+      <a href="http://cr.yp.to/daemontools/tai64n.html">tai64n</a>
+      (# man tai64n) timestamps prepended to each message, use this
+      <tt>socklog-unix/log/run</tt> script as example:
+      <pre>
+  #!/bin/sh
+  LOGDIR=/var/log/socklog
+  exec setuidgid log multilog t ${LOGDIR}/main \
+    -* +'* kern.*' ${LOGDIR}/kern \
+    -* +'* user.*' ${LOGDIR}/user \
+    -* +'* mail.*' ${LOGDIR}/mail \
+    -* +'* daemon.*' ${LOGDIR}/daemon \
+    -* +'* auth.*' +authpriv.* ${LOGDIR}/auth \
+    -* +'* syslog.*' ${LOGDIR}/syslog \
+    -* +'* news.*' ${LOGDIR}/news \
+    -* +'* cron.*' ${LOGDIR}/cron \
+    -* +'* ftp.*' ${LOGDIR}/ftp \
+    -* +'* local*.*' ${LOGDIR}/local \
+    -* +'* *.debug*' ${LOGDIR}/debug
+      </pre>
+      note that
+      <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+      (# man multilog) patterns apply to the timestamps.
+</ul>
+<hr>
+<h2>
+listening on udp network socket <tt>0.0.0.0</tt>:<tt>514</tt>:
+</h2>
+<ul>
+  <li>a sample <tt>socklog-inet/run</tt> script is:
+      <pre>
+  #!/bin/sh
+  exec 2>&1
+  exec envuidgid nobody socklog inet 0 514
+      </pre>
+  <li>a sample <tt>socklog-inet/log/run</tt> script is:
+      <pre>
+  #!/bin/sh
+  LOGDIR=/var/log/socklog-remote
+  exec setuidgid log multilog t ${LOGDIR}/main \
+    -* +'* 10.0.0.2:' ${LOGDIR}/10.0.0.2 \
+    -* +'* 10.0.0.17:' ${LOGDIR}/10.0.0.17
+      </pre>
+</ul>
+<hr>
+<h2>
+listening on unix domain stream socket <tt>/dev/log</tt>:
+</h2>
+<ul>
+  <li>a sample <tt>socklog-ucspi-unix/run</tt> script:
+      <pre>
+  #!/bin/sh
+  exec 2>&1
+  exec unixserver -U `id -u nobody` /dev/log -- \
+    socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
+      </pre>
+  <li>a sample <tt>socklog-ucspi-unix/log/run</tt> script:
+      <pre>
+  #!/bin/sh
+  LOGDIR=/var/log/socklog
+  exec setuidgid log multilog ${LOGDIR}/main \
+    -* +'*: *: kern.*' ${LOGDIR}/kern \
+    -* +'*: *: user.*' ${LOGDIR}/user \
+    -* +'*: *: mail.*' ${LOGDIR}/mail \
+    -* +'*: *: daemon.*' ${LOGDIR}/daemon \
+    -* +'*: *: auth.*' +authpriv.* ${LOGDIR}/auth \
+    -* +'*: *: syslog.*' ${LOGDIR}/syslog \
+    -* +'*: *: news.*' ${LOGDIR}/news \
+    -* +'*: *: cron.*' ${LOGDIR}/cron \
+    -* +'*: *: ftp.*' ${LOGDIR}/ftp \
+    -* +'*: *: local*.*' ${LOGDIR}/local \
+    -* +'*: *: *.debug*' ${LOGDIR}/debug
+      </pre>
+      
+</ul>
+<hr>
+<address><a href="mailto:pape@innominate.com">
+G. Pape &lt;pape@innominate.com&gt;
+</a></address>
+<small>$Id$</small>
+</body>
+</html>

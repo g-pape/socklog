@@ -31,7 +31,7 @@
     <a href="http://cr.yp.to/daemontools/supervise.html">supervise</a>
     and <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
     <p>
-      <i>socklog</i> is small, secure, reliable and not feature-overloaded.
+    <i>socklog</i> is small, secure, reliable and not feature-overloaded.
     <hr>
     <i>socklog</i> is run under
     <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
@@ -44,20 +44,26 @@
     to a <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
     process.
     <p>
-      If <i>socklog</i> listens to an udp socket, it prepends
-      <tt>ip:</tt> (<tt>a.b.c.d: </tt>) to each syslog message it receives,
-      where <tt>a.b.c.d</tt> is the ip address of the connecting system.
+    <i>socklog</i> can be run as an
+    <a href="http://cr.yp.to/proto/ucspi.txt">ucspi</a> application to
+    listen to an unix domain stream socket and for centralized or more
+    flexible distributed logging.
     <p>
-      If the environment variables $UID and/or $GID are present,
-      <i>socklog</i> will drop permissions to those ids after creating
-      and binding to the socket.
+    If <i>socklog</i> listens to an udp socket, it prepends
+    <tt>ip:</tt> (<tt>a.b.c.d: </tt>) to each syslog message it receives,
+    where <tt>a.b.c.d</tt> is the ip address of the connecting system.
     <p>
-      <i>socklog</i>  converts syslog <tt>facility</tt> and <tt>priority</tt>
-      information to names (<tt>facility.priority</tt>) as found in
-      <tt>/usr/include/syslog.h</tt>
-      at compile time if present, you can use this for
-      <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s line
-      selecting by pattern.
+    If the environment variables $UID and/or $GID are present,
+    <i>socklog</i> will drop permissions to those ids after creating
+    and binding to the socket (not in
+    <a href="http://cr.yp.to/proto/ucspi.txt">ucspi</a> mode).
+    <p>
+    <i>socklog</i>  converts syslog <tt>facility</tt> and <tt>priority</tt>
+    information to names (<tt>facility.priority</tt>) as found in
+    <tt>/usr/include/syslog.h</tt>
+    at compile time if present, you can use this for
+    <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s line
+    selecting by pattern.
     <hr>
     A proper <tt>run</tt> file for
     <a href="http://cr.yp.to/daemontools/supervise.html">supervise</a> is:

@@ -19,11 +19,15 @@ socklog is run under daemontools' supervise, writing syslog messages it
 receives from an unix domain socket path (/dev/log) or an inet udp socket ip:
 port (0.0.0.0:514) through a pipe provided by svscan to a multilog process.
 
+socklog can be run as an ucspi application to listen to an unix domain stream
+socket and for centralized or more flexible distributed logging.
+
 If socklog listens to an udp socket, it prepends ip: (a.b.c.d: ) to each syslog
 message it receives, where a.b.c.d is the ip address of the connecting system.
 
 If the environment variables $UID and/or $GID are present, socklog will drop
-permissions to those ids after creating and binding to the socket.
+permissions to those ids after creating and binding to the socket (not in ucspi
+mode).
 
 socklog converts syslog facility and priority information to names
 (facility.priority) as found in /usr/include/syslog.h at compile time if
@@ -33,7 +37,7 @@ A proper run file for supervise is:
   #!/bin/sh
   exec 2>&1
   exec envuidgid nobody socklog unix /dev/log
-    
+
 See envuidgid (# man envuidgid) and socklog (# man socklog).
 
 A proper log/run file for supervise is:
@@ -51,17 +55,17 @@ A proper log/run file for supervise is:
     -* +ftp.* ${LOGDIR}/ftp \
     -* +local*.* ${LOGDIR}/local \
     -* +*.debug* ${LOGDIR}/debug
-    
+
 See setuidgid (# man setuidgid) and multilog (# man multilog).
 -------------------------------------------------------------------------------
 you can download the package via ftp. socklog is also available as Debian GNU/
 Linux package, just add
   deb ftp://ftp.innominate.org/pub/pape/Debian potato innominate
   deb-src ftp://ftp.innominate.org/pub/pape/Debian potato innominate
-    
+
 to /etc/apt/sources.list and
   # apt-get update
-    
+
 Then install the package socklog as usual with apt, dpkg or dselect.
 -------------------------------------------------------------------------------
 See INSTALL on how to install socklog and Configuration for setting up socklog

@@ -1,24 +1,39 @@
+#include "fdbuffer.h"
+
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/un.h>
 #include <unistd.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <grp.h>
 
 #define SYSLOG_NAMES
 #include <syslog.h>
 
 #define LINEC 1024
-#define USAGE " [unix|inet] [address]"
+#define USAGE " [unix|inet|ucspi] [args]"
 #define VERSION "$Id$"
 #define DEFAULTINET "0"
 #define DEFAULTPORT "514"
 #define DEFAULTUNIX "/dev/log"
 
 char *progname;
-int inet =0;
+
+#define MODE_UNIX 0
+#define MODE_INET 1
+#define MODE_UCSPI 2
+
+int mode =MODE_UNIX;
+char line[LINEC];
+char *address =NULL;
+char *uid, *gid;
+char buf[1024];
+fdbuffer fdbuf;
 
 void usage() {
   write(2, "usage: ", 7);
@@ -40,8 +55,10 @@ int syslog_names (char *line, int linec) {
       ok =1;
       break;
     }
-    if ('0' <= line[i] <= '9') {
+    if (('0' <= line[i]) && (line[i] <= '9')) {
       fpr =10 *fpr + line[i] -'0';
+    } else {
+      return(0);
     }
   }
   if (!ok || !fpr) return(0);
@@ -50,25 +67,25 @@ int syslog_names (char *line, int linec) {
   fp =LOG_FAC(fpr) <<3;
   for (p =facilitynames; p->c_name; p++) {
     if (p->c_val == fp) {
-      write(2, p->c_name, strlen(p->c_name));
-      write(2, ".", 1);
+      fdbuffer_write(&fdbuf, p->c_name, strlen(p->c_name));
+      fdbuffer_write(&fdbuf, ".", 1);
       break;
     }
   }
   if (! p->c_name) {
-    write (2, "unknown.", 8);
+    fdbuffer_write(&fdbuf, "unknown.", 8);
     i =0;
   }
   fp =LOG_PRI(fpr);
   for (p =prioritynames; p->c_name; p++) {
     if (p->c_val == fp) {
-      write(2, p->c_name, strlen(p->c_name));
-      write(2, ": ", 2);
+      fdbuffer_write(&fdbuf, p->c_name, strlen(p->c_name));
+      fdbuffer_write(&fdbuf, ": ", 2);
       break;
     }
   }
   if (! p->c_name) {
-    write (2, "unknown: ", 9);
+    fdbuffer_write(&fdbuf, "unknown: ", 9);
     i =0;
   }
   return(i);
@@ -78,20 +95,20 @@ void remote_info (struct sockaddr_in *sa) {
   char *host;
 
   host =inet_ntoa(sa->sin_addr);
-  write(2, host, strlen(host));
-  write(2, ": ", 2);
+  fdbuffer_write(&fdbuf, host, strlen(host));
+  fdbuffer_write(&fdbuf, ": ", 2);
 }
 
 int socket_unix (char* f) {
   int s;
   struct sockaddr_un sa;
-
+  
   if ((s =socket(AF_UNIX, SOCK_DGRAM, 0)) == -1) {
     perror("socket");
     exit(1);
   }
   sa.sun_family =AF_UNIX;
-  strcpy(sa.sun_path, f);
+  strncpy(sa.sun_path, f, sizeof(sa.sun_path));
   unlink(f);
   umask(0);
   if (bind(s, (struct sockaddr*) &sa, sizeof sa) == -1) {
@@ -134,50 +151,21 @@ int socket_inet (char* ip, char* port) {
   return(s);
 }
 
-int main(int argc, char** argv) {
-  int s;
-  char *address =NULL;
-  char *uid, *gid;
-
-  progname =*argv++;
-  if (*argv) {
-    switch (**argv) {
-    case 'u':
-      inet =0;
-      break;
-    case 'i':
-      inet =1;
-      break;
-    case '-':
-      if ((*argv)[1] && (*argv)[1] == 'v') {
-	write(2, VERSION, strlen(VERSION));
-	write(2, "\n", 1);
-      }
-    default:
-      usage();
-    }
-    argv++;
-  }
-  if (*argv) address =*argv++;
-
-  if (inet) {
-    char* port =NULL;
-
-    if (*argv) port =*argv++;
-    if (!address) address =DEFAULTINET;
-    if (!port) port =DEFAULTPORT;
-    s =socket_inet(address, port);
-  } else {
-    if (!address) address =DEFAULTUNIX;
-    s =socket_unix(address);
-  }
+int read_socket (int s) {
+  fdbuffer_init(&fdbuf, buf, 1024, 1);
 
   // drop permissions
   if ((gid = getenv("GID")) != NULL) {
+    int g =atoi(gid);
+    
     write(2, "gid=", 4);
     write(2, gid, strlen(gid));
     write(2, ", ", 2);
-    if (setgid(atoi(gid)) == -1) {
+    if (setgroups(1, &g)) {
+      perror("setgroups");
+      usage();
+    }
+    if (setgid(g) == -1) {
       perror("setgid");
       usage();
     }
@@ -192,13 +180,11 @@ int main(int argc, char** argv) {
     }
   }
   write(2, "starting.\n", 10);
-  if (*argv) usage();
 
   for(;;) {
     struct sockaddr_in saf;
     int dummy =sizeof saf;
     int linec;
-    char line[LINEC];
     int os;
 
     linec =recvfrom(s, line, LINEC, 0, (struct sockaddr *) &saf, &dummy);
@@ -208,11 +194,125 @@ int main(int argc, char** argv) {
     }
     if (linec == 0) continue;
 
-    if (inet) remote_info(&saf);
+    if (mode == MODE_INET) remote_info(&saf);
     os =syslog_names(line, linec);
 
-    write(2, line +os, linec -os);
-    if (linec == LINEC) write(2, "...", 3);
-    if (line[linec -1] != '\n') write(2, "\n", 1);
+    //    write(2, line +os, linec -os);
+    fdbuffer_write(&fdbuf, line +os, linec -os);
+    if (linec == LINEC) fdbuffer_write(&fdbuf, "...", 3);
+    if (line[linec -1] != '\n') fdbuffer_write(&fdbuf, "\n", 1);
+    fdbuffer_flush(&fdbuf);
   }
+}
+
+int read_ucspi (int fd, char** vars) {
+  char *envs[9];
+  int flageol =1;
+  int i;
+
+  fdbuffer_init(&fdbuf, buf, 1024, 2);
+
+  for (i =0; *vars && (i < 8); vars++) {
+    if ((envs[i] =getenv(*vars)) != NULL) {
+      i++;
+    }
+  }
+  envs[i] =NULL;
+
+  for(;;) {
+    int linec;
+    char *l, *p;
+    
+    linec =read(fd, line, LINEC);
+    if (linec == -1) {
+      fdbuffer_flush(&fdbuf);
+      perror("read");
+      return(1);
+    }
+    if (linec == 0) {
+      if (! flageol) fdbuffer_write(&fdbuf, "\n", 1);
+      fdbuffer_flush(&fdbuf);
+      return(0);
+    }
+    
+    for (l =p =line; l -line < linec; l++) {
+      if (flageol) {
+	if (! *l || (*l == '\n')) continue;
+	for (i =0; envs[i]; i++) {
+	  fdbuffer_write(&fdbuf, envs[i], strlen(envs[i]));
+	  fdbuffer_write(&fdbuf, ": ", 2);
+	}
+	// could fail on eg <13\0>user.notice: ...
+	l += syslog_names(l, line -l +linec);
+	p =l;
+	flageol =0;
+      }
+      if (! *l || (*l == '\n')) {
+	fdbuffer_write(&fdbuf, p, l -p);
+	fdbuffer_write(&fdbuf, "\n", 1);
+	fdbuffer_flush(&fdbuf);
+	flageol =1;
+      }
+    }
+    if (!flageol) fdbuffer_write(&fdbuf, p, l -p);
+  }
+}
+  
+int main(int argc, char** argv) {
+  int s =0;
+  
+  progname =*argv++;
+  if (*argv) {
+    switch (**argv) {
+    case 'u':
+      if (! *(++*argv)) usage();
+      switch (**argv) {
+      case 'n':
+	mode =MODE_UNIX;
+	break;
+      case 'c':
+	mode =MODE_UCSPI;
+	argv--;
+	break;
+      default:
+	usage();
+      }
+      break;
+    case 'i':
+      mode =MODE_INET;
+      break;
+    case '-':
+      if ((*argv)[1] && (*argv)[1] == 'v') {
+	write(2, VERSION, strlen(VERSION));
+	write(2, "\n", 1);
+      }
+    default:
+      usage();
+    }
+    argv++;
+  }
+  if (*argv) address =*argv++;
+
+  switch (mode) {
+  case MODE_INET: {
+    char* port =NULL;
+
+    if (*argv) port =*argv++;
+    if (*argv) usage();
+    if (!address) address =DEFAULTINET;
+    if (!port) port =DEFAULTPORT;
+    s =socket_inet(address, port);
+    return(read_socket(s));
+  }
+  case MODE_UNIX:
+    if (*argv) usage();
+    if (!address) address =DEFAULTUNIX;
+    s =socket_unix(address);
+    return(read_socket(s));
+  case MODE_UCSPI:
+    s =0;
+    return(read_ucspi(0, argv));
+  }
+  // not reached
+  return(1);
 }

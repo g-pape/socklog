@@ -1,5 +1,17 @@
 #!/bin/sh
 LOGDIR=/var/log/socklog-remote
+exec setuidgid log multilog t ${LOGDIR}/main
+
+# not reached
+
+# use something like this to seperate logs with timestamps by machine or
+# network
+exec setuidgid log multilog t ${LOGDIR}/main \
+  -* +'* 10.0.0.2:' ${LOGDIR}/10.0.0.2 \
+  -* +'* 10.1.0.*:' ${LOGDIR}/10.1.0
+            
+# use something like this to seperate logs without timestamps by
+# facility.priority
 exec setuidgid log multilog ${LOGDIR}/main \
   -* +kern.* ${LOGDIR}/kern \
   -* +user.* ${LOGDIR}/user \

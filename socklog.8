@@ -8,17 +8,21 @@ unix
 ] [
 .I path
 ]
-.LP
+.br
 .B socklog
-inet
-[
+inet [
 .I ip
 ] [
 .I port
 ]
+.br
+.B socklog
+ucspi [
+.I args
+]
 .SH DESCRIPTION
 .B socklog
-should be run under daemontools'
+is run under daemontools'
 .BR supervise (8),
 writing syslog messages it receives from unix domain socket
 .I path
@@ -30,13 +34,20 @@ to a
 .BR multilog (8)
 process.
 .LP
+.B socklog
+can be run as an ucspi application to listen to an unix domain stream socket
+and for more flexible distributed logging.
+.LP
 If the environment variables $UID and/or $GID are present,
 .B socklog
-will drop permissions to those ids after creating and binding the socket.
+will drop permissions to those ids after creating and binding the socket
+(not in
+.I ucspi
+mode).
 .LP
 .B socklog
 converts syslog facility and priority information to names
-(\fIfacility\fR.\fIpriority\fR)
+(\fIfacility\fR.\fIpriority\fR:)
 as found in
 .I /usr/include/syslog.h
 at compile time if present.
@@ -102,8 +113,41 @@ prepends
 to each syslog message it receives, where
 .I a.b.c.d
 is the ip address of the connecting system.
-.SH DAEMONTOOLS
-A proper
+.SH UCSPI MODE
+.B socklog
+ucspi [
+.I args
+]
+.LP
+Starting
+.B socklog
+with the 1st argument
+.IR ucspi ,
+.B socklog
+will run as an ucspi application. Normally
+.B socklog
+will only be started in
+.I ucspi
+mode by an ucspi server tool, such as
+.BR tcpserver (1)
+or
+.BR unixserver .
+.LP
+For each
+.IR arg ,
+.B socklog
+will prepend
+$\fIarg\fR:
+to each syslog message, if the environment variable
+.RI $ arg
+is present (maximum is 8).
+
+
+.SH EXAMPLES
+.I unix
+mode for listening on unix domain dgram socket
+.IR /dev/log .
+a proper
 .I run
 file for
 .BR supervise (8)
@@ -112,12 +156,42 @@ is:
   #!/bin/sh
   exec 2>&1
   exec envuidgid nobody socklog unix /dev/log
+.LP
+.I ucspi
+mode for listening on unix domain stream socket
+.IR /dev/log .
+a proper
+.I run
+file for
+.BR supervise (8)
+is:
+.LP
+  #!/bin/sh
+  exec 2>&1
+  exec unixserver -U `id -u nobody` /dev/log \\
+    socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
+.LP
+.I inet
+mode for listening on udp network socket
+.IR 0.0.0.0\fR:\fI514 .
+a proper
+.I run
+file for
+.BR supervise (8)
+is:
+.LP
+  #!/bin/sh
+  exec 2>&1
+  exec envuidgid nobody socklog inet 0 514
+.LP
 .SH AUTHOR
 G.Pape <pape@innominate.com>
 .SH SEE ALSO
 svscan(8),
 supervise(8),
-multilog(8)
+multilog(8),
+tcpserver(1)
 
  http://innominate.org/~pape/socklog/
  http://cr.yp.to/daemontools.html
+ http://cr.yp.tp/proto/ucspi.txt
