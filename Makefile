@@ -36,10 +36,18 @@ installdirs:
 install: installdirs
 	install -m 0755 $(TARGET) $(DESTDIR)/usr/sbin/$(TARGET)
 	for i in $(SERVICES); do \
+		EXT="" ; \
+		if [ -e $(DESTDIR)/etc/socklog/$$i/run ]; then \
+			EXT=.distrib ; \
+		fi ; \
 		install -m 0755 $$i/run \
-			$(DESTDIR)/etc/socklog/$$i/run ; \
+			$(DESTDIR)/etc/socklog/$$i/run$$EXT ; \
+		EXT="" ; \
+		if [ -e $(DESTDIR)/etc/socklog/$$i/log/run ]; then \
+			EXT=.distrib ; \
+		fi ; \
 		install -m 0755 $$i/runlog \
-			$(DESTDIR)/etc/socklog/$$i/log/run ; \
+			$(DESTDIR)/etc/socklog/$$i/log/run$$EXT ; \
 	done
 
 docs-clean:
