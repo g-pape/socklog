@@ -23,6 +23,7 @@ byte_cr.o
 byte_diff.o
 byte_rchr.o
 chkshsgr
+chkshsgr.o
 choose
 coe.o
 compile
