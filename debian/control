@@ -30,7 +30,7 @@ Description: small and secure replacement for syslogd using djb's daemontools
  calculated properly.
  .
  socklog runs on Linux, OpenBSD, and FreeBSD. socklog reportedly runs on
- Solaris an NetBSD. If it runs for you on other operating systems, please
+ Solaris and NetBSD. If it runs for you on other operating systems, please
  let me know.
  .
  socklog is small, secure, reliable.
