@@ -22,19 +22,19 @@ Create a <tt>/package</tt> directory
   # cd /package
 </pre>
 Download
-<a href="ftp://ftp.innominate.org/pub/pape/socklog/socklog-0.4.0.tar.gz">
-socklog-0.4.0.tar.gz</a> into <tt>/package</tt> and unpack the archive
+<a href="ftp://ftp.innominate.org/pub/pape/socklog/socklog-0.4.1.tar.gz">
+socklog-0.4.1.tar.gz</a> into <tt>/package</tt> and unpack the archive
 <pre>
-  # gunzip socklog-0.4.0.tar
-  # tar -xpf socklog-0.4.0.tar
-  # rm socklog-0.4.0.tar
-  # cd admin/socklog-0.4.0
+  # gunzip socklog-0.4.1.tar
+  # tar -xpf socklog-0.4.1.tar
+  # rm socklog-0.4.1.tar
+  # cd admin/socklog-0.4.1
 </pre>
 On solaris, edit the top of <tt>src/Makefile</tt>, add <tt>-DSOLARIS</tt>
 to <tt>CFLAGS</tt> and <tt>-lsocket -lnsl -ldoor -lthread</tt> to
 <tt>LDFLAGS</tt>.
 <p>
-Compile and install the <i>socklog</i> program
+Compile and install the <i>socklog</i> programs
 <pre>
   # package/install
 </pre>
@@ -48,7 +48,7 @@ gzip the man pages and copy them into a reasonable directory in your
   # gzip man/uncat.1 && cp -f man/uncat.1.gz /usr/local/man/man1/ 
 </pre>
 Refer to <a href="configuration.html">Configuration</a> for
-configuring and setting up <i>socklock</i> services.
+configuring and setting up <i>socklog</i> services.
 <hr>
 <address><a href="mailto:pape@smarden.org">
 Gerrit Pape &lt;pape@smarden.org&gt;

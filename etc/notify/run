@@ -7,7 +7,6 @@ if [ ! -p "$PIPE" ]; then mknod "$PIPE" p; fi
 chmod 666 "$PIPE"
 
 exec < "$PIPE"
-exec setuidgid log uncat -vs49999 -t180 \
-  env QMAILUSER=log \
-  sh -c "( echo -e \"Subject: socklog-notify\nTo: <$MAILTO>\n\"; cat ) | \
-  datemail -F'socklog notify' $MAILTO"
+exec setuidgid log uncat -s49999 -t180 \
+  env QMAILUSER=log QMAILNAME='socklog notify' \
+  sh -c "mailsubj socklog-notify $MAILTO"

@@ -1,0 +1,1 @@
+socklog.c: remove fdbuffer.* switch to djb buffer library.

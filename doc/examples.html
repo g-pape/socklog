@@ -112,6 +112,25 @@ listening on unix domain stream socket <tt>/dev/log</tt>:
 </ul>
 <hr>
 <h2>
+<a href="notify.html">log events notification</a> with <i>mailsubj</i>:
+</h2>
+<ul>
+  <li>a sample <tt>socklog-notify/run</tt> script that injects mail using
+  <i>mailsubj</i> for notification is:
+  <pre>
+  #!/bin/sh -e
+  MAILTO=root
+  PIPE=/var/log/socklog/.notify
+  if [ ! -p "$PIPE" ]; then mknod "$PIPE" p; fi
+  chmod 666 "$PIPE"
+  exec < "$PIPE"
+  exec setuidgid log uncat -s49999 -t180 \
+    env QMAILUSER=log QMAILNAME='socklog notify' \
+    sh -c "mailsubj socklog-notify $MAILTO"
+  </pre>
+</ul>
+<hr>
+<h2>
 <a href="notify.html">log events notification</a> with <i>wall</i>:
 </h2>
 <ul>

@@ -9,16 +9,19 @@
 <hr>
 <h1>socklog - log events notification</h1>
 <hr>
-The service <tt>socklog-notify</tt> provides instant notification of
+The service <i>socklog-notify</i> provides instant notification of
 log events. There is an interval in seconds for the creation of
 notifications to prevent a flood.
 <p>
-Set up the <tt>socklog-notify</tt> service as described in
-<a href="configuration.html">Configuration</a> to ensure that the
+Set up the <i>socklog-notify</i> service as described in
+<a href="configuration.html#notify">Configuration</a> to ensure that the
 named pipe <tt>/var/log/socklog/.notify</tt> exists. Do not delete
 this file after creation.
 <p>
-<tt>socklog-notify</tt> is handled by the
+Read <a href="#disable">disable notifications</a> before stopping the
+<i>socklog-notify</i> service once it is started.
+<p>
+<i>socklog-notify</i> is handled by the
 <a href="uncat.1.html">uncat</a> program.
 <hr>
 <h2>how to configure log events</h2>
@@ -26,11 +29,11 @@ Choose a log controlled by
 <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
 to be watched for log events, say <tt>/service/dnscache/log/main/</tt>.
 <p>
-Make sure that the service <tt>socklog-notify</tt> is running.
+Make sure that the service <i>socklog-notify</i> is running.
 <p>
 Redirect the standard error output <tt>stderr</tt> of
 <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
-to the named pipe <tt>socklog-notify</tt> is reading from. To do so,
+to the named pipe <i>socklog-notify</i> is reading from. To do so,
 insert <tt>exec 2> /var/log/socklog/.notify</tt> as second line into
 <tt>/service/dnscache/log/run</tt>:
 <pre>
@@ -60,7 +63,7 @@ Then restart the log service:
 </pre>
 <hr>
 <h2>how to configure the notification</h2>
-Per default, <tt>socklog-notify</tt> injects a mail to a specified
+Per default, <i>socklog-notify</i> injects a mail to a specified
 address containing the log events, but the behavior is configurable, so
 you can change it to use instant or short messaging service for example.
 <p>
@@ -70,12 +73,11 @@ of <a href="uncat.1.html">uncat</a> to your needs. This example
 uses <i>sms_client</i> to notify:
 <pre>
   #!/bin/sh -e
-  MAILTO=root
   PIPE=/var/log/socklog/.notify
   if [ ! -p "$PIPE" ]; then mknod "$PIPE" p; fi
   chmod 666 "$PIPE"
   exec < "$PIPE"
-  exec setuidgid log uncat -vs49999 -t90 \
+  exec setuidgid log uncat -s49999 -t90 \
     sh -c 'head -c140 | sms_client pager'
 </pre>
 Then restart the service:
@@ -88,6 +90,22 @@ Another example using <i>wall</i>:
   exec setuidgid log uncat -vs49999 -t180 \
     sh -c 'head | wall'
 </pre>
+<hr>
+
+<a name="disable"><h2>Disable log event notifications</h2></a>
+You need to disable all log event notifications</a> before stopping
+the <i>socklog-notify</i> service. To check which services are configured
+for sending log events, run:
+<pre>
+  # grep -F /var/log/socklog/.notify /service/*/log/run
+</pre>
+For each of these services, edit the corresponding <tt>log/run</tt> script
+to remove the <tt>exec 2&gt;/var/log/socklog/.notify</tt> line and the
+configured log event(s) and restart its log service:
+<pre>
+  # svc -t /service/&lt;service&gt;/log
+</pre>
+Now it is safe to stop the <i>socklog-notify</i> service.
 <hr>
 <address><a href="mailto:pape@smarden.org">
 Gerrit Pape &lt;pape@smarden.org&gt;

@@ -6,9 +6,6 @@
 #include "stralloc.h"
 #include "buffer.h"
 #include "pathexec.h"
-/*
-#include "deepsleep.h"
-*/
 #include "fd.h"
 #include "wait.h"
 #include "taia.h"
@@ -46,7 +43,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
   progname =*argv;
 
   sig_block(sig_term);
-  sig_catch(sig_term,exit_asap);
+  sig_catch(sig_term, exit_asap);
 
   while ((opt =getopt(argc, argv, "t:s:vV")) != opteof) {
     switch(opt) {
@@ -70,11 +67,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
   argv +=optind;
   if (!*argv) usage();
   
-  /*
-  if (! stralloc_ready(&sa, (unsigned int) sizemax)) {
-    strerr_die2sys(111, FATAL, "out of memory: ");
-  }
-  */
+  if (verbose) strerr_warn2(WARNING, "starting.", 0);
 
   ndelay_on(0);
 
@@ -91,39 +84,49 @@ int main (int argc, const char * const *argv, const char * const *envp) {
     taia_uint(&deadline, timeout);
     taia_add(&deadline, &now, &deadline);
 
-    /* read fd 0 up to maxsize bytes */
+    /* read fd 0, stop at maxsize bytes or timeout */
     for (;;) {
       int r;
       char *s;
       iopause_fd sin;
 
       taia_now(&now);
-      if (taia_less(&deadline, &now)) break;
+      if (taia_less(&deadline, &now)) {
+      	if (verbose && sa.len) strerr_warn2(WARNING, "timeout reached.", 0);
+      	break;
+      }
       sin.fd =0;
       sin.events =IOPAUSE_READ;
 
       sig_unblock(sig_term);
       iopause(&sin, 1, &deadline, &now);
       sig_block(sig_term);
-
+      
+      if (exitasap) {
+      	if (verbose) strerr_warn2(WARNING, "got sigterm.", 0);
+      	break;
+      }
+      
       r =buffer_feed(buffer_0);
       if (r < 0) {
-	if (errno == error_again) break;
+	if (errno == error_again) continue;
 	strerr_die2sys(111, FATAL, "failed reading fd 0: ");
       }
       if (r == 0) {
-       	++eof;
+	++eof;
+	if (verbose) strerr_warn2(WARNING, "end of input.", 0);
 	break;
       }
       if (r >= sizemax) r =sizemax;
-      if ((sa.len +r) > sizemax) break;
-
+      if ((sa.len +r) > sizemax) {
+      	if (verbose) strerr_warn2(WARNING, "max size reached.", 0);
+      	break;
+      }
       s =buffer_peek(buffer_0);
       if (! stralloc_catb(&sa, s, r)) {
 	strerr_die2sys(111, FATAL, "out of memory: ");
       }
       buffer_seek(buffer_0, r);
-      if (exitasap) break;
     }
     if (sa.len) {
       /* run prog to process sa.s */
@@ -156,7 +159,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       close(cpipe[1]);
       
       if (wait_pid(&wstat, pid) != pid) {
-      strerr_die2sys(111, FATAL, "wait_pid: ");
+	strerr_die2sys(111, FATAL, "wait_pid: ");
       }
       if (verbose) {
 	if (wait_crashed(wstat)) {
@@ -166,15 +169,10 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 	}
       }
     }
-    if (eof) {
-      if (verbose) strerr_die2x(0, WARNING, "end of input.");
-      break;
-    }
-    if (exitasap) {
-      if (verbose) strerr_die2x(0, WARNING, "exit by signal.");
-      break;
-    }
+
+    if (exitasap || eof) break;
   }
 
+  strerr_warn2(WARNING, "exit.", 0);
   exit(0);
 }
