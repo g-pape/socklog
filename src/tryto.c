@@ -152,7 +152,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       if (verbose) strerr_warn2(WARNING, "starting child.", 0);
       */
       pathexec_run(*argv, argv, envp);
-      strerr_die2sys(111, FATAL, "could not start child: ");
+      strerr_die2sys(111, FATAL, "unable to start child: ");
     }
     close(cpipe[0]);
 
@@ -235,7 +235,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
     if (verbose) strerr_warn2(WARNING, "child crashed.", 0);
     if (lseek(0, 0, SEEK_SET) != 0)
 	if (verbose) strerr_warn2(WARNING,
-				  "cannot lseek fd 0: ", &strerr_sys);
+				  "unable to lseek fd 0: ", &strerr_sys);
     if (try >= trymax) break;
     sleep(1);
   }

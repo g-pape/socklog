@@ -110,7 +110,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       r =buffer_feed(buffer_0);
       if (r < 0) {
 	if (errno == error_again) continue;
-	strerr_die2sys(111, FATAL, "failed reading fd 0: ");
+	strerr_die2sys(111, FATAL, "unable to read fd 0: ");
       }
       if (r == 0) {
 	++eof;
@@ -149,12 +149,12 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 	
 	if (verbose) strerr_warn2(WARNING, "starting child.", 0);
 	pathexec_run(*argv, argv, envp);
-	strerr_die2sys(111, FATAL, "could not start child: ");
+	strerr_die2sys(111, FATAL, "unable to start child: ");
       }
       
       close(cpipe[0]);
       if (write(cpipe[1], sa.s, sa.len) < sa.len) {
-	strerr_warn2(WARNING, "failed writing to child: ", &strerr_sys);
+	strerr_warn2(WARNING, "unable to write to child: ", &strerr_sys);
       }
       close(cpipe[1]);
       
@@ -171,6 +171,6 @@ int main (int argc, const char * const *argv, const char * const *envp) {
     if (exitasap || eof) break;
   }
 
-  strerr_warn2(WARNING, "exit.", 0);
+  if (verbose) strerr_warn2(WARNING, "exit.", 0);
   exit(0);
 }

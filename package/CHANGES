@@ -1,4 +1,9 @@
 socklog 0.5.0
+Fri, 16 Nov 2001 15:53:07 +0100
+  * minor beautification
+  * deb: reorganized debian/rules
+
+socklog 0.4.6
 Sun, 11 Nov 2001 15:08:22 +0100
   * socklog: changed undocumented option -v to -V
   * Makefile: does not require gnu make (thx Jordan Krushen)

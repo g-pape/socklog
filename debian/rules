@@ -12,7 +12,6 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
-	
 
 	touch configure-stamp
 
@@ -24,6 +23,18 @@ build-stamp:
 	#	$(MAKE)
 	#/usr/bin/docbook-to-man debian/socklog.sgml > socklog.1
 
+	tar xfzvp socklog-0.5.0.tar.gz
+	mkdir -p admin/socklog-0.5.0/compile
+	tar xfzvp daemontools-pd-0.76.tar.gz \
+		-C admin/socklog-0.5.0/compile
+	ln -s daemontools-pd-0.76 admin/socklog-0.5.0/compile/support
+	( \
+	cd admin/socklog-0.5.0 ; \
+	package/compile ; \
+	echo "/package/admin/socklog-0.5.0" > compile/home ; \
+	rm -f compile/src ; \
+	ln -s /package/admin/socklog-0.5.0/src compile/src ; \
+	)
 	touch build-stamp
 
 clean:
@@ -33,8 +44,9 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	#	-$(MAKE) clean
-	rm -f debian/links
 
+	rm -rf admin
+	rm -f debian/links
 	dh_clean
 
 install: build
@@ -47,31 +59,15 @@ install: build
 	#	$(MAKE) install DESTDIR=$(CURDIR)/debian/socklog
 
 	chmod 1755 debian/socklog/package
-	tar xfzvp socklog-0.5.0.tar.gz -C debian/socklog/package
-	mkdir -p debian/socklog/package/admin/socklog-0.5.0/compile
-	tar xfzvp daemontools-pd-0.76.tar.gz \
-		-C debian/socklog/package/admin/socklog-0.5.0/compile
-	( cd debian/socklog/package/admin/socklog-0.5.0/compile ; \
-		ln -s daemontools-pd-0.76 support )
-	( \
-	cd debian/socklog/package/admin/socklog-0.5.0 ; \
-	package/compile ; \
-	echo "/package/admin/socklog-0.5.0" > compile/home ; \
-	rm -f compile/src ; \
-	ln -s /package/admin/socklog-0.5.0/src compile/src ; \
-	)
-
-	# docs
-	cp -pr debian/socklog/package/admin/socklog-0.5.0/man \
-		debian/socklog/package/admin/socklog-0.5.0/doc \
-		debian/socklog/package/admin/socklog-0.5.0/package  \
-		.
+	cp -a admin debian/socklog/package/
+	cp -a debian/socklog/package/admin/socklog-0.5.0/man .
+	rm -rf debian/socklog/package/admin/socklog-0.5.0/man
+	cp -a debian/socklog/package/admin/socklog-0.5.0/doc .
+	rm -rf debian/socklog/package/admin/socklog-0.5.0/doc
+	cp -a debian/socklog/package/admin/socklog-0.5.0/package .
 
 	# cleanup
 	rm -rf debian/socklog/package/admin/socklog-0.5.0/compile
-	rm -rf debian/socklog/package/admin/socklog-0.5.0/man
-	rm -rf debian/socklog/package/admin/socklog-0.5.0/doc
-	rm -rf debian/socklog/package/admin/socklog-0.5.0/etc
 
 	# create debian/links
 	rm -f debian/links

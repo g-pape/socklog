@@ -10,8 +10,9 @@ socklog (0.5.0-1) woody; urgency=low
   * deb: create user log as member of group adm
   * deb: /etc/socklog removed, debian/conffiles empty
   * deb: /var/log/socklog* removed
+  * deb: reorganized debian/rules
 
- -- Gerrit Pape <pape@smarden.org>  Sun, 11 Nov 2001 15:08:22 +0100
+ -- Gerrit Pape <pape@smarden.org>  Fri, 16 Nov 2001 15:53:07 +0100
 
 socklog (0.4.1-1) woody; urgency=low
 
