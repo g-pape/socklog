@@ -12,32 +12,41 @@
 socklog-check - checks for the availability of a <i>socklog(8)</i> service. 
 <h2><a name='sect1'>Synopsis</a></h2>
 <b>socklog-check</b>
-[ <b>-v</b> ] [ unix [ <i>address</i> ] ] 
+[-v] [unix [<i>address]]</i> 
 <h2><a name='sect2'>Description</a></h2>
-<b>socklog-check</b> attempts to connect
-to a <i><b>socklog</b>(8)</i> unix service and reports whether the connection attempt
-succeeded or not. <p>
-It connects to the datagram oriented unix domain socket
-<i>address</i>, and reports success through the return code. If <i>address</i> is not
-specified, <b>socklog-check</b> attempts to connect to <i>/dev/log</i>. 
+<b>socklog-check</b> attempts to connect to a <i><b>socklog</b>(8)</i>
+unix service and reports whether the connection attempt succeeded or not.
+<p>
+It connects to the datagram oriented unix domain socket <i>address</i>, and reports
+success through the return code. If <i>address</i> is not specified, <b>socklog-check</b>
+attempts to connect to <i>/dev/log</i>. <p>
+When running services that use the syslog
+facility under runit&rsquo;s service supervision, <b>socklog-check</b> should be added
+to the top of the service&rsquo;s run script to ensure that no syslog messages
+are generated until a syslog service is up and running to process the messages,
+e.g.: <p>
+ #!/bin/sh<br>
+  socklog-check || exit 1<br>
+  exec service_using_syslog <br>
+ 
 <h2><a name='sect3'>Options</a></h2>
 
 <dl>
 
 <dt><b>-v</b> </dt>
-<dd>verbose.
-Print verbose message to standard error. </dd>
+<dd>verbose. Print verbose message to standard error. </dd>
 </dl>
 
 <h2><a name='sect4'>Exit Codes</a></h2>
-On success <b>socklog-check</b>
-returns 0. <p>
-On error, <b>socklog-check</b> prints a message to standard error and
-exits 111. 
+On
+success <b>socklog-check</b> returns 0. <p>
+On error, <b>socklog-check</b> prints a message
+to standard error and exits 111. 
 <h2><a name='sect5'>See Also</a></h2>
-<i>socklog(8)</i>, <i>socklog-conf(8)</i>, <i>svlogd(8)</i>, <i>nc(1)</i>, <i>tryto(1)</i>,
-<i>uncat(1)</i>, <i>tcpsvd(8)</i> <p>
+<i>socklog(8)</i>, <i>socklog-conf(8)</i>, <i>svlogd(8)</i>,
+<i>tryto(1)</i>, <i>uncat(1)</i>, <i>tcpsvd(8)</i>, <i>runsv(8)</i>, <i>runsvdir(8)</i> <p>
  <i>http://smarden.org/socklog/</i><br>
+  <i>http://smarden.org/runit/</i><br>
  
 <h2><a name='sect6'>Author</a></h2>
 Gerrit Pape &lt;pape@smarden.org&gt; <p>

@@ -12,53 +12,55 @@
 tryto - tries to run a command limited by a timeout or number of tries,
 can be used to run as <i>svlogd(8)</i> processor. 
 <h2><a name='sect1'>Synopsis</a></h2>
-<b>tryto</b> [ <b>-pv</b> ] [ <b>-t</b> <i>sec</i>
-] [ <b>-k</b> <i>ksec</i> ] [ <b>-n</b> <i>tries</i> ] <i>prog</i> 
+<b>tryto</b> [-pPv] [-t <i>sec</i>] [-k
+<i>ksec</i>] [-n <i>tries</i>] <i>prog</i> 
 <h2><a name='sect2'>Description</a></h2>
-<i>prog</i> consist of one or more arguments.
-<p>
-<b>tryto</b> runs and watches <i>prog</i>, feeding its standard input to <i>prog</i>&rsquo;s standard
-input. If <i>prog</i> exits with an error code other then 0, <b>tryto</b> runs <i>prog</i> again
-after sleeping one second. <p>
-If the number of retries reaches the maximal
-number of <i>tries</i>, <b>tryto</b> prints an error message and gives up. <p>
-If the timeout
-<i>sec</i> seconds is reached and <i>prog</i> is still running, <b>tryto</b> sends a TERM signal
+<i>prog</i> consist of one or more arguments. <p>
+<b>tryto</b>
+runs and watches <i>prog</i>, feeding its standard input to <i>prog</i>&rsquo;s standard input.
+If <i>prog</i> exits with a return code other then 0, <b>tryto</b> runs <i>prog</i> again after
+sleeping one second. <p>
+If the number of retries reaches the maximal number
+of <i>tries</i>, <b>tryto</b> prints an error message and gives up. <p>
+If the timeout <i>sec</i>
+seconds is reached and <i>prog</i> is still running, <b>tryto</b> sends a TERM signal
 to <i>prog</i>, waits <i>ksec</i> seconds for <i>prog</i> to terminate, then sends a KILL signal
-if <i>prog</i> still is there, and exits as soon as possible. <p>
-The main purpose
-of <b>tryto</b> is to run as <i><b>svlogd</b>(8)</i> or <i><b>multilog</b>(8)</i> processor (see below). Without
-the <b>-p</b> option, <b>tryto</b> does just a subset of what <i><b>timelimit</b>(8)</i> from Peter
-Pentchev provides. 
+if <i>prog</i> still is there, and exits as soon as possible. 
 <h2><a name='sect3'>Options</a></h2>
 
 <dl>
 
-<dt><b>-v</b> </dt>
-<dd>verbose. Print verbose messages to stderr. </dd>
+<dt><b>-t <i>sec</b> </i></dt>
+<dd>timeout.
+Set the timeout to send TERM to <i>prog</i> to <i>sec</i> seconds. Default is 180. </dd>
+
+<dt><b>-k <i>ksec</b>
+</i></dt>
+<dd>kill timeout. Set the timeout to send KILL to <i>prog</i> to <i>ksec</i> seconds. Default
+is 5. </dd>
+
+<dt><b>-n <i>tries</b> </i></dt>
+<dd>Set the maximal number of tries to <i>tries</i>. If <i>prog</i> exited with
+a return code other that 0, <b>tryto</b> tries to rewind standard input to the
+beginning using <i><b>lseek</b>(2)</i> before starting <i>prog</i> again. Default is 5. </dd>
 
 <dt><b>-p</b> </dt>
 <dd>processor.
 Use this option if you run <b>tryto</b> as a <i><b>svlogd</b>(8)</i> processor (see below). </dd>
 
-<dt><b>-t
-<i>sec</b> </i></dt>
-<dd>timeout. Set the timeout to send TERM to <i>prog</i> to <i>sec</i> seconds. Default
-is 180. </dd>
+<dt><b>-P</b>
+</dt>
+<dd>process group. Run <i>prog</i> in a new session and process group, and send signals
+on timeout to <i>prog</i>&rsquo;s process group instead of its pid. </dd>
 
-<dt><b>-k <i>ksec</b> </i></dt>
-<dd>kill timeout. Set the timeout to send KILL to <i>prog</i> to <i>ksec</i>
-seconds. Default is 5. </dd>
-
-<dt><b>-n <i>tries</b> </i></dt>
-<dd>Set the maximal number of tries to <i>tries</i>. If
-<i>prog</i> has crashed, <b>tryto</b> tries to rewind stdin to the beginning using <i><i>lseek</i>(2)</i>
-before starting <i>prog</i> again. Default is 5. </dd>
+<dt><b>-v</b> </dt>
+<dd>verbose. Print verbose
+messages to standard error. </dd>
 </dl>
 
 <h2><a name='sect4'>Processor</a></h2>
-If <b>tryto</b> sees the <b>-p</b> option,
-<b>tryto</b> runs as a <i><b>svlogd</b>(8)</i> or <i><b>multilog</b>(8)</i> processor, making use of filedescriptors
+If <b>tryto</b> sees the <b>-p</b> option, <b>tryto</b> runs
+as a <i><b>svlogd</b>(8)</i> or <i><b>multilog</b>(8)</i> processor, making use of filedescriptors
 4 and 5: <p>
 Before starting <i>prog</i>, <b>tryto</b> moves the filedescriptor 5 to 2, so
 all error messages from <b>tryto</b> and <i>prog</i> will be saved in <i><b>svlogd</b>(8)</i>&rsquo;s <i>state</i>
@@ -68,7 +70,7 @@ first feeds all data it reads from filedescriptor 4 into <i>prog</i>&rsquo;s sta
 input, then all data from filedescriptor 0. <p>
 If <i>prog</i> fails by timeout <i>sec</i>
 seconds or maximal number of <i>tries</i>, <b>tryto</b> prints all data from standard
-input to standard output, an error message to standard error and exits
+input to standard output, an error message to standard error, and exits
 with 0. 
 <h2><a name='sect5'>Exit Codes</a></h2>
 If <b>tryto</b> itself fails, it returns 111. <p>
@@ -78,16 +80,17 @@ If <i>prog</i> was run
 successfully, <b>tryto</b> returns 0. <p>
 If <i>prog</i> failed by timeout, <b>tryto</b> returns
 100. <p>
-If <i>prog</i> failed by maximal number of <i>tries</i>, <b>tryto</b> returns the last exit
+If <i>prog</i> failed by maximal number of <i>tries</i>, <b>tryto</b> returns the last return
 code from <i>prog</i>. <p>
 
 <h2><a name='sect6'>See Also</a></h2>
 <i>socklog(8)</i>, <i>uncat(1)</i>, <i>svlogd(8)</i>, <i>multilog(8)</i>, <i>lseek(2)</i>,
 <i>timelimit(8)</i> <p>
-<i>http://smarden.org/socklog/</i> 
+ <i>http://smarden.org/socklog/</i><br>
+  <i>http://smarden.org/runit/</i><br>
+ 
 <h2><a name='sect7'>Author</a></h2>
-Gerrit Pape &lt;pape@smarden.org&gt;
-<p>
+Gerrit Pape &lt;pape@smarden.org&gt; <p>
 
 <hr><p>
 <a name='toc'><b>Table of Contents</b></a><p>

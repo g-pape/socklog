@@ -12,9 +12,9 @@
 socklog - small and secure syslogd replacement for use with runit 
 <h2><a name='sect1'>Synopsis</a></h2>
 <b>socklog</b>
-[ <b>-rRU</b> ] [ unix ] [ <i>path</i> ] <br>
-<b>socklog</b> [ <b>-rR</b> ] inet [ <i>ip</i> ] [ <i>port</i> ] <br>
-<b>socklog</b> [ <b>-rR</b> ] ucspi [ <i>args</i> ] 
+[-rRU] [unix] [<i>path]</i> <br>
+<b>socklog</b> [-rR] inet [<i>ip]</i> [<i>port]</i> <br>
+<b>socklog</b> [-rR] ucspi [<i>args]</i> 
 <h2><a name='sect2'>Description</a></h2>
 <b>socklog</b> is run under runit&rsquo;s <i><b>runsv</b>(8)</i>,
 writing syslog messages it receives from unix domain socket <i>path</i> or an
@@ -81,8 +81,10 @@ option only takes effect in unix mode. </dd>
 
 <h2><a name='sect7'>See Also</a></h2>
 <i>runsvdir(8)</i>, <i>runsv(8)</i>, <i>svlogd(8)</i>,
-<i>tryto(1)</i>, <i>uncat(1)</i>, <i>socklog-check(8)</i>, <i>tcpsvd(8)</i>, <i>nc(1)</i> <p>
+<i>tryto(1)</i>, <i>uncat(1)</i>, <i>socklog-check(8)</i>, <i>tcpsvd(8)</i>, <i>runsv(8)</i>, <i>runsvdir(8)</i>,
+<i>nc(1)</i> <p>
  <i>http://smarden.org/socklog/</i><br>
+  <i>http://smarden.org/runit/</i><br>
  
 <h2><a name='sect8'>Author</a></h2>
 Gerrit Pape &lt;pape@smarden.org&gt; <p>
