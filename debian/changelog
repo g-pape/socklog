@@ -1,3 +1,10 @@
+socklog (0.2.2) unstable; urgency=low
+
+  * LDFLAGS for solaris in Makefile.
+  * benefits.html added, describing logfile rotation based on file size.
+
+ -- Gerrit Pape <pape@innominate.com>  Fri, 22 Jun 2001 11:59:10 +0200
+
 socklog (0.2.1) unstable; urgency=low
 
   * support for solaris (thx Gary Gendel).

@@ -2,10 +2,12 @@ DESTDIR=
 
 CC=gcc
 
-# add -DSOLARIS to CFLAGS on solaris
 CFLAGS=-Wall -O3 # -DSOLARIS
-
 LDFLAGS=-Wall -O3 -s
+
+# use this on solaris
+#CFLAGS=-Wall -O3 -DSOLARIS
+#LDFLAGS=-Wall -O3 -s -lsocket -lnsl -ldoor -lthread
 
 TARGET=socklog
 OBJECTS=$(TARGET).o fdbuffer.o

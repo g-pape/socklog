@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>socklog - benefits</title>
+  </head>
+
+  <body>
+    <h1>socklog - benefits</h1>
+    <hr>
+    <h2>logfile rotation based on file size</h2>
+    <p>
+      <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+      supports automatically rotated logs, there is no need for any other
+      tool running from cron or similar to rotate the logs.
+    <p>
+      <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+      keeps a specified number of logfiles with a maximum file size, so it is
+      possible to calculate a logfile partition properly.
+    <p>
+      for example, this <tt>log/run</tt> file:
+    <pre>
+#!/bin/sh
+LOGDIR=/var/log/socklog
+exec setuidgid log multilog s4999999 n10 ${LOGDIR}/main \
+  s999999 n5 -* +kern.* ${LOGDIR}/kern \
+  s999999 n5 -* +user.* ${LOGDIR}/user \
+  s999999 n5 -* +mail.* ${LOGDIR}/mail \
+  s999999 n5 -* +daemon.* ${LOGDIR}/daemon \
+  s999999 n5 -* +auth.* +authpriv.* ${LOGDIR}/auth \
+  s999999 n5 -* +syslog.* ${LOGDIR}/syslog \
+  s999999 n5 -* +news.* ${LOGDIR}/news \
+  s999999 n5 -* +cron.* ${LOGDIR}/cron \
+  s999999 n5 -* +ftp.* ${LOGDIR}/ftp \
+  s999999 n5 -* +local*.* ${LOGDIR}/local \
+  s999999 n5 -* +*.debug* ${LOGDIR}/debug
+    </pre>
+    causes
+    <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+    to hold maximal 10 logfiles, each of maximal size
+    4999999 bytes in <tt>/var/log/socklog/main/</tt>, maximal 5 logfiles,
+    each of maximal size 999999 bytes in <tt>/var/log/socklog/kern/</tt>,
+    <tt>/var/log/socklog/user/</tt>, ...
+    <p>
+      so the maximal used space for all these directories is less then:
+    <p>
+      <tt>10 * 5000000 + 11 * 5 * 1000000 = 105000000 bytes < 100 MB</tt>
+    <p>
+      if there is any service acting up and filling up your logs rapidly,
+      you will never run into a filled up log partition, causing loss of new
+      log entries, even of other services. you can lose old log entries from
+      this service, but will ever have the recent ones.
+    <hr>
+    <address><a href="mailto:pape@innominate.com">G. Pape</a></address>
+    <small>$Id$</small
+  </body>
+</html>

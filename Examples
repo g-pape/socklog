@@ -13,34 +13,34 @@ listening on unix domain dgram socket /dev/log:
       #!/bin/sh
       LOGDIR=/var/log/socklog
       exec setuidgid log multilog ${LOGDIR}/main \
-        -* +kern.* ${LOGDIR}/kern \
-        -* +user.* ${LOGDIR}/user \
-        -* +mail.* ${LOGDIR}/mail \
-        -* +daemon.* ${LOGDIR}/daemon \
-        -* +auth.* +authpriv.* ${LOGDIR}/auth \
-        -* +syslog.* ${LOGDIR}/syslog \
-        -* +news.* ${LOGDIR}/news \
-        -* +cron.* ${LOGDIR}/cron \
-        -* +ftp.* ${LOGDIR}/ftp \
-        -* +local*.* ${LOGDIR}/local \
-        -* +*.debug* ${LOGDIR}/debug
+        s999999 n10 -* +kern.* ${LOGDIR}/kern \
+        s999999 n10 -* +user.* ${LOGDIR}/user \
+        s999999 n10 -* +mail.* ${LOGDIR}/mail \
+        s999999 n10 -* +daemon.* ${LOGDIR}/daemon \
+        s999999 n10 -* +auth.* +authpriv.* ${LOGDIR}/auth \
+        s999999 n10 -* +syslog.* ${LOGDIR}/syslog \
+        s999999 n10 -* +news.* ${LOGDIR}/news \
+        s999999 n10 -* +cron.* ${LOGDIR}/cron \
+        s999999 n10 -* +ftp.* ${LOGDIR}/ftp \
+        s999999 n10 -* +local*.* ${LOGDIR}/local \
+        s999999 n10 -* +*.debug* ${LOGDIR}/debug
           
   * if you want additional tai64n (# man tai64n) timestamps prepended to each
     message, use this socklog-unix/log/run script as example:
       #!/bin/sh
       LOGDIR=/var/log/socklog
       exec setuidgid log multilog t ${LOGDIR}/main \
-        -* +'* kern.*' ${LOGDIR}/kern \
-        -* +'* user.*' ${LOGDIR}/user \
-        -* +'* mail.*' ${LOGDIR}/mail \
-        -* +'* daemon.*' ${LOGDIR}/daemon \
-        -* +'* auth.*' +authpriv.* ${LOGDIR}/auth \
-        -* +'* syslog.*' ${LOGDIR}/syslog \
-        -* +'* news.*' ${LOGDIR}/news \
-        -* +'* cron.*' ${LOGDIR}/cron \
-        -* +'* ftp.*' ${LOGDIR}/ftp \
-        -* +'* local*.*' ${LOGDIR}/local \
-        -* +'* *.debug*' ${LOGDIR}/debug
+        s999999 n10 -* +'* kern.*' ${LOGDIR}/kern \
+        s999999 n10 -* +'* user.*' ${LOGDIR}/user \
+        s999999 n10 -* +'* mail.*' ${LOGDIR}/mail \
+        s999999 n10 -* +'* daemon.*' ${LOGDIR}/daemon \
+        s999999 n10 -* +'* auth.*' +authpriv.* ${LOGDIR}/auth \
+        s999999 n10 -* +'* syslog.*' ${LOGDIR}/syslog \
+        s999999 n10 -* +'* news.*' ${LOGDIR}/news \
+        s999999 n10 -* +'* cron.*' ${LOGDIR}/cron \
+        s999999 n10 -* +'* ftp.*' ${LOGDIR}/ftp \
+        s999999 n10 -* +'* local*.*' ${LOGDIR}/local \
+        s999999 n10 -* +'* *.debug*' ${LOGDIR}/debug
           
     note that multilog (# man multilog) patterns apply to the timestamps.
 
@@ -57,8 +57,8 @@ listening on udp network socket 0.0.0.0:514:
       #!/bin/sh
       LOGDIR=/var/log/socklog-remote
       exec setuidgid log multilog t ${LOGDIR}/main \
-        -* +'* 10.0.0.2:' ${LOGDIR}/10.0.0.2 \
-        -* +'* 10.0.0.17:' ${LOGDIR}/10.0.0.17
+        s4999999 n10 -* +'* 10.0.0.2:' ${LOGDIR}/10.0.0.2 \
+        s4999999 n10 -* +'* 10.0.0.17:' ${LOGDIR}/10.0.0.17
           
 
 -------------------------------------------------------------------------------
@@ -75,17 +75,17 @@ listening on unix domain stream socket /dev/log:
       #!/bin/sh
       LOGDIR=/var/log/socklog
       exec setuidgid log multilog ${LOGDIR}/main \
-        -* +'*: *: kern.*' ${LOGDIR}/kern \
-        -* +'*: *: user.*' ${LOGDIR}/user \
-        -* +'*: *: mail.*' ${LOGDIR}/mail \
-        -* +'*: *: daemon.*' ${LOGDIR}/daemon \
-        -* +'*: *: auth.*' +authpriv.* ${LOGDIR}/auth \
-        -* +'*: *: syslog.*' ${LOGDIR}/syslog \
-        -* +'*: *: news.*' ${LOGDIR}/news \
-        -* +'*: *: cron.*' ${LOGDIR}/cron \
-        -* +'*: *: ftp.*' ${LOGDIR}/ftp \
-        -* +'*: *: local*.*' ${LOGDIR}/local \
-        -* +'*: *: *.debug*' ${LOGDIR}/debug
+        s999999 n10 -* +'*: *: kern.*' ${LOGDIR}/kern \
+        s999999 n10 -* +'*: *: user.*' ${LOGDIR}/user \
+        s999999 n10 -* +'*: *: mail.*' ${LOGDIR}/mail \
+        s999999 n10 -* +'*: *: daemon.*' ${LOGDIR}/daemon \
+        s999999 n10 -* +'*: *: auth.*' +authpriv.* ${LOGDIR}/auth \
+        s999999 n10 -* +'*: *: syslog.*' ${LOGDIR}/syslog \
+        s999999 n10 -* +'*: *: news.*' ${LOGDIR}/news \
+        s999999 n10 -* +'*: *: cron.*' ${LOGDIR}/cron \
+        s999999 n10 -* +'*: *: ftp.*' ${LOGDIR}/ftp \
+        s999999 n10 -* +'*: *: local*.*' ${LOGDIR}/local \
+        s999999 n10 -* +'*: *: *.debug*' ${LOGDIR}/debug
           
 
 -------------------------------------------------------------------------------

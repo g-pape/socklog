@@ -15,8 +15,9 @@
   # tar xfzvp socklog_x.x.x.tar.gz
   # cd socklog-x.x.x
     </pre>
-    on solaris, edit the top of <tt>Makefile</tt> and add <tt>-DSOLARIS</tt>
-    to <tt>CFLAGS</tt>.
+    on solaris, edit the top of <tt>Makefile</tt>, add <tt>-DSOLARIS</tt>
+    to <tt>CFLAGS</tt> and <tt>-lsocket -lnsl -ldoor -lthread</tt> to
+    <tt>LDFLAGS</tt>.
     <p>
       run <tt>make</tt> and <tt>make install</tt>
     <pre>

@@ -3,7 +3,7 @@
   <head>
     <title>socklog - minimal replacement for syslogd</title>
   </head>
-
+  
   <body>
     <h1>socklog - minimal replacement for <i>syslogd</i></h1>
     <hr>
@@ -24,14 +24,20 @@
 	writing received syslog messages to an udp socket
 	(<tt>x.x.x.x:514</tt>)
     </ul>
-    <i>socklog</i> refuses the latter but provides the first two features
-    with the help of
-    <a href="http://cr.yp.to/daemontools.html">daemontools</a>`
-    <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>,
-    <a href="http://cr.yp.to/daemontools/supervise.html">supervise</a>
-    and <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
     <p>
-    <i>socklog</i> is small, secure, reliable and not feature-overloaded.
+      <i>socklog</i> refuses the latter but provides the first two features
+      with the help of
+      <a href="http://cr.yp.to/daemontools.html">daemontools</a>`
+      <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>,
+      <a href="http://cr.yp.to/daemontools/supervise.html">supervise</a>
+      and <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
+    <p>
+      <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+      has a built in
+      <a href=benefits.html>logfile rotation based on file size</a>,
+      so there is no need for any cron jobs or similar.
+    <p>
+      <i>socklog</i> is small, secure, reliable and not feature-overloaded.
     <hr>
     <i>socklog</i> is run under
     <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
