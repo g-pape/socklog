@@ -1,3 +1,16 @@
+socklog 1.4.0
+Sat, 28 Feb 2004 16:03:21 +0000
+  * socklog.c: handle sigterm on other platforms as accurately as already
+    done on solaris.
+  * tryto.c, uncat.c: minor cleanup.
+  * check-diff, check-dist, check-local: new; run checks on programs.
+  * socklog-conf.check, socklog.check, tryto.check, uncat.check,
+    check-socklog-inet.c, check-socklog-unix.c: new; check program.
+  * socklog-conf.dist, socklog.dist, tryto.dist, uncat.dist: new; dist check
+    program output.
+  * package/COPYING: 2004.
+  * package/compile, package/install-man, package/upgrade: minor.
+
 socklog 1.3.1
 Mon, 19 Jan 2004 18:39:01 +0000
   * trysocketlib.c: new; check for libraries needed for socket() on some
