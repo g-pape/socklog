@@ -1,9 +1,15 @@
 #!/usr/bin/make -f
 
 STRIP =strip
-
 ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
   STRIP =: nostrip
+endif
+
+CFLAGS =-O2 -Wall
+LDFLAGS =
+CC =gcc
+ifneq (,$(findstring diet,$(DEB_BUILD_OPTIONS)))
+  CC =diet -v -Os gcc
 endif
 
 DIR =`pwd`/debian/socklog
@@ -12,11 +18,13 @@ build: deb-checkdir build-arch-stamp build-indep-stamp
 
 build-arch: deb-checkdir build-arch-stamp
 build-arch-stamp:
+	rm -rf admin
 	tar xzpf socklog-1.4.0.tar.gz
 	-gcc -v
-	( cd admin/socklog-1.4.0/src && \
-	rm -f socklog && ln -s socklog-1.4.0 socklog && mv socklog ../.. && \
-	$(MAKE); )
+	rm -f admin/socklog && ln -s socklog-1.4.0 admin/socklog
+	echo "$(CC) $(CFLAGS)" >admin/socklog/src/conf-cc
+	echo "$(CC) $(LDFLAGS)" >admin/socklog/src/conf-ld
+	$(MAKE) -Cadmin/socklog/src
 	touch build-arch-stamp
 
 build-indep: deb-checkdir build-indep-stamp
@@ -85,7 +93,8 @@ install-indep: deb-checkdir deb-checkuid build-indep-stamp
 	test -r changelog || ln -s admin/socklog/package/CHANGES changelog
 
 binary-arch: deb-checkdir deb-checkuid install-arch socklog.deb
-	dpkg-shlibdeps "$(DIR)"/usr/bin/* "$(DIR)"/usr/sbin/*
+	test "$(CC)" != 'gcc' || \
+	  dpkg-shlibdeps "$(DIR)"/usr/bin/* "$(DIR)"/usr/sbin/*
 	dpkg-gencontrol -isp -psocklog -P"$(DIR)" 
 	dpkg -b "$(DIR)" ..
 

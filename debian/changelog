@@ -1,3 +1,12 @@
+socklog (1.4.0-1) unstable; urgency=low
+
+  * new upstream version.
+  * debian/rules: link statically against diet libc if $DEB_BUILD_OPTIONS
+    set 'diet'; minor.
+  * debian/implicit: update to revision 1.5.
+
+ -- Gerrit Pape <pape@smarden.org>  Sat, 28 Feb 2004 16:32:01 +0000
+
 socklog (1.3.1-2) unstable; urgency=low
 
   * debian/etc/klog/run: linux kernels 2.6.x don't allow to read from the

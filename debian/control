@@ -5,6 +5,7 @@ Maintainer: Gerrit Pape <pape@smarden.org>
 Standards-Version: 3.6.1.0
 
 Package: socklog
+Section: admin
 Architecture: any
 Depends: adduser, ${shlibs:Depends}
 Recommends: socklog-run, runit (>> 0.11.2-0), ipsvd
