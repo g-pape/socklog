@@ -1,5 +1,5 @@
-socklog 1.4.0
-Sat, 28 Feb 2004 16:03:21 +0000
+socklog 1.4.1
+Sat, 28 Feb 2004 17:47:13 +0000
   * socklog.c: handle sigterm on other platforms as accurately as already
     done on solaris.
   * tryto.c, uncat.c: minor cleanup.
