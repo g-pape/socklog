@@ -1,8 +1,10 @@
-socklog 0.5.3
-Sat, 22 Dec 2001 15:45:49 +0100
+socklog 0.5.4
+Sun, 30 Dec 2001 19:18:29 +0100
   * uncat: new option -o: once, exit on eof
   * uncat: manpage adapted
   * doc: minor changes
+  * socklog: trim 0-characters
+  * Makefile: use ./support/compile, ./support/load
 
 socklog 0.5.1
 Tue, 20 Nov 2001 11:36:23 +0100
