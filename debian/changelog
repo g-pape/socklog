@@ -3,8 +3,9 @@ socklog (1.0.0-1) sarge; urgency=low
   * new upstream version, see /package/admin/socklog/package/CHANGES.
   * debian/preinst: use getent to check if user log exists.
   * debian/copyright: include upstream source url.
+  * debian/rules: use dh_strip; minor cleanup.
 
- -- Gerrit Pape <pape@smarden.org>  Thu, 30 Jan 2003 11:37:00 +0100
+ -- Gerrit Pape <pape@smarden.org>  Thu, 30 Jan 2003 13:07:13 +0100
 
 socklog (0.10.1-1) sarge; urgency=low
 
