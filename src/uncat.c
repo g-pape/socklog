@@ -92,18 +92,18 @@ int main (int argc, const char * const *argv, const char * const *envp) {
     for (;;) {
       int r;
       char *s;
-      iopause_fd sin;
+      iopause_fd iofd;
 
       taia_now(&now);
       if (taia_less(&deadline, &now)) {
       	if (verbose && sa.len) strerr_warn2(WARNING, "timeout reached.", 0);
       	break;
       }
-      sin.fd =0;
-      sin.events =IOPAUSE_READ;
+      iofd.fd =0;
+      iofd.events =IOPAUSE_READ;
 
       sig_unblock(sig_term);
-      iopause(&sin, 1, &deadline, &now);
+      iopause(&iofd, 1, &deadline, &now);
       sig_block(sig_term);
       
       if (exitasap) {

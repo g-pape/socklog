@@ -1,3 +1,7 @@
+socklog 0.5.5
+  * socklog.c, socklog-conf.c, uncat.c: cleanup, avoid compiler warnings
+  * doc: install.html: typos
+
 socklog 0.5.4
 Sun, 30 Dec 2001 19:18:29 +0100
   * uncat: new option -o: once, exit on eof

@@ -34,15 +34,15 @@ void usage() {
   strerr_die4x(1, "usage: ", progname, USAGE2, "\n");
 }
 
-char *dir;
-char *fn;
+const char *dir;
+const char *fn;
 char buf[1024];
 int fd;
 buffer b;
 
 char *user;
 char *loguser;
-char *path;
+const char *path;
 
 struct passwd *upw, *pw;
 struct group *gr;
@@ -51,14 +51,14 @@ void fail() {
   strerr_die6sys(111, FATAL, "unable to create ", dir, "/", fn, ": ");
 }
 
-void start(char *s) {
+void start(const char *s) {
   fn = s;
   fd = open_trunc(fn);
   if (fd == -1) fail();
   buffer_init(&b, write, fd, buf, sizeof buf);
 }
 
-void outs(char *s) {
+void outs(const char *s) {
   if (buffer_puts(&b, s) == -1) fail();
 }
 
@@ -72,11 +72,11 @@ void perm(int mode) {
   if (chmod(fn, mode) == -1) fail();
 }
 
-void makedir(char *s) {
+void makedir(const char *s) {
   fn =s;
   if (mkdir(fn, 0750) == -1) fail();
 }
-void makechdir(char *s) {
+void makechdir(const char *s) {
   makedir(s);
   if (chown(s, pw->pw_uid, pw->pw_gid) == -1)
     strerr_die6sys(111, FATAL, "unable to set owner of ", dir, "/", s, ": ");

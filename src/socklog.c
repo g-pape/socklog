@@ -38,7 +38,7 @@ char *progname;
 
 int mode =MODE_UNIX;
 char line[LINEC];
-char *address =NULL;
+const char *address =NULL;
 char *uid, *gid;
 char buf[1024];
 fdbuffer fdbuf;
@@ -79,20 +79,20 @@ void setuidgid() {
   }
 }
 
-int syslog_names (char *line, int linec) {
+int syslog_names (char *l, int lc) {
   int i, fp;
   int ok =0;
   int fpr =0;
   CODE *p;
 
-  if (line[0] != '<') return(0);
-  for (i =1; (i < 5) && (i < linec); i++) {
-    if (line[i] == '>') {
+  if (l[0] != '<') return(0);
+  for (i =1; (i < 5) && (i < lc); i++) {
+    if (l[i] == '>') {
       ok =1;
       break;
     }
-    if (('0' <= line[i]) && (line[i] <= '9')) {
-      fpr =10 *fpr + line[i] -'0';
+    if (('0' <= l[i]) && (l[i] <= '9')) {
+      fpr =10 *fpr + l[i] -'0';
     } else {
       return(0);
     }
@@ -136,7 +136,7 @@ void remote_info (struct sockaddr_in *sa) {
 }
 
 #ifndef SOLARIS
-int socket_unix (char* f) {
+int socket_unix (const char* f) {
   int s;
   struct sockaddr_un sa;
   
@@ -159,7 +159,7 @@ int socket_unix (char* f) {
 }
 #endif
 
-int socket_inet (char* ip, char* port) {
+int socket_inet (const char* ip, const char* port) {
   int s;
   struct sockaddr_in sa;
   
@@ -404,7 +404,7 @@ int main(int argc, char** argv) {
 
   switch (mode) {
   case MODE_INET: {
-    char* port =NULL;
+    const char* port =NULL;
 
     if (*argv) port =*argv++;
     if (*argv) usage();
