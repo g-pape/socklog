@@ -9,7 +9,7 @@
 #include "open.h"
 #include "buffer.h"
 
-#define USAGE1 " unix|inet|ucspi-tcp acct logacct [/etc/socklog] [logdir]"
+#define USAGE1 " unix|inet|ucspi-tcp acct logacct [/etc/socklog] [/logdir]"
 #define USAGE2 " notify acct grp [/etc/socklog] [pipe]"
 
 #define VERSION "$Id$"
@@ -48,7 +48,10 @@ struct passwd *upw, *pw;
 struct group *gr;
 
 void fail() {
-  strerr_die6sys(111, FATAL, "unable to create ", dir, "/", fn, ": ");
+  if (fn[0] == '/') 
+    strerr_die4sys(111, FATAL, "unable to create ", fn, ": ");
+  else
+    strerr_die6sys(111, FATAL, "unable to create ", dir, "/", fn, ": ");
 }
 
 void start(const char *s) {
@@ -87,13 +90,10 @@ void conf_unix() {
   perm(01750);
   makedir("unix/log");
   perm(0755);
-  makechdir("unix/log/main");
-  if (rename("unix/log/main", path) != -1) {
-    if (symlink(path, "unix/log/main") == -1)
-      strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
-  }
-  else
-    strerr_warn4(WARNING, "unable to move to ", path, ": ", &strerr_sys);
+
+  makechdir(path);
+  if (symlink(path, "unix/log/main") == -1)
+    strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
   
   makechdir("unix/log/main/auth");
   makechdir("unix/log/main/cron");
@@ -145,13 +145,10 @@ void conf_inet() {
   perm(01750);
   makedir("inet/log");
   perm(0755);
-  makechdir("inet/log/main");
-  if (rename("inet/log/main", path) != -1) {
-    if (symlink(path, "inet/log/main") == -1)
-      strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
-  }
-  else
-    strerr_warn4(WARNING, "unable to move to ", path, ": ", &strerr_sys);
+
+  makechdir(path);
+  if (symlink(path, "inet/log/main") == -1)
+    strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
   
   makechdir("inet/log/main/main");
 
@@ -178,14 +175,10 @@ void conf_ucspi_tcp() {
   perm(01750);
   makedir("ucspi-tcp/log");
   perm(0755);
-  makechdir("ucspi-tcp/log/main");
-  if (rename("ucspi-tcp/log/main", path) != -1) {
-    if (symlink(path, "ucspi-tcp/log/main") == -1)
-      strerr_die4sys(111, FATAL,
-		     "unable to link ", path, ": ");
-  }
-  else
-    strerr_warn4(WARNING, "unable to move to ", path, ": ", &strerr_sys);
+
+  makechdir(path);
+  if (symlink(path, "ucspi-tcp/log/main") == -1)
+    strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
   
   makechdir("ucspi-tcp/log/main/main");
 
@@ -214,8 +207,7 @@ void conf_notify() {
 
   umask(007);
   if (mkfifo(path, 0620) == -1)
-    strerr_die4sys(111, FATAL,
-		   "unable to create \"", path, "\": ");
+    strerr_die4sys(111, FATAL, "unable to create \"", path, "\": ");
   umask(022);
   if (chown(path, upw->pw_uid, gr->gr_gid) == -1)
     strerr_die4sys(111, FATAL, "unable to set owner of ", path, ": ");
@@ -284,6 +276,7 @@ int main(int argc, char **argv) {
     if (dir[0] != '/') usage();
     if (*argv) {
       path =*argv;
+      if (path[0] != '/') usage();
     }
   }
 
@@ -330,6 +323,5 @@ int main(int argc, char **argv) {
     conf_notify();
     break;
   }
-
-  exit(0);
+  return(0);
 }

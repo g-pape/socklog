@@ -1,6 +1,6 @@
 DESTDIR=
 
-PACKAGE=socklog-0.6.4
+PACKAGE=socklog-0.7.0
 DIRS=doc man package src
 MANPAGES=man/socklog.8 man/tryto.1 man/uncat.1 man/socklog-conf.8
 DAEMONTOOLS_PD=daemontools-pd-0.76

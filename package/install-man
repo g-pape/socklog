@@ -21,7 +21,7 @@ do
   for j in *.$i
   do
     rm -f /usr/local/man/man$i/$j.gz'{new}'
-    ln -s $parent/sockog/man/$j.gz /usr/local/man/man$i/$j.gz'{new}'
+    ln -s $parent/socklog/man/$j.gz /usr/local/man/man$i/$j.gz'{new}'
     mv -f /usr/local/man/man$i/$j.gz'{new}' /usr/local/man/man$i/$j.gz
   done
 done

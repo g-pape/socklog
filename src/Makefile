@@ -26,6 +26,8 @@ uncat:	djb-publicdomain uncat.o
 
 djb-publicdomain:
 	( cd support ; make )
+	cat support/systype support/compile support/load > sysdeps
+	grep sysdep support/*.h >> sysdeps
 
 clean:
 	find . -name \*~ -exec rm -f {} \;

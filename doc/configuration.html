@@ -9,26 +9,30 @@
 <hr>
 <h1>socklog - configuration</h1>
 <hr>
+The <i>socklog-unix</i> service listens on the unix domain socket
+<tt>/dev/log</tt>. Usually this service replaces the <i>syslogd</i>
+system log daemon.
+<p>
+The <i>socklog-inet</i> service listens on the UDP port
+<tt>0.0.0.0:514</tt>. Usually this service replaces <i>syslogd</i>'s
+support for remote logging.
+<p>
+The <i>socklog-ucspi-tcp</i> service listens on the TCP port
+<tt>0.0.0.0:10116</tt>, this is a server for
+<a href="network.html">socklog network logging</a>, a different remote
+logging concept.
+<p>
+The <i>socklog-notify</i> handles
+<a href="notify.html">log event notification</a>, scheduled notification
+of specified log entries.
+<hr>
+<h2>How to configure the socklog services</h2>
 <a href="#unix">The socklog-unix service</a><br>
 <a href="#inet">The socklog-inet service</a><br>
 <a href="#ucspi-tcp">The socklog-ucspi-tcp service</a><br>
 <a href="#notify">The socklog-notify service</a><br><br>
 <a href="http://cr.yp.to/daemontools/faq/create.html#remove">
 Removing socklog services</a>
-<hr>
-<h2>The socklog services</h2>
-The <i>socklog-unix</i> service listens on the unix domain socket
-<tt>/dev/log</tt>.
-<p>
-The <i>socklog-inet</i> service listens on the UDP port
-<tt>0.0.0.0:514</tt>.
-<p>
-The <i>socklog-ucspi-tcp</i> service listens on the TCP port
-<tt>0.0.0.0:10116</tt>, this is a server for
-<a href="network.html">socklog network logging</a>.
-<p>
-The <i>socklog-notify</i> handles
-<a href="notify.html">log event notification</a>.
 <hr>
 
 <h3><a name="unix">The socklog-unix service</a></h3>
@@ -57,8 +61,10 @@ new service:
   # ln -s /etc/socklog/unix /service/socklog-unix
 </pre>
 Wait five seconds for the service to start and then check the log
-directories.
-<p>
+directories, e.g.:
+<pre>
+  # less /var/log/socklog/main/current
+</pre>
 Optionally configure the <i>socklog-unix</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
 the corresponding <tt>run</tt> scripts:
@@ -148,8 +154,10 @@ new service:
   # ln -s /etc/socklog/inet /service/socklog-inet
 </pre>
 Wait five seconds for the service to start and then check the log
-directories.
-<p>
+directory:
+<pre>
+  # less /var/log/socklog-inet/main/current
+</pre>
 Optionally configure the <i>socklog-inet</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
 the corresponding <tt>run</tt> scripts:
@@ -181,8 +189,10 @@ new service:
   # ln -s /etc/socklog/ucspi-tcp /service/socklog-ucspi-tcp
 </pre>
 Wait five seconds for the service to start and then check the log
-directories.
-<p>
+directory:
+<pre>
+  # less /var/log/socklog-ucspi-tcp/main/current
+</pre>
 Optionally configure the <i>socklog-ucspi-tcp</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
 the corresponding <tt>run</tt> scripts:

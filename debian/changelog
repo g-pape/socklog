@@ -1,3 +1,9 @@
+socklog (0.7.0-1) woody; urgency=low
+
+  * See /package/admin/socklog/package/CHANGES.
+
+ -- Gerrit Pape <pape@smarden.org>  Sun,  3 Feb 2002 17:09:16 +0100
+
 socklog (0.6.1-2) woody; urgency=low
 
   * postinst: Use adduser ... --ingroup instead of --group which failed.

@@ -1,9 +1,14 @@
-socklog-0.6.4
-Fri,  1 Feb 2002 12:07:08 +0100
+socklog-0.7.0
+Fri,  1 Feb 2002 17:54:14 +0100
   * install-man: symlinks now point into the correct directory:
     /package/admin/socklog/man/ (thx Mike Forster).
   * socklog.c: complete revision: dropped fdbuffer.o, switched to unix.a,
     byte.a support libraries (now in the Public domain).
+  * socklog-conf.c: support log dir with cross device link; optional logdir
+    option must start with /.
+  * Makefile: sysdeps.
+  * doc: revised.
+  * (thx Gary Gendel, support for solaris)
 
 socklog-0.6.1
 Thu, 17 Jan 2002 11:43:36 +0100
