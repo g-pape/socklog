@@ -31,13 +31,13 @@ No user 'log' found.
 This script will run the following command; without adding the user, the
 socklog services cannot run on this system.
 
-adduser --system --home /var/log/socklog --no-create-home log
+adduser --system --home /var/log/socklog --no-create-home --ingroup adm log
 
 EOT
 		echo -n "Will proceed in 5 seconds, press Ctrl-C to abort..."
 		sleep 5s
 		adduser --system --home /var/log/socklog \
-			--no-create-home --group adm log
+			--no-create-home --ingroup adm log
 	fi
 	( \
 	cd /package/admin/socklog-0.6.1
