@@ -7,7 +7,7 @@
 <body>
 <h1>socklog - configuration</h1>
 <hr>
-the installation of <i>socklog</i> provides two service directories
+the installation of <i>socklog</i> provides two example service directories
 for the use with
 <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>:
 <ul>
@@ -19,11 +19,19 @@ listening on unix domain socket (<tt>/dev/log</tt>),
 <tt>/package/admin/socklog/etc/inet/</tt> handles the service listening on
 udp socket (<tt>0.0.0.0:514</tt>).
 <hr>
-to configure the behaviour of <i>socklog</i> services, edit the
-appropriate <tt>run</tt> scripts:
+to configure the behaviour of <i>socklog</i> services, create a
+<tt>/etc/socklog</tt> directory
+<pre>
+  # mkdir -p /etc/socklog
+</pre>
+and copy the example service directories into <tt>/etc/socklog</tt>
+<pre>
+  # cp -pr /package/admin/socklog/etc/* /etc/socklog/
+</pre>
+then edit the appropriate <tt>run</tt> scripts:
 <ul>
-  <li><tt>/package/admin/socklog/etc/*/run</tt>
-  <li><tt>/package/admin/socklog/etc/*/log/run</tt>
+  <li><tt>/etc/socklog/*/run</tt>
+  <li><tt>/etc/socklog/*/log/run</tt>
 </ul>
 <hr>
 to enable one of <i>socklog</i>'s services, stop the default syslog
@@ -34,21 +42,21 @@ edit the corresponding
 <tt>run</tt> scripts once for configuration, e.g. for the unix domain
 socket service:
 <pre>
-  # vi /package/admin/socklog/etc/unix/run
-  # vi /package/admin/socklog/etc/unix/log/run
+  # vi /etc/socklog/unix/run
+  # vi /etc/socklog/unix/log/run
 </pre>
 create the user you chose to run
 <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
 if not yet done and
 check carefully that all log directories you stated in
-<tt>/package/admin/socklog/etc/unix/log/run</tt> exist and are writable to
+<tt>/etc/socklog/unix/log/run</tt> exist and are writable to
 this user.
 <p>
 then link the directory to
 <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
 <i>service</i> directory, e.g. for the unix domain socket service:
 <pre>
-  # ln -s /package/admin/socklog/etc/unix /service/socklog-unix
+  # ln -s /etc/socklog/unix /service/socklog-unix
 </pre>
 wait five seconds for the service to start and then check the log
 directories.
@@ -59,8 +67,8 @@ it is possible to replace the unix domain dgram socket listener
 <a href="http://untroubled.org/ucspi-unix/">ucspi-unix</a> and
 <a href="http://www.superscript.com/ucspi-ipc/intro.html">ucspi-icp</a>.
 <p>
-create a service directory <tt>/package/admin/socklog/etc/ucspi-unix</tt>
-with a subdirectory <tt>log</tt> an the correspnding <tt>run</tt> scripts:
+create a service directory <tt>/etc/socklog/ucspi-unix</tt>
+with a subdirectory <tt>log</tt> and the correspnding <tt>run</tt> scripts:
 <ul>
   <li>a sample <tt>socklog-ucspi-unix/run</tt> script:
       <pre>
@@ -94,14 +102,14 @@ disable the service <tt>socklog-unix</tt> if it is running
   # svc -dx . log
 </pre>
 check carefully that all log directories you stated in
-<tt>/package/admin/socklog/etc/ucspi-unix/log/run</tt> exist and are writable
+<tt>/etc/socklog/ucspi-unix/log/run</tt> exist and are writable
 to the corresponding user.
 <p>
 then link the directory to
 <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
 <i>service</i> directory:
 <pre>
-  # ln -s /package/admin/socklog/etc/ucspi-unix /service/socklog-ucspi-unix
+  # ln -s /etc/socklog/ucspi-unix /service/socklog-ucspi-unix
 </pre>
 wait five seconds for the service to start and then check the log
 directories.
