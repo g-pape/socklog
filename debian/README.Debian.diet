@@ -2,8 +2,8 @@ Building with the diet libc
 ---------------------------
 
 This package optionally can be built with the diet libc instead of the
-glibc to provide small statically linked programs.  The resulting package
-has no dependency on any other package.
+glibc to provide small statically linked programs.  The resulting binary
+package does not depend on any C library package.
 
 To use the diet libc, make sure the latest versions of the dietlibc-dev
 package is installed, and set DEB_BUILD_OPTIONS=diet in the environment
