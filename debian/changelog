@@ -2,8 +2,10 @@ socklog (1.4.2-1) unstable; urgency=low
 
   * new upstream version.
   * debian/diff/uncat.check.diff: remove; applied upstream.
+  * debian/rules: don't apply diff.
+  * debian/implicit: update to revision 1.7.
 
- -- Gerrit Pape <pape@smarden.org>  Tue, 23 Mar 2004 18:17:09 +0000
+ -- Gerrit Pape <pape@smarden.org>  Tue, 23 Mar 2004 18:21:18 +0000
 
 socklog (1.4.1-2) unstable; urgency=low
 
