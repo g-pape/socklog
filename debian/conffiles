@@ -1,0 +1,6 @@
+/etc/socklog/unix/run
+/etc/socklog/unix/log/run
+/etc/socklog/inet/run
+/etc/socklog/inet/log/run
+/etc/socklog/klog/run
+/etc/socklog/klog/log/run

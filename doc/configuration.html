@@ -7,18 +7,16 @@
   <body>
     <h1>socklog - configuration</h1>
     <hr>
-    the installation of <i>socklog</i> provides three service directories
+    the installation of <i>socklog</i> provides two service directories
     for the use with
     <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>:
     <ul>
       <li><tt>/etc/socklog/unix/</tt>
       <li><tt>/etc/socklog/inet/</tt>
-      <li><tt>/etc/socklog/klog/</tt>
     </ul>
     the directory <tt>/etc/socklog/unix/</tt> handles the service listening
     to unix domain socket (<tt>/dev/log</tt>), <tt>/etc/socklog/inet/</tt>
     handles the service listening to udp socket (<tt>0.0.0.0:514</tt>).
-    For <tt>/etc/socklog/klog/</tt> see below.
     <hr>
     to configure the behaviour of <i>socklog</i> services, edit the
     appropriate <tt>run</tt> scripts:
