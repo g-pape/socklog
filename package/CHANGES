@@ -1,7 +1,9 @@
-socklog 1.1.2
-
-  * socklog-conf.c: use runit's chpst instead of setuidgid.
+socklog 1.2.0
+  * socklog-conf.c: fix run file for socklog-unix service on solaris; use
+    runit's chpst instead of setuidgid.
   * doc/install.html: remove obsolete note about setuidgid replacement.
+  * doc/examples.html: adapt.
+  * doc/index.html: adapt examples.
 
 socklog 1.1.1
 Mon, 07 Jul 2003 09:59:08 +0200

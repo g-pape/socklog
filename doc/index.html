@@ -114,22 +114,20 @@ selecting by pattern.
 A proper <tt>run</tt> file for
 <a href="http://smarden.org/runit/runsv.8.html">runsv</a> is:
 <pre>
- #!/bin/sh
- exec 2&gt;&1
- USRID=`id -u nobody`
- GRPID=`id -g nobody`
- exec env UID="$USRID" GID="$GRPID" socklog unix /dev/log
+  #!/bin/sh
+  exec 2&gt;&amp;1
+  exec chpst -Unobody socklog unix /dev/log
 </pre>
 <p>
 A proper <tt>log/run</tt> file for
 <a href="http://smarden.org/runit/runsv.8.html">runsv</a> is:
 <pre>
- #!/bin/sh
- exec setuidgid log svlogd main/*
+  #!/bin/sh
+  exec chpst -ulog svlogd -t main/*
 </pre>
 <hr>
 See <a href="install.html">INSTALL</a> on how to install <i>socklog</i>
-and <a href=configuration.html>Configuration</a> for setting up
+and <a href="configuration.html">Configuration</a> for setting up
 <i>socklog</i> services.
 <hr>
 See <a href="http://smarden.org/socklog/">http://smarden.org/socklog/</a>

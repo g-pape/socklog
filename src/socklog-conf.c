@@ -148,13 +148,10 @@ void conf_unix() {
   start("unix/run");
   outs("#!/bin/sh\n");
   outs("exec 2>&1\n");
-  outs("USRID=`id -u "); outs(user); outs("`\n");
-  outs("GRPID=`id -g "); outs(user); outs("`\n");
 #ifndef SOLARIS
-  outs("exec env UID=\"$USRID\" GID=\"$GRPID\" socklog unix /dev/log\n");
+  outs("exec chpst -U"); outs(user); outs(" socklog unix /dev/log\n");
 #else
-  outs("exec env UID=\"$USRID\" GID=\"$GRPID\" socklog unix");
-  outs(" socklog sun_stream /dev/log");
+  outs("exec chpst -U"); outs(user); outs(" socklog sun_stream /dev/log");
 #if WANT_SUN_DOOR
   if (sunos_version == 7) outs(" /etc/.syslog_door");
   if (sunos_version >= 8) outs(" /var/run/syslog_door");
@@ -190,9 +187,7 @@ void conf_inet() {
   start("inet/run");
   outs("#!/bin/sh\n");
   outs("exec 2>&1\n");
-  outs("USRID=`id -u "); outs(user); outs("`\n");
-  outs("GRPID=`id -g "); outs(user); outs("`\n");
-  outs("exec env UID=\"$USRID\" GID=\"$GRPID\" socklog inet 0 514\n");
+  outs("exec chpst -U"); outs(user); outs(" socklog inet 0 514\n");
   finish();
   perm(0750);
 

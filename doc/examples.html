@@ -17,14 +17,12 @@ listening on unix domain dgram socket <tt>/dev/log</tt>:
   <pre>
   #!/bin/sh
   exec 2&gt;&amp;1
-  USRID=`id -u nobody`
-  GRPID=`id -g nobody`
-  exec env UID="$USRID" GID="$GRPID" socklog unix /dev/log
+  exec chpst -Unobody socklog unix /dev/log
   </pre>
   <li>a sample <tt>socklog-unix/log/run</tt> script:
   <pre>
   #!/bin/sh
-  exec setuidgid log svlogd \
+  exec chpst -ulog svlogd \
     main/main main/auth main/cron main/daemon main/debug main/ftp \
     main/kern main/local main/mail main/news main/syslog main/user
   </pre>
@@ -53,7 +51,7 @@ listening on unix domain dgram socket <tt>/dev/log</tt>:
   as example:
   <pre>
   #!/bin/sh
-  exec setuidgid log svlogd -t \
+  exec chpst -ulog svlogd -t \
     main/main main/auth main/cron main/daemon main/debug main/ftp \
     main/kern main/local main/mail main/news main/syslog main/user
   </pre>
@@ -67,14 +65,12 @@ listening on udp network socket <tt>0.0.0.0</tt>:<tt>514</tt>:
   <pre>
   #!/bin/sh
   exec 2&gt;&amp;1
-  USRID=`id -u nobody`
-  GRPID=`id -g nobody`
-  exec env UID="$USRID" GID="$GRPID" socklog inet 0 514
+  exec chpst -Unobody socklog inet 0 514
   </pre>
   <li>a sample <tt>socklog-inet/log/run</tt> script is:
   <pre>
   #!/bin/sh
-  exec setuidgid log svlogd -t main/main
+  exec chpst -ulog svlogd -t main/main
   </pre>
 </ul>
 <hr>
@@ -87,12 +83,12 @@ reading kernel messages from <tt>/dev/klog</tt> on BSD:
   #!/bin/sh
   exec &lt;/dev/klog
   exec 2&gt;&amp;1
-  exec setuidgid nobody socklog ucspi
+  exec chpst -unobody socklog ucspi
   </pre>
   <li>a sample <tt>socklog-klog/log/run</tt>:
   <pre>
   #!/bin/sh
-  exec setuidgid log svlogd -t main/main
+  exec chpst -ulog svlogd -t main/main
   </pre>
 </ul>
 <hr>
@@ -106,7 +102,7 @@ A client for <a href="network.html">socklog network logging</a>:
   need to have the <i>netcat</i> package installed):
   <pre>
   #!/bin/sh
-  exec setuidgid log svlogd ./main/main
+  exec chpst -ulog svlogd ./main/main
 
   # cat main/config
   s4096
@@ -126,8 +122,7 @@ A client for <a href="network.html">socklog network logging</a>:
   PIPE=/var/log/socklog/.notify
   if [ ! -p "$PIPE" ]; then mkfifo -m0620 "$PIPE"; chown log:adm "$PIPE"; fi
   exec &lt;&gt; "$PIPE"
-  exec setuidgid log uncat -s49999 -t180 \
-    sh -c 'head | wall'
+  exec chpst -ulog uncat -s49999 -t180 sh -c 'head | wall'
   </pre>
 </ul>
 <hr>
