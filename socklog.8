@@ -1,6 +1,6 @@
 .TH socklog 8
 .SH NAME
-socklog \- syslogd replacement for use with djb's daemontools
+socklog \- minimal syslogd replacement for use with djb's daemontools
 .SH SYNOPSIS
 .B socklog
 [
@@ -61,7 +61,7 @@ is omitted, the default
 .I /dev/log
 is used.
 .LP
-If the 1st argument may be omitted, default is
+The 1st argument may be omitted, default is
 .IR unix .
 .SH INET SOCKET
 .B socklog
@@ -119,5 +119,5 @@ svscan(8),
 supervise(8),
 multilog(8)
 
-http://innominate.org/~pape/socklog/
-http://cr.yp.to/daemontools.html
+ http://innominate.org/~pape/socklog/
+ http://cr.yp.to/daemontools.html
