@@ -16,14 +16,15 @@ set -e
 
 case "$1" in
   install)
-    if ! egrep '^log\:' /etc/passwd >/dev/null; then
+#    if ! egrep '^log\:' /etc/passwd >/dev/null; then
+    if ! getent passwd log >/dev/null; then
       cat <<-EOT
 No user 'log' found.
 
 This script will run the following command; without adding the user, the
 socklog services cannot run on this system.
 
-adduser --system --home /var/log/socklog --no-create-home --ingroup adm log
+ adduser --system --home /var/log/socklog --no-create-home --ingroup adm log
 
 EOT
       echo -n 'Will proceed in 5 seconds, press Ctrl-C to abort... '
