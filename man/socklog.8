@@ -174,7 +174,7 @@ is:
 .LP
   #!/bin/sh
   exec 2>&1
-  exec unixserver -U `id -u nobody` /dev/log \\
+  exec unixserver -U `id \-u nobody` /dev/log \\
     socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
 .LP
 .I inet
