@@ -20,7 +20,7 @@ decision, what to do in such cases.
 <ul>
   <li>
   logging is still done locally through
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>.
+  <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>.
   <li>
   the log is transmitted through a network connection (if possible)
   when <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
@@ -62,7 +62,7 @@ socklog-ucspi-tcp/run:
 socklog-ucspi-tcp/log/run:
 <pre>
   #!/bin/sh
-  exec setuidgid log svlogd -t main/main main/10.0.0.236
+  exec chpst -ulog svlogd -t main/main main/10.0.0.236
 </pre>
 and socklog-ucspi-tcp/log/main/10.0.0.236/config
 <pre>
@@ -71,7 +71,7 @@ and socklog-ucspi-tcp/log/main/10.0.0.236/config
   +10.0.0.236:*
 </pre>
 You will then find all log data from remote hosts that was successfully
-transmitted in <tt>main/main</tt>. Log data from <tt>10.0.0.236</tt>
+transmitted in <tt>main/main/</tt>. Log data from <tt>10.0.0.236</tt>
 will additionally be saved in <tt>main/10.0.0.236/</tt>.
 <h3>Log client (machine sending log data)</h3>
 Change the <i>socklog</i> configuration to use a processor to transmit
@@ -80,7 +80,7 @@ the log data:
 socklog-unix/log/run:
 <pre>
   #!/bin/sh
-  exec setuidgid log svlogd ./main/main
+  exec chpst -ulog svlogd ./main/main
 </pre>
 socklog-unix/log/main/main/config
 <pre>
@@ -99,7 +99,78 @@ On each rotation of
 and <i>netcat</i>, failures will be noticed and notified on the next run.
 <hr>
 <h2><a name="udp">Logging through UDP</a></h3>
+Transmitting log messages through UDP should only be used within private
+networks.
+Logging through UDP doesn't ensure that the log messages actually reach the
+log server, and doesn't provide authentication and authorization.
+It's the old-stype UNIX syslog remote logging, and supported by
+<i>socklog</i> for compatibility reasons.
 
+
+<h2>Example setup</h2>
+<h3>Log Server (machine receiving log data)</h3>
+Setup a <i>socklog-inet</i> service as described in
+<a href="configuration.html#inet">Configuration</a> with the following
+<tt>socklog-inet/run</tt> and <tt>socklog-inet/log/run</tt> scripts, and
+the following <tt>socklog-inet/log/main/config</tt> log configuration:
+<p>
+socklog-inet/run:
+<pre>
+  #!/bin/sh
+  exec 2&gt;&amp;1
+  exec chpst -Unobody socklog inet 0 514
+</pre>
+socklog-inet/log/run:
+<pre>
+  #!/bin/sh
+  exec chpst -ulog svlogd -t main/main main/10.0.0.236
+</pre>
+and socklog-inet/log/main/10.0.0.236/config:
+<pre>
+  # cat 10.0.0.236/config
+  -*
+  +10.0.0.236:*
+</pre>
+You will then find all log messages from remote hosts that were successfully
+transmitted in <tt>main/main/</tt>.
+Log messages from <tt>10.0.0.236</tt> will additionally be saved in
+<tt>main/10.0.0.236/</tt>.
+<h3>Log client (machine sending log data)</h3>
+Tell socklog to write raw syslog messages without converting syslog
+priority and facility to names by adding the -R option:
+<p>
+socklog-unix/run:
+<pre>
+  #!/bin/sh
+  exec 2>&1
+  exec chpst -Unobody socklog -R unix /dev/log
+</pre>
+Then change the configuration of <i>socklog</i>'s main log directory to tell
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> to transmit
+log messages through UDP:
+<p>
+/var/log/socklog/main/config:
+<pre>
+  s9999
+  n2
+  U10.0.0.16:514
+</pre>
+Restart the service, and tell the log service to reload its configuration:
+<pre>
+  # runsvctrl term /var/service/socklog-unix
+  # runsvctrl hup /var/service/socklog-unix/log
+</pre>
+Now each log message will be sent through UDP to <tt>10.0.0.16:514</tt>, and
+not written to the log directory.
+If <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> has trouble
+transmitting data through UDP, and is able to detect an error, it logs an
+error message followed by the log message to the log directory.
+<p>
+Of course you can configure <i>socklog</i> to log through UDP while keeping
+local logging enabled, and also select log messages to be transmitted through
+UDP by pattern.
+See the documentation of
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> for details.
 <hr>
 <address><a href="mailto:pape@smarden.org">
 Gerrit Pape &lt;pape@smarden.org&gt;
