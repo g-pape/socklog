@@ -7,22 +7,32 @@
   <body>
     <h1>socklog - installation</h1>
     <hr>
-    check that you have a recent version of
+    since version 0.3.0, <i>socklog</i> installs into
+    <a href="http://cr.yp.to/slashpackage.html">/package</a>.
+    <p>
+    check that you have the recent version of
     <a href="http://cr.yp.to/daemontools.html">daemontools</a> installed.
     <p>
-      unpack <tt>socklog_x.x.x.tar.gz</tt>
+    create a <tt>/package</tt> directory
+    <pre>
+  # mkdir -p /package
+  # chmod 1775 /package
+  # cd /package
+    </pre>
+    copy <tt>socklog-x.x.x.tar.gz</tt> to <tt>/package</tt> and unpack the
+    archive
     <pre>
   # tar xfzvp socklog_x.x.x.tar.gz
-  # cd socklog-x.x.x
+  # rm socklog_x.x.x.tar.gz
+  # cd admin/socklog-x.x.x
     </pre>
-    on solaris, edit the top of <tt>Makefile</tt>, add <tt>-DSOLARIS</tt>
+    on solaris, edit the top of <tt>src/Makefile</tt>, add <tt>-DSOLARIS</tt>
     to <tt>CFLAGS</tt> and <tt>-lsocket -lnsl -ldoor -lthread</tt> to
     <tt>LDFLAGS</tt>.
     <p>
-      run <tt>make</tt> and <tt>make install</tt>
+    compile the socklog program
     <pre>
-  # make
-  # make install
+  # package/install
     </pre>
     refer to <a href="configuration.html">Configuration</a> for
     configuring and setting up <i>socklock</i> services.
