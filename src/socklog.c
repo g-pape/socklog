@@ -209,7 +209,7 @@ int read_socket (int s) {
     int os;
     
     linec =recvfrom(s, line, LINEC, 0, (struct sockaddr *) &saf, &dummy);
-    if (! (0 <= linec <= LINEC)) {
+    if (linec == -1) {
       perror("recvfrom");
       exit(1);
     }

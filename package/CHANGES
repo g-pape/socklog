@@ -1,3 +1,8 @@
+socklog-0.6.1
+
+  * bug: error in recvfrom() was not catched, bad condition, fix: test
+    return code for -1 (thx Liviu Daia)
+
 socklog-0.6.0
 Sat, 12 Jan 2002 14:18:57 +0100
   * uncat: redirect prog's stdout to stderr; never writes to stdout
