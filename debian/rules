@@ -25,6 +25,7 @@ build-arch-stamp:
 	echo "$(CC) $(CFLAGS)" >admin/socklog/src/conf-cc
 	echo "$(CC) $(LDFLAGS)" >admin/socklog/src/conf-ld
 	$(MAKE) -Cadmin/socklog/src
+	$(MAKE) -Cadmin/socklog/src check
 	touch build-arch-stamp
 
 build-indep: deb-checkdir build-indep-stamp
