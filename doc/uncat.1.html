@@ -17,8 +17,8 @@ or number of bytes read to process it
 <H2><A NAME="sect2">Description</A></H2>
 <B>uncat</B> continuously reads stdin and repeatedly
 processes the data either after <I>seconds</I> timeout or maximal number of bytes
-<I>size</I> read. To process the data, <B>uncat</B> starts <I>prog</I> and feeds <I>prog</I>'s standard
-input with that data. <P>
+<I>size</I> read. To process the data, <B>uncat</B> starts <I>prog</I> and feeds the data into
+<I>prog</I>'s standard input. <P>
 <I>prog</I> consist of one or more arguments. <P>
 If <I>prog</I> exits
 non-zero, <B>uncat</B> prints an error message, discards the data and continues

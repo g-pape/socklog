@@ -51,7 +51,7 @@ Set the timeout to send TERM to <I>prog</I> to <I>sec</I> seconds. Default is 18
 is 5. </DD>
 
 <DT><B>-n <I>tries</B> </I></DT>
-<DD>Set the maximal number of tries to <I>tries</I>. If <I>prog</I> has crached,
+<DD>Set the maximal number of tries to <I>tries</I>. If <I>prog</I> has crashed,
 <B>tryto</B> tries to rewind stdin to the beginning using <I><I>lseek</I>(2)</I> before starting
 <I>prog</I> again. Default is 5. </DD>
 </DL>
@@ -60,28 +60,28 @@ is 5. </DD>
 If <B>tryto</B> sees the <B>-p</B> option, <B>tryto</B>
 runs as a <B><I>multilog</B>(8)</I> processor, making use of filedescriptors 4 and 5:
 <P>
-After forking, <B>tryto</B> moves the filedescriptor 5 to 2, so all error messages
-from <B>tryto</B> and <I>prog</I> will be saved in <B><I>multilog</B>(8)</I>'s <I>state</I> to be processed
-on the next run of <B>tryto </B> <B>-p</B>. <P>
-After starting <I>prog</I>, <B>tryto</B> first feeds all
-data it reads from filedescriptor 4 to <I>prog</I>'s standard input, then all data
-from filedescriptor 0. <P>
-If <I>prog</I> fails by timeout <I>sec</I> seconds or maximal number
-of <I>tries</I>, <B>tryto</B> prints all data from standard input to standard output,
-an error message to filedesriptor 5 and exits with 0. 
-<H2><A NAME="sect5">Exit Codes</A></H2>
-If <B>tryto</B>
-itself failes, it returns 111. <P>
-If <B>tryto</B> runs as a <B><I>multilog</B>(8)</I> processor,
-<B>tryto</B> returns 0 in all other cases. <P>
-If <I>prog</I> was run successfully, <B>tryto</B>
-returns 0. <P>
+Before starting <I>prog</I>, <B>tryto</B> moves the filedescriptor 5 to 2, so all error
+messages from <B>tryto</B> and <I>prog</I> will be saved in <B><I>multilog</B>(8)</I>'s <I>state</I> to be
+processed on the next run of <B>tryto </B> <B>-p</B>. <P>
+After starting <I>prog</I>, <B>tryto</B> first
+feeds all data it reads from filedescriptor 4 into <I>prog</I>'s standard input,
+then all data from filedescriptor 0. <P>
+If <I>prog</I> fails by timeout <I>sec</I> seconds
+or maximal number of <I>tries</I>, <B>tryto</B> prints all data from standard input to
+standard output, an error message to standard error and exits with 0. 
+<H2><A NAME="sect5">Exit
+Codes</A></H2>
+If <B>tryto</B> itself failes, it returns 111. <P>
+If <B>tryto</B> runs as a <B><I>multilog</B>(8)</I>
+processor, <B>tryto</B> returns 0 in all other cases. <P>
+If <I>prog</I> was run successfully,
+<B>tryto</B> returns 0. <P>
 If <I>prog</I> failed by timeout, <B>tryto</B> returns 10. <P>
-If <I>prog</I> failed by
-maximal number of <I>tries</I>, <B>tryto</B> returns the last exit code from <I>prog</I>. <P>
+If <I>prog</I> failed
+by maximal number of <I>tries</I>, <B>tryto</B> returns the last exit code from <I>prog</I>.
+<P>
 
-<H2><A NAME="sect6">See
-Also</A></H2>
+<H2><A NAME="sect6">See Also</A></H2>
 <I>multilog(8)</I>, <I>socklog(8)</I>, <I>uncat(1)</I>, <I>lseek(2)</I>, <I>timelimit(8)</I> <P>
 <I>http://innominate.org/~pape/socklog/</I>
 
