@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>socklog - network logging</title>
+  </head>
+  
+  <body>
+    <a href="http://innominate.org/~pape/">G. Pape</a><br>
+    <a href="index.html">socklog</a><br>
+    <a href="benefits.html">socklog - benefits</a><br>
+    <a href="install.html">socklog - installation</a><br>
+    <a href="configuration.html">socklog - configuration</a>
+    <hr>
+    <h1>socklog - network logging</h1>
+    <hr>
+    Logging via network connection cannot be made reliable. There is always
+    a possibility for failures. The network connection itself may be down or
+    the receiving machine has crashed for example. So there must be a
+    decision, what to do in such cases.
+    <h2>The <i>socklog</i> network logging concept</h2>
+    <ul>
+      <li>
+	logging is still done locally through
+	<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+      <li>
+	the log is transmitted through a network connection (if possible)
+	when <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+	decides that <tt>current</tt> is big enough, using
+	<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s
+	<i>processor</i> feature.
+      <li>
+	since this transmission cannot be made reliable, there is a tool
+	<a href="man/tryto.1.html">tryto</a> that limits the time to try this
+	transmission. See below for examples.
+      <li>
+	if the transmission of <tt>current</tt> fails, the log will be saved
+	local, <i>socklog</i> remembers the failure and includes the
+	error messages into the transmission on the next run, so the remote
+	machine gets the information of log transmission failures.
+    </ul>
+    There are no restrictions on how to transmit the log data, a separate
+    process of your choice will do the work, e.g. <i>netcat</i>,
+    <a href="http://cr.yp.to/ucspi-tcp/tcpclient.html">tcpclient</a>.
+    This modularity lets you easily insert authentication, compression,
+    encryption and other things.
+    <h2>Example setup</h2>
+    <h3>Log Server (machine receiving log data)</h3>
+    Setup a <i>socklog-ucspi-tcp</i> service (see
+    <a href="configuration.html">Configuration</a>) with the following
+    <tt>socklog-ucspi-tcp/run</tt> and <tt>socklog-ucspi-tcp/log/run</tt>
+    scripts:
+    <p>
+      socklog-ucspi-tcp/run:
+    <pre>
+  #!/bin/sh
+  PORT=10116
+  exec 2>&1
+  exec envuidgid log tcpserver -vUHR -l0 0 $PORT socklog ucspi TCPREMOTEIP
+    </pre>
+    socklog-ucspi-tcp/log/run:
+    <pre>
+  #!/bin/sh
+  LOGDIR=/var/log/socklog-remote
+  exec 2>&1
+  exec setuidgid log multilog ${LOGDIR}/main \
+         -* +'10.0.0.236:*' ${LOGDIR}/10.0.0.236
+    </pre>
+    You will then find all log data from remote hosts that was successfully
+    transmitted in <tt>${LOGDIR}/main/</tt>. Log data from <tt>10.0.0.236</tt>
+    will also be saved in <tt>${LOGDIR}/10.0.0.236/</tt>.
+    <h3>Log client (machine sending log data)</h3>
+    Change the <i>socklog</i> configuration to use a processor to transmit
+    the log data:
+    <p>
+      socklog-unix/log/run:
+    <pre>
+  #!/bin/sh
+  LOGDIR=/var/log/socklog
+  LOGSERVERIP=10.0.0.16
+  PORT=10116
+  exec setuidgid log multilog s4096 n20 \
+	 !'tryto -pv tcpclient -v $LOGSERVERIP $PORT sh -c "cat >&7"' \
+	 ${LOGDIR}/main
+    </pre>
+    <hr>
+    <address><a href="mailto:pape@innominate.com">G. Pape</a></address>
+    <small>$Id$</small
+  </body>
+</html>
