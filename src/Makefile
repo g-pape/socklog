@@ -20,11 +20,11 @@ tryto: load tryto.o unix.a byte.a time.a
 uncat: load uncat.o unix.a byte.a time.a
 	./load uncat unix.a byte.a time.a
 
-check-socklog-inet: load check-socklog-inet.o unix.a byte.a
-	./load check-socklog-inet unix.a byte.a
+check-socklog-inet: load check-socklog-inet.o unix.a byte.a socket.lib
+	./load check-socklog-inet unix.a byte.a `cat socket.lib`
 
-check-socklog-unix: load check-socklog-unix.o unix.a byte.a
-	./load check-socklog-unix unix.a byte.a
+check-socklog-unix: load check-socklog-unix.o unix.a byte.a socket.lib
+	./load check-socklog-unix unix.a byte.a `cat socket.lib`
 
 socklog-conf.o: compile socklog-conf.c
 	./compile socklog-conf.c

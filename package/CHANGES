@@ -1,3 +1,8 @@
+socklog 2.0.1
+  * Makefile: add linker options detected by trysocketlib.c to targets
+    check-socklog-inet, check-socklog-inet (fixes test failure on solaris,
+    thx Uffe Jakobsen).
+
 socklog 2.0.0
 Sun, 06 Feb 2005 19:57:04 +0000
   * socklog-check.check: tweak timing in program test.
