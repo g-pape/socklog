@@ -28,7 +28,7 @@ build-arch-stamp: configure-stamp
 	$(MAKE); \
 	)
 
-	touch build-stamp
+	touch build-arch-stamp
 
 build-indep: build-indep-stamp
 build-indep-stamp: 
