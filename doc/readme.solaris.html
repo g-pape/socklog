@@ -89,6 +89,7 @@ You'll have to decide if you want &quot;door&quot; support or not.
 1. With syslog_door support
 <pre>
   echo "gcc -O2 -Wall -DWANT_SUN_DOOR" > src/conf-cc
+  echo "gcc -s -ldoor -lthread" > src/conf-ld
 </pre>
 <p>
 2. Without syslog_door support (default)
@@ -105,10 +106,7 @@ This will create the following run script:
 <pre>
   #!/bin/sh
   exec 2&gt;&amp;1
-  USRID=`id -u nobody`
-  GRPID=`id -g nobody`
-  exec env UID="$USRID" GID="$GRPID" \
-    socklog sun_stream /dev/log /var/run/syslog_door
+  exec chpst -Uacct socklog sun_stream /dev/log /var/run/syslog_door
 </pre>
 It is possible to run multiple <i>socklog</i> instances, but only one
 <i>socklog</i> can listen on the door file. If another process is in charge
@@ -121,7 +119,7 @@ parallel, to test your <i>socklog</i> setup.
 If you have problems, questions or suggestions regarding the Solaris support,
 email me:
 <a href="mailto:lu@cachescrubber.org">Lars Uffmann &lt;lu@cachescrubber.org&gt;</a>,
-or post to the <tt>log@list.cr.yp.to</tt> mailing list.
+or post to the <tt>&lt;misc@list.smarden.org&gt;</tt> mailing list.
 <hr>
 <address><a href="mailto:lu@cachescrubber.org">
 Lars Uffmann, &lt;lu@cachescrubber.org&gt;
