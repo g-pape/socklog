@@ -1,6 +1,4 @@
 #!/usr/bin/make -f
-# Sample debian/rules that uses debhelper.
-# GNU copyright 1997 to 1999 by Joey Hess.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -11,7 +9,6 @@ export DH_COMPAT=3
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	# Add here commands to configure the package.
 
 	touch configure-stamp
 
@@ -19,18 +16,16 @@ build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
 
-	# Add here commands to compile the package.
-	#	$(MAKE)
-	#/usr/bin/docbook-to-man debian/socklog.sgml > socklog.1
+	tar xzvpf socklog-1.1.0.tar.gz
+	-gcc -v
 
-	tar xfzvp socklog-1.0.0.tar.gz
 	( \
-	cd admin/socklog-1.0.0 ; \
-	package/compile ; \
-	echo "/package/admin/socklog-1.0.0" > compile/home ; \
-	rm -f compile/src ; \
-	ln -s /package/admin/socklog-1.0.0/src compile/src ; \
+	set -e; \
+	cd admin/socklog-1.1.0/src; \
+	ln -s socklog-1.1.0 socklog; mv socklog ../..; \
+	$(MAKE); \
 	)
+
 	touch build-stamp
 
 clean:
@@ -38,11 +33,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp configure-stamp
 
-	# Add here commands to clean up after the build process.
-	#	-$(MAKE) clean
-
 	rm -rf admin
-	rm -f debian/links
 	dh_clean
 
 install: build
@@ -51,40 +42,17 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	# Add here commands to install the package into debian/socklog.
-	#	$(MAKE) install DESTDIR=$(CURDIR)/debian/socklog
-
-	chmod 1755 debian/socklog/package
-	cp -a admin debian/socklog/package/
-	cp -a debian/socklog/package/admin/socklog-1.0.0/man .
-	rm -rf debian/socklog/package/admin/socklog-1.0.0/man
-	cp -a debian/socklog/package/admin/socklog-1.0.0/doc .
-	rm -rf debian/socklog/package/admin/socklog-1.0.0/doc
-	cp -a debian/socklog/package/admin/socklog-1.0.0/package .
-
-	# cleanup
-	rm -rf debian/socklog/package/admin/socklog-1.0.0/compile
-
-	# create debian/links
-	rm -f debian/links
-	for i in \
-	 `cat debian/socklog/package/admin/socklog-1.0.0/package/commands` ; \
-	do \
-	  echo "/package/admin/socklog/command/$$i /command/$$i" \
-		>> debian/links ; \
+	for i in socklog socklog-conf; do \
+	  install -m0755 admin/socklog/src/$$i \
+	    $(CURDIR)/debian/socklog/usr/sbin/; \
 	done
-	for i in \
-	 `cat debian/socklog/package/admin/socklog-1.0.0/package/commands` ; \
-	do \
-	  echo "/command/$$i /usr/local/bin/$$i" \
-		>> debian/links ; \
+	for i in tryto uncat; do \
+	  install -m0755 admin/socklog/src/$$i \
+	    $(CURDIR)/debian/socklog/usr/bin/; \
 	done
 
-# Build architecture-independent files here.
 binary-indep: build install
-# We have nothing to do by default.
 
-# Build architecture-dependent files here.
 binary-arch: build install
 	dh_testdir
 	dh_testroot
@@ -97,7 +65,7 @@ binary-arch: build install
 	dh_link
 	dh_strip
 	dh_compress
-#	dh_fixperms
+	dh_fixperms
 #	dh_makeshlibs
 	dh_installdeb
 	dh_shlibdeps

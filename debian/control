@@ -2,37 +2,22 @@ Source: socklog
 Section: admin
 Priority: optional
 Maintainer: Gerrit Pape <pape@smarden.org>
-Standards-Version: 3.5.2
+Standards-Version: 3.5.10
 Build-Depends: debhelper (>> 3.0.0)
 
 Package: socklog
 Architecture: any
-Depends: runit | daemontools (>= 0.76-1), ${shlibs:Depends}
-Provides: system-log-daemon
-Description: small and secure replacement for syslogd using djb's daemontools
- socklog in cooperation with djb's daemontools is a small and secure
- replacement for syslogd. There are three main features, syslogd provides:
+Depends: runit (>> 0.10.0-0), adduser, ${shlibs:Depends}
+Recommends: ipsvd
+Provides: system-log-daemon, linux-kernel-log-daemon
+Description: small and secure replacement for syslogd
+ socklog cooperates with the runit package to create a small and secure
+ replacement for syslogd.  socklog supports system logging through Unix
+ domain sockets (/dev/log) and UDP sockets (0.0.0.0:514) with the help of
+ runit's runsvdir, runsv, and svlogd.  socklog provides a different
+ network logging concept, and also does log event notification.  svlogd
+ has built in log file rotation based on file size, so there is no need
+ for any cron jobs to rotate the logs.  socklog is small, secure, and
+ reliable.
  .
- o receiving syslog messages from an unix domain socket (/dev/log)
-   and writing them to various files on disk depending on facility
-   and priority.
- o receiving syslog messages from an udp socket (0.0.0.0:514) and
-   writing them to various files on disk depending on facility and
-   priority.
- o writing received syslog messages to an udp socket (a.b.c.d:514)
- .
- socklog provides the first two features with the help of daemontools svscan,
- supervise and multilog, provides a different network logging concept and
- additionally does log event notification.
- .
- multilog has a built in logfile rotation based on file size, so there is no
- need for any cron jobs or similar to rotate the logs; log partitions can be
- calculated properly.
- .
- socklog runs on Linux, OpenBSD, and FreeBSD. socklog reportedly runs on
- Solaris and NetBSD. If it runs for you on other operating systems, please
- let me know.
- .
- socklog is small, secure, reliable.
- .
- See http://smarden.org/socklog/ for recent informations.
+ See http://smarden.org/socklog/ for more information.
