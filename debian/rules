@@ -65,6 +65,7 @@ install: build
 	rm -rf debian/socklog/package/admin/socklog-0.3.2/compile
 	rm -rf debian/socklog/package/admin/socklog-0.3.2/man
 	rm -rf debian/socklog/package/admin/socklog-0.3.2/doc
+	rm -rf debian/socklog/package/admin/socklog-0.3.2/etc
 
 	# /etc/socklog
 	cp -pr debian/socklog/package/admin/socklog-0.3.2/etc/* \
