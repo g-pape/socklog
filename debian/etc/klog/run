@@ -1,4 +1,6 @@
 #!/bin/sh
+USER=nobody
 exec </proc/kmsg
 exec 2>&1
-exec chpst -unobody socklog ucspi
+test "`uname -r |cut -c0-4`" != '2.6.' || USER=root
+exec chpst -u"$USER" socklog ucspi
