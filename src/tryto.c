@@ -19,7 +19,7 @@
 #define KTIMEOUT 5
 #define TRYMAX  5
 
-#define USAGE " [ -vp ] [ -t seconds ] [ -k kseconds ] [ -n tries ] prog"
+#define USAGE " [-vp] [-t seconds] [-k kseconds] [-n tries] prog"
 #define WARNING "tryto: warning: "
 #define FATAL "tryto: fatal: "
 
@@ -255,5 +255,5 @@ int main (int argc, const char * const *argv, const char * const *envp) {
     if (processor) strerr_die2x(0, FATAL, "child crashed, giving up.");
     strerr_die2x(rc >> 8, FATAL, "child crashed, giving up.");
   }
-  exit(0);
+  _exit(0);
 }

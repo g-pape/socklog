@@ -6,6 +6,10 @@ tryto
 tryto.o
 uncat
 uncat.o
+check-socklog-inet
+check-socklog-inet.o
+check-socklog-unix
+check-socklog-unix.o
 socket.lib
 trysocketlib
 trysocketlib.o
@@ -104,3 +108,7 @@ uint64.h
 unix.a
 wait_nohang.o
 wait_pid.o
+socklog-conf.local
+socklog.local
+tryto.local
+uncat.local

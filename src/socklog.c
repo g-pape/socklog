@@ -222,8 +222,13 @@ int read_socket (int s) {
     int os;
     
     linec =recvfrom(s, line, LINEC, 0, (struct sockaddr *) &saf, &dummy);
-    if (linec == -1)
-      strerr_die2sys(111, FATAL, "recvfrom(): ");
+    if (linec == -1) {
+      if (errno != error_intr)
+	strerr_die2sys(111, FATAL, "recvfrom(): ");
+      else
+	linec =0;
+    }
+    if (flag_exitasap) break;
 
     while (linec && (line[linec -1] == 0)) linec--;
     if (linec == 0) continue;
@@ -250,6 +255,7 @@ int read_socket (int s) {
     }
     buffer_flush(buffer_1);
   }
+  return(0);
 }
 
 int read_ucspi (int fd, const char **vars) {
@@ -448,6 +454,9 @@ int main(int argc, const char **argv, const char *const *envp) {
 
   if (*argv) address =*argv++;
 
+  sig_catch(sig_term, sig_term_catch);
+  sig_catch(sig_int, sig_term_catch);
+
   switch (mode) {
   case MODE_INET: {
     const char* port =NULL;
@@ -474,9 +483,6 @@ int main(int argc, const char **argv, const char *const *envp) {
 #endif
     if (!address) address =DEFAULTUNIX;
     if (*argv) usage();
-
-    sig_catch(sig_term, sig_term_catch);
-    sig_catch(sig_int, sig_term_catch);
 
     s =stream_sun(address);
 

@@ -17,7 +17,7 @@
 #define TIMEOUT 300
 #define SIZEMAX 1024
 
-#define USAGE " [ -v ] [ -o ] [ -t timeout ] [ -s size ] prog"
+#define USAGE " [-vo] [-t timeout] [-s size] prog"
 #define WARNING "uncat: warning: "
 #define FATAL "uncat: fatal: "
 
@@ -178,5 +178,5 @@ int main (int argc, const char * const *argv, const char * const *envp) {
   }
 
   if (verbose) strerr_warn2(WARNING, "exit.", 0);
-  exit(0);
+  _exit(0);
 }

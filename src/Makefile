@@ -1,8 +1,9 @@
-IT=sysdeps socklog-conf socklog tryto uncat
+IT=socklog-conf socklog tryto uncat
 
-#IT=unix.a byte.a time.a
+default: sysdeps $(IT) check
 
-default: $(IT)
+check: $(IT) check-socklog-unix check-socklog-inet
+	./check-local $(IT)
 
 socklog-conf: load socklog-conf.o unix.a byte.a
 	./load socklog-conf unix.a byte.a
@@ -16,6 +17,12 @@ tryto: load tryto.o unix.a byte.a time.a
 uncat: load uncat.o unix.a byte.a time.a
 	./load uncat unix.a byte.a time.a
 
+check-socklog-inet: load check-socklog-inet.o unix.a byte.a
+	./load check-socklog-inet unix.a byte.a
+
+check-socklog-unix: load check-socklog-unix.o unix.a byte.a
+	./load check-socklog-unix unix.a byte.a
+
 socklog-conf.o: compile socklog-conf.c
 	./compile socklog-conf.c
 
@@ -27,6 +34,12 @@ tryto.o: compile tryto.c iopause.h uint64.h
 
 uncat.o: compile uncat.c iopause.h uint64.h
 	./compile uncat.c
+
+check-socklog-inet.o: compile check-socklog-inet.c
+	./compile check-socklog-inet.c
+
+check-socklog-unix.o: compile check-socklog-unix.c
+	./compile check-socklog-unix.c
 
 socket.lib: compile load trysocketlib.c
 	./compile trysocketlib.c
