@@ -35,6 +35,6 @@ clean:
 	find . -name \*~ -exec rm -f {} \;
 	find . -name .??*~ -exec rm -f {} \;
 	find . -name \#?* -exec rm -f {} \;
-	if test -h support;
+	if test -h support; \
 		then ( cd support ; $(MAKE) clean ); rm support; fi
 	rm -f `cat TARGETS`
