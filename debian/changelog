@@ -6,13 +6,13 @@ socklog (1.1.0-1) unstable; urgency=low
   * debian/control: Standards-Version: 3.5.10; Depends: runit (>> 0.10.0-0),
     adduser; Recommends: ipsvd; Provides: system-log-daemon,
     linux-kernel-log-daemon; adapt package description.
-  * debian/postinst: create system user ``log''.
+  * debian/postinst: create system user ``log''; cleanup on upgrade.
   * debian/preinst: remove, obsolete.
   * debian/postrm: remove system user ``log'' on purge.
   * debian/rules: install binaries in /usr/sbin, /usr/bin.
   * debian/README.Debian: new.
 
- -- Gerrit Pape <pape@smarden.org>  Tue, 24 Jun 2003 11:54:09 +0200
+ -- Gerrit Pape <pape@smarden.org>  Thu, 26 Jun 2003 09:43:34 +0200
 
 socklog (1.0.0-1) sarge; urgency=low
 
