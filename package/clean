@@ -1,4 +1,0 @@
-#!/bin/sh -e
-
-#umask 022
-make -C compile clean

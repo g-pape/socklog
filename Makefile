@@ -5,7 +5,7 @@ DIRS=doc man etc package src
 MANPAGES=man/socklog.8 man/tryto.1 man/uncat.1
 DAEMONTOOLS_PD=daemontools-pd-0.76
 
-all: .manpages daemontools-pd-archive archive
+all: .manpages $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz
 
 .manpages: $(MANPAGES)
 	for i in $(MANPAGES); do \
@@ -17,10 +17,10 @@ all: .manpages daemontools-pd-archive archive
 	done ; \
 	touch .manpages
 
-daemontools-pd-archive:
+$(DAEMONTOOLS_PD).tar.gz:
 	tar cpfz $(DAEMONTOOLS_PD).tar.gz $(DAEMONTOOLS_PD)
 
-archive:
+$(PACKAGE).tar.gz:
 	rm -rf TEMP
 	mkdir -p TEMP/admin/$(PACKAGE)
 	make -C src clean
@@ -36,6 +36,9 @@ clean:
 	find . -name \*~ -exec rm -f {} \;
 	find . -name .??*~ -exec rm -f {} \;
 	find . -name \#?* -exec rm -f {} \;
+
+cleaner:
+	rm -f $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz
 	for i in $(MANPAGES); do rm -f doc/`basename $$i`.html; done
 	rm -f .manpages
 
