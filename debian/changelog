@@ -1,4 +1,4 @@
-socklog (0.3.0-1) unstable; urgency=low
+socklog (0.3.0-1) woody; urgency=low
 
   * installs into /package (see http://cr.yp.to/slashpackage.html).
   * no code changes.
