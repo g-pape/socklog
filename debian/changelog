@@ -1,4 +1,4 @@
-socklog (0.5.0-1) woody; urgency=low
+socklog (0.5.1-1) woody; urgency=low
 
   * socklog: changed undocumented option -v to -V
   * Makefile: does not require gnu make (thx Jordan Krushen)
@@ -11,8 +11,9 @@ socklog (0.5.0-1) woody; urgency=low
   * deb: /etc/socklog removed, debian/conffiles empty
   * deb: /var/log/socklog* removed
   * deb: reorganized debian/rules
+  * package socklog moved to smarden.org
 
- -- Gerrit Pape <pape@smarden.org>  Fri, 16 Nov 2001 15:53:07 +0100
+ -- Gerrit Pape <pape@smarden.org>  Tue, 20 Nov 2001 11:36:23 +0100
 
 socklog (0.4.1-1) woody; urgency=low
 

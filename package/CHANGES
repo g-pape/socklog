@@ -1,3 +1,7 @@
+socklog 0.5.1
+Tue, 20 Nov 2001 11:36:23 +0100
+  * package socklog moved to smarden.org
+
 socklog 0.5.0
 Fri, 16 Nov 2001 15:53:07 +0100
   * minor beautification

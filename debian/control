@@ -35,4 +35,4 @@ Description: small and secure replacement for syslogd using djb's daemontools
  .
  socklog is small, secure, reliable.
  .
- See http://innominate.org/~pape/socklog/ for recent informations.
+ See http://smarden.org/socklog/ for recent informations.
