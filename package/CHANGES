@@ -1,5 +1,5 @@
 socklog-0.6.1
-Thu, 17 Jan 2002 11:33:28 +0100
+Thu, 17 Jan 2002 11:43:36 +0100
   * bug: socklog.c: error in recvfrom() was not catched (thx Liviu Daia)
 
 socklog-0.6.0

@@ -213,8 +213,8 @@ int read_socket (int s) {
       perror("recvfrom");
       exit(1);
     }
+    while (linec && (line[linec -1] == 0)) linec--;
     if (linec == 0) continue;
-    while (line[linec -1] == 0) linec--;
 
     if (mode == MODE_INET) remote_info(&saf);
     os =syslog_names(line, linec);
