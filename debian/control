@@ -7,7 +7,7 @@ Build-Depends: debhelper (>> 3.0.0)
 
 Package: socklog
 Architecture: any
-Depends: daemontools (>= 0.76-1), ${shlibs:Depends}
+Depends: runit | daemontools (>= 0.76-1), ${shlibs:Depends}
 Provides: system-log-daemon
 Description: small and secure replacement for syslogd using djb's daemontools
  socklog in cooperation with djb's daemontools is a small and secure
@@ -29,9 +29,9 @@ Description: small and secure replacement for syslogd using djb's daemontools
  need for any cron jobs or similar to rotate the logs; log partitions can be
  calculated properly.
  .
- socklog runs on linux, glibc 2.1.0 or higher. socklog reportedly runs on
- OpenBSD 2.8 and 2.9, FreeBSD and Solaris. If it runs for you on other
- operating systems, please let me know.
+ socklog runs on Linux, OpenBSD, and FreeBSD. socklog reportedly runs on
+ Solaris an NetBSD. If it runs for you on other operating systems, please
+ let me know.
  .
  socklog is small, secure, reliable.
  .

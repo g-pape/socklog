@@ -1,11 +1,12 @@
 socklog-1.0.0
-Thu, 30 Jan 2003 11:48:44 +0100
+Thu, 30 Jan 2003 13:32:24 +0100
   * doc/configuration.html, doc/examples.html: remove description for
     socklog-ucspi-unix service.
   * doc/benefits.html, doc/network.html, doc/readme.solaris.html,
     doc/usedietlibc.html, man/socklog-conf.8: typos.
   * error.h: include <errno.h>.
   * tryto.c: catch possible error in write() to child; minor cleanup.
+  * doc/index.html: add NetBSD to supported systems.
 
 socklog-0.10.1
 Thu, 08 Aug 2002 22:55:35 +0200
