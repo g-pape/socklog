@@ -88,14 +88,13 @@ You'll have to decide if you want &quot;door&quot; support or not.
 <p>
 1. With syslog_door support
 <pre>
-  echo "gcc -O2 -Wall -DSOLARIS -DWANT_SUN_DOOR" > src/conf-cc
-  echo "gcc -s -lsocket -lnsl -ldoor -lthread" > src/conf-ld
+  echo "gcc -O2 -Wall -DWANT_SUN_DOOR" > src/conf-cc
 </pre>
-2. Without syslog_door support
-<pre>
-  echo "gcc -O2 -Wall -DSOLARIS" > src/conf-cc
-  echo "gcc -s -lsocket -lnsl" > src/conf-ld
-</pre>
+<p>
+2. Without syslog_door support (default)
+
+Just run package/install.
+
 Then follow the standard installation instructions.
 <p>
 <h2>How to configure socklog for the STREAMS log driver</h2>
@@ -121,11 +120,11 @@ parallel, to test your <i>socklog</i> setup.
 <h2>Support</h2>
 If you have problems, questions or suggestions regarding the Solaris support,
 email me:
-<a href="mailto:lu@mediaways.net">Lars Uffmann &lt;lu@mediaways.net&gt;</a>,
+<a href="mailto:lu@cachescrubber.org">Lars Uffmann &lt;lu@cachescrubber.org&gt;</a>,
 or post to the <tt>log@list.cr.yp.to</tt> mailing list.
 <hr>
-<address><a href="mailto:lu@mediaways.net">
-Lars Uffmann, &lt;lu@mediaways.net&gt;
+<address><a href="mailto:lu@cachescrubber.org">
+Lars Uffmann, &lt;lu@cachescrubber.org&gt;
 </a></address>
 <small>$Id$</small>
 </body>

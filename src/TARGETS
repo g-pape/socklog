@@ -6,6 +6,9 @@ tryto
 tryto.o
 uncat
 uncat.o
+socket.lib
+trysocketlib
+trysocketlib.o
 alloc.o
 alloc_re.o
 buffer.o

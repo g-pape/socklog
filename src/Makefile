@@ -7,8 +7,8 @@ default: $(IT)
 socklog-conf: load socklog-conf.o unix.a byte.a
 	./load socklog-conf unix.a byte.a
 
-socklog: load socklog.o unix.a byte.a
-	./load socklog unix.a byte.a
+socklog: load socklog.o unix.a byte.a socket.lib
+	./load socklog unix.a byte.a `cat socket.lib`
 
 tryto: load tryto.o unix.a byte.a time.a
 	./load tryto unix.a byte.a time.a
@@ -27,6 +27,15 @@ tryto.o: compile tryto.c iopause.h uint64.h
 
 uncat.o: compile uncat.c iopause.h uint64.h
 	./compile uncat.c
+
+socket.lib: compile load trysocketlib.c
+	./compile trysocketlib.c
+	( ./load trysocketlib >/dev/null 2>&1 || \
+	  ( ./load trysocketlib -lxnet >/dev/null 2>&1 && echo '-lxnet' ) || \
+	  ( ./load trysocketlib -lsocket -lnsl >/dev/null 2>&1 && \
+	    echo '-lsocket -lnsl' ) \
+	) >socket.lib
+	rm -f trysocketlib.o trysocketlib
 
 clean:
 	find . -name \*~ -exec rm -f {} \;

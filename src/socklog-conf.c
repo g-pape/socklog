@@ -9,7 +9,8 @@
 #include "open.h"
 #include "buffer.h"
 
-#ifdef SOLARIS
+#if defined(__sun__) && defined(__sparc__) && defined(__unix__) && defined(__svr4__)
+#define SOLARIS
 #include <sys/utsname.h>
 #include "scan.h"
 #endif

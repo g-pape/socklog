@@ -21,7 +21,8 @@
 #define SYSLOG_NAMES
 #include <syslog.h>
 
-#ifdef SOLARIS
+#if defined(__sun__) && defined(__sparc__) && defined(__unix__) && defined(__svr4__)
+#define SOLARIS
 # include <stropts.h>
 # include <sys/strlog.h>
 # include <fcntl.h>
