@@ -60,10 +60,10 @@ If you are replacing another service providing system logging through the
 socket <tt>/dev/log</tt>, such as <i>syslogd</i>, stop this service now and
 ensure that it will not be restarted on runlevel change or system reboot.
 <p>
-Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
-new service:
+Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
+the new service:
 <pre>
-  # ln -s /etc/socklog/unix /service/socklog-unix
+  # ln -s /etc/socklog/unix /var/service/socklog-unix
 </pre>
 Wait five seconds for the service to start and then check the log
 directories, e.g.:
@@ -72,10 +72,11 @@ directories, e.g.:
 </pre>
 Optionally configure the <i>socklog-unix</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
-the corresponding <tt>run</tt> scripts:
+the corresponding <tt>run</tt> scripts and <tt>config</tt> files:
 <ul>
-  <li>/service/socklog-unix/run
-  <li>/service/socklog-unix/log/run
+  <li>/var/service/socklog-unix/run
+  <li>/var/service/socklog-unix/log/run
+  <li>/var/log/socklog/*/config
 </ul>
 <hr>
 
@@ -99,10 +100,10 @@ If you are replacing another service providing system logging through the
 syslog UDP port 514, such as <i>syslogd</i>, stop this service now and ensure
 that it will not be restarted on runlevel change or system reboot.
 <p>
-Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
-new service:
+Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
+the new service:
 <pre>
-  # ln -s /etc/socklog/inet /service/socklog-inet
+  # ln -s /etc/socklog/inet /var/service/socklog-inet
 </pre>
 Wait five seconds for the service to start and then check the log
 directory:
@@ -111,10 +112,11 @@ directory:
 </pre>
 Optionally configure the <i>socklog-inet</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
-the corresponding <tt>run</tt> scripts:
+the corresponding <tt>run</tt> scripts and <tt>config</tt> file:
 <ul>
-  <li>/service/socklog-inet/run
-  <li>/service/socklog-inet/log/run
+  <li>/var/service/socklog-inet/run
+  <li>/var/service/socklog-inet/log/run
+  <li>/var/log/socklog-inet/main/config
 </ul>
 <hr>
 
@@ -138,10 +140,10 @@ If you are replacing another service providing kernel logging, such as
 <i>klogd</i> on Linux or <i>syslogd</i> on BSD, stop this service now and
 ensure that it will not be restarted on runlevel change or system reboot.
 <p>
-Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
-new service:
+Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
+the new service:
 <pre>
-  # ln -s /etc/socklog/klog /service/socklog-klog
+  # ln -s /etc/socklog/klog /var/service/socklog-klog
 </pre>
 Wait five seconds for the service to start and then check the log
 directory:
@@ -150,10 +152,11 @@ directory:
 </pre>
 Optionally configure the <i>socklog-klog</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
-the corresponding <tt>run</tt> scripts:
+the corresponding <tt>run</tt> scripts and <tt>config</tt> file:
 <ul>
-  <li>/service/socklog-klog/run
-  <li>/service/socklog-klog/log/run
+  <li>/var/service/socklog-klog/run
+  <li>/var/service/socklog-klog/log/run
+  <li>/var/log/socklog-klog/config
 </ul>
 <hr>
 
@@ -168,15 +171,17 @@ to make two decisions:
   programs run under this account. If this account does not exist, create
   it now.
 </ul>
-Create the service directory and log directories by running the
+Make sure that you have the <a href="http://smarden.org/ipsvd/">ipsvd</a>
+package installed.
+Then create the service directory and log directories by running the
 <a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
 <pre>
   # socklog-conf ucspi-tcp nobody log
 </pre>
-Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
-new service:
+Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
+the new service:
 <pre>
-  # ln -s /etc/socklog/ucspi-tcp /service/socklog-ucspi-tcp
+  # ln -s /etc/socklog/ucspi-tcp /var/service/socklog-ucspi-tcp
 </pre>
 Wait five seconds for the service to start and then check the log
 directory:
@@ -185,10 +190,11 @@ directory:
 </pre>
 Optionally configure the <i>socklog-ucspi-tcp</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
-the corresponding <tt>run</tt> scripts:
+the corresponding <tt>run</tt> scripts and <tt>config</tt> file:
 <ul>
-  <li>/service/socklog-ucspi-tcp/run
-  <li>/service/socklog-ucspi-tcp/log/run
+  <li>/var/service/socklog-ucspi-tcp/run
+  <li>/var/service/socklog-ucspi-tcp/log/run
+  <li>/var/log/socklog-ucspi-tcp/main/config
 </ul>
 Refer to <a href="network.html">Network logging</a> for setting up clients.
 <hr>
@@ -202,18 +208,18 @@ make two decisions:
   exist, create it now.
   <li>The <i>socklog</i> group name, normally <tt>adm</tt>. Logging
   programs that report <a href="notify.html">log events</a> to the
-  <i>socklog-notify</i> service must run under an account that is member of
-  this group. If this group does not exist, create it now.
+  <i>socklog-notify</i> service must run under an account that is member
+  of this group. If this group does not exist, create it now.
 </ul>
 Create the service directory by running the
 <a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
 <pre>
   # socklog-conf notify log adm
 </pre>
-Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
-new service:
+Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
+the new service:
 <pre>
-  # ln -s /etc/socklog/notify /service/socklog-notify
+  # ln -s /etc/socklog/notify /var/service/socklog-notify
 </pre>
 Wait five seconds for the service to start, you can test the service with:
 <pre>
@@ -223,7 +229,7 @@ Optionally configure the <i>socklog-notify</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
 the corresponding <tt>run</tt> script:
 <ul>
-  <li>/service/socklog-notify/run
+  <li>/var/service/socklog-notify/run
 </ul>
 Read <a href="notify.html">Log events notification</a> before disabling this
 service and for configuring arbitrary log services to notify events.

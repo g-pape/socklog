@@ -9,62 +9,18 @@
 <hr>
 <h1>socklog - upgrading from previous versions</h1>
 <hr>
-<h3>0.10.0 or 0.10.1 to 1.0.0</h3>
-No further action from you is required.
-<hr>
-<h3>0.9.1 to 0.10.0 or 0.10.1</h3>
-Only the solaris support of <i>socklog</i> has changed. If you are not
-running solaris, no action from you is required.
+<h3>1.0.0 to 1.1.0</h3>
+The socklog package now cooperates with the runit package instead of the
+daemontools package to provide syslog services.
+If you don't want to change your current configuration to utilize the
+programs from the runit package, you don't need to upgrade.
+If you want to upgrade nonetheless, but still use the programs from the
+daemontools package, no further action from you but installing the new
+socklog version is required.
 <p>
-On solaris you need to reconfigure your <i>socklog</i> service. Please
-read <a href="readme.solaris.html">using socklog on solaris</a>, adapt
-<tt>/service/socklog-unix/run</tt> script as described there, and restart
-the service:
-<pre>
-  # svc -t /service/socklog-unix
-</pre>
-<hr>
-<h3>0.8.1 or 0.8.2 to 0.9.1</h3>
-This version comes with the new socklog-klog service which provides kernel
-logging on Linux and BSD. You might want to start this service on BSD, or
-replace the <i>klogd</i> service on Linux. The socklog program running in
-ucspi mode now correctly decodes facility and priority to syslog names.
-<hr>
-<h3>0.7.0 to 0.8.1 or 0.8.2</h3>
-No further action from you is required.
-<hr>
-<h3>0.6.0 or 0.6.1 to 0.7.0</h3>
-There are mostly internal changes, no further actions from you are required.
-<hr>
-<h3>0.5.1 to 0.6.0 or 0.6.1</h3>
-The socklog-notify service run-script now redirects uncat's standard output
-to the notify pipe. This avoids wrong timeout handling seen in some special
-configurations. If you are currently running the socklog-notify service,
-change the line <b><tt>exec &gt; "$PIPE"</tt></b> to
-<b><tt>exec &lt;&gt; "$PIPE"</tt></b> in
-<tt>/service/socklog-notify/run</tt> and restart the service:
-<pre>
-  # svc -t /service/socklog-notify
-</pre>
-The socklog program now trims 0-characters. If you see 0-characters in your
-socklog log files (most probably caused by klogd on GNU/Linux), restart the
-corresponding socklog service, e.g.:
-<pre>
-  # svc -t /service/socklog-unix/
-</pre>
-The package/install-man script creates symbolic links for the man pages
-into the /usr/local/man/ hierarchy on installation. The uncat program
-has a new option -o.
-<hr>
-<h3>0.4.0 or 0.4.1 to 0.5.1</h3>
-The named pipe for log events notification has now more strict permissions
-for security reasons. It is recommended to upgrade this service if it is
-running by stopping it, removing /etc/socklog/notify and
-/var/log/socklog/.notify and recreating the service, following the
-instructions.
-<p>
-The socklog program is now run by softlimit, you may consider adapting your
-run scripts.
+If you want to switch your configuration to utilize the runit package, you
+need to re-create your service directories using the
+<a href="socklog-conf.8.html">socklog-conf</a> program.
 <hr>
 <address><a href="mailto:pape@smarden.org">
 Gerrit Pape &lt;pape@smarden.org&gt;

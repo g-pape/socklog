@@ -1,6 +1,6 @@
 .TH socklog 8
 .SH NAME
-socklog \- small and secure syslogd replacement for use with djb's daemontools
+socklog \- small and secure syslogd replacement for use with runit
 .SH SYNOPSIS
 .B socklog
 [
@@ -22,16 +22,16 @@ ucspi [
 ]
 .SH DESCRIPTION
 .B socklog
-is run under daemontools'
-.BR supervise (8),
+is run under runit's
+.BR runsv (8),
 writing syslog messages it receives from unix domain socket
 .I path
 or an inet udp socket
 .I ip\fR:\fIport\fR
 through a pipe provided by
-.BR svscan (8)
+.BR runsv (8)
 to a
-.BR multilog (8)
+.BR svlogd (8)
 process.
 .LP
 .B socklog
@@ -40,8 +40,7 @@ and for more flexible distributed logging.
 .LP
 If the environment variables $UID and/or $GID are present,
 .B socklog
-will drop permissions to those ids after creating and binding the socket
-(not in
+drops permissions to those ids after creating and binding the socket (not in
 .I ucspi
 mode).
 .LP
@@ -135,6 +134,7 @@ will run as an ucspi application. Normally
 will only be started in
 .I ucspi
 mode by an ucspi server tool, such as
+.BR tcpsvd (8),
 .BR tcpserver (1)
 or
 .BR unixserver .
@@ -148,57 +148,15 @@ to each syslog message, if the environment variable
 .RI $ arg
 is present (maximum is 8).
 
-
-.SH EXAMPLES
-.I unix
-mode for listening on unix domain dgram socket
-.IR /dev/log .
-a proper
-.I run
-file for
-.BR supervise (8)
-is:
-.LP
-  #!/bin/sh
-  exec 2>&1
-  exec envuidgid nobody socklog unix /dev/log
-.LP
-.I ucspi
-mode for listening on unix domain stream socket
-.IR /dev/log .
-a proper
-.I run
-file for
-.BR supervise (8)
-is:
-.LP
-  #!/bin/sh
-  exec 2>&1
-  exec unixserver -U `id \-u nobody` /dev/log \\
-    socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
-.LP
-.I inet
-mode for listening on udp network socket
-.I 0.0.0.0\fR:\fI514\fR.
-a proper
-.I run
-file for
-.BR supervise (8)
-is:
-.LP
-  #!/bin/sh
-  exec 2>&1
-  exec envuidgid nobody socklog inet 0 514
-.LP
 .SH SEE ALSO
-svscan(8),
-supervise(8),
-multilog(8),
+runsvdir(8),
+runsv(8),
+svlogd(8),
 tryto(1),
 uncat(1),
-tcpserver(1)
+tcpsvd(8),
+nc(1)
 .LP
  http://smarden.org/socklog/
- http://cr.yp.to/daemontools.html
 .SH AUTHOR
 Gerrit Pape <pape@smarden.org>

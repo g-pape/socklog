@@ -16,17 +16,20 @@
 <a href="#smallcode">Small code size</a>
 <hr>
 Most of the benefits described here are actually benefits of
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>. But since
-<i>socklog</i> uses <i>multilog</i> as its backend, the benefits apply
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> and
+<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
+But since <i>socklog</i> uses
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+as its backend, the benefits apply
 to <i>syslogging</i> with <i>socklog</i>.
 <hr>
 <h2><a name="logrotation">Logfile rotation based on file size</a></h2>
 <p>
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
 supports automatically rotated logs, there is no need for any other
 tool running from cron or similar to rotate the logs.
 <p>
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
 keeps a specified number of logfiles with a maximum file size, so it is
 possible to calculate a logfile partition properly.
 <p>
@@ -34,75 +37,75 @@ For example, this <tt>log/run</tt> file
 <pre>
   #!/bin/sh
   LOGDIR=/var/log/socklog
-  exec setuidgid log multilog s4999999 n10 ${LOGDIR}/main \
-    s999999 n5 -* +kern.* ${LOGDIR}/kern \
-    s999999 n5 -* +user.* ${LOGDIR}/user \
-    s999999 n5 -* +mail.* ${LOGDIR}/mail \
-    s999999 n5 -* +daemon.* ${LOGDIR}/daemon \
-    s999999 n5 -* +auth.* +authpriv.* ${LOGDIR}/auth \
-    s999999 n5 -* +syslog.* ${LOGDIR}/syslog \
-    s999999 n5 -* +news.* ${LOGDIR}/news \
-    s999999 n5 -* +cron.* ${LOGDIR}/cron \
-    s999999 n5 -* +ftp.* ${LOGDIR}/ftp \
-    s999999 n5 -* +local*.* ${LOGDIR}/local \
-    s999999 n5 -* +*.debug* ${LOGDIR}/debug
+  exec setuidgid log svlogd ${LOGDIR}/main ${LOGDIR}/debug
+</pre>
+with these log <tt>config</tt> files
+<pre>
+  # cat /var/log/socklog/main/config
+  s4999999
+  n10
+  # cat /var/log/socklog/debug/config
+  s999999
+  n5
+  -*
+  +*.debug*
 </pre>
 causes
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
 to hold maximal 10 logfiles, each of maximal size
-4999999 bytes in <tt>/var/log/socklog/main/</tt>, maximal 5 logfiles,
-each of maximal size 999999 bytes in <tt>/var/log/socklog/kern/</tt>,
-<tt>/var/log/socklog/user/</tt>, ...
+4999999 bytes in <tt>/var/log/socklog/main/</tt>, and maximal 5 logfiles,
+each of maximal size 999999 bytes in <tt>/var/log/socklog/debug/</tt>.
 <p>
-So the maximal used space for all these directories is less then:
+So the maximal used space for these both logs is less then:
 <p>
-<tt>10 * 5000000 + 11 * 5 * 1000000 = 105000000 bytes < 110 MB</tt>
+<tt>(10 * 5000000) + (5 * 1000000) = 55000000 bytes < 55 MB</tt>
 <p>
 If there is any service acting up and filling up your logs rapidly,
 you will never run into a filled up log partition, causing loss of new
-log entries, even of other services. You can lose old log entries from
-this service, but will ever have the recent ones.
+log entries, even of other services.
+You can lose old log entries from this service, but will ever have the
+recent ones.
 <p>
 Please note that above numbers could change if you use 
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
 with a <i>processor</i>.
 <hr>
 <h2><a name="selecting">Selecting and deselecting log entries</a></h2>
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a> supports
-selecting and deselecting log lines based on pattern matching, see the
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog documentation</a>
-for details.
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+supports selecting and deselecting log lines based on pattern matching.
 <p>
 This is much more flexible than the usual <i>syslogd</i> support for
-selecting log entries by <tt>facility</tt> and <tt>priority</tt>. Of course,
-selecting entries by <tt>facility</tt> or <tt>priority</tt> is still possible
-with <i>socklog</i> and
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>, just like
-the default <i>socklog-unix</i> configuration shows.
+selecting log entries by <tt>facility</tt> and <tt>priority</tt>.
+Of course, selecting entries by <tt>facility</tt> or <tt>priority</tt> is
+still possible with <i>socklog</i> and
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>,
+just like the default <i>socklog-unix</i> configuration shows.
 <p>
 This line selection feature is also used for <i>socklog</i>'s instant
 <a href="notify.html">Log events notification</a>.
 <hr>
 <h2><a name="network">Modular, reliable network logging</a></h2>
 The <i>socklog-inet</i> service can be used to replace a <i>syslog</i>
-network server, receiving log messages on UDP port 514. Usually
-<i>syslog</i> clients try to transmit their logs to that port using UDP.
-This is just for compatibility.
+network server, receiving log messages on UDP port 514.
+Usually <i>syslog</i> clients try to transmit their logs to that port
+using UDP.
 <p>
 <i>socklog</i> does not support this UDP network logging on the client
-side. <i>socklog</i> provides a different modular, reliable
-<a href="network.html">Network logging concept</a> instead. Logs are
-transmitted through network using a TCP connection in the default
-configuration, log transmission failures are handled. The modular design
-of <a href="http://cr.yp.to/daemontools.html">daemontools</a> and
+side.
+<i>socklog</i> provides a different modular, reliable
+<a href="network.html">Network logging concept</a> instead.
+Logs are transmitted through network using a TCP connection in the default
+configuration, log transmission failures are handled.
+The modular design of
+<a href="http://smarden.org/runit/">runit</a> and
 <i>socklog</i> makes it possible to insert encryption, authentication,
-compression, and more easily.
+compression, and more, easily.
 <hr>
 <h2><a name="sortable">Sortable logs</a></h2>
-If <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a> is
-told to add timestamps to log lines, the resulting logs are sortable (with
-<tt>sort</tt> for example). So it is possible to merge different logs and
-sort them chronologically without special effort.
+If <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> is
+told to prepend log lines with timestamps, the resulting logs are sortable.
+So it is possible to merge different logs and sort them chronologically
+without special effort.
 <hr>
 <h2><a name="smallcode">Small code size</a></h2>
 One of the <i>socklog</i> project's principles is to keep the code size

@@ -13,17 +13,17 @@ Since version 0.3.0, <i>socklog</i> installs into
 <a href="http://cr.yp.to/slashpackage.html">/package</a>.
 <p>
 Check that you have the recent version of
-<a href="http://cr.yp.to/daemontools.html">daemontools</a> installed.
+<a href="http://smarden.org/runit/">runit</a> installed.
 <p>
 Download
-<a href="socklog-1.0.0.tar.gz">socklog-1.0.0.tar.gz</a> into
+<a href="socklog-1.1.0.tar.gz">socklog-1.1.0.tar.gz</a> into
 <tt>/package</tt> and unpack the archive
 <pre>
   # cd /package
-  # gunzip socklog-1.0.0.tar
-  # tar -xpf socklog-1.0.0.tar
-  # rm socklog-1.0.0.tar
-  # cd admin/socklog-1.0.0
+  # gunzip socklog-1.1.0.tar
+  # tar -xpf socklog-1.1.0.tar
+  # rm socklog-1.1.0.tar
+  # cd admin/socklog-1.1.0
 </pre>
 On solaris read <a href="readme.solaris.html">using socklog on solaris</a>
 before proceeding.
@@ -37,9 +37,15 @@ hierarchy, do:
 <pre>
   # package/install-man
 </pre>
+If you don't have the
+<a href="http://cr.yp.to/daemontools.html">daemontools</a> package installed,
+you need to make the <tt>setuidgid</tt> program available:
+<pre>
+  # install -m0755 /package/admin/runit/compile/setuidgid /usr/local/bin/
+</pre>
 To report success:
 <pre>
-  # mail pape-socklog-1.0.0@smarden.org < compile/sysdeps
+  # mail pape-socklog-1.1.0@smarden.org &lt;compile/sysdeps
 </pre>
 Refer to <a href="configuration.html">Configuration</a> for
 configuring and setting up <i>socklog</i> services.

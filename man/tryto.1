@@ -1,7 +1,7 @@
 .TH tryto 1
 .SH NAME
 tryto \- tries to run a command limited by a timeout or number of tries,
-can be used to run as multilog(8) processor.
+can be used to run as svlogd(8) processor.
 .SH SYNOPSIS
 .B tryto
 [
@@ -63,6 +63,8 @@ still is there, and exits as soon as possible.
 The main purpose of
 .B tryto
 is to run as
+.BR svlogd (8)
+or
 .BR multilog (8)
 processor (see below). Without the
 .B \-p
@@ -80,7 +82,7 @@ verbose. Print verbose messages to stderr.
 processor. Use this option if you run
 .B tryto
 as a
-.BR multilog (8)
+.BR svlogd (8)
 processor (see below).
 .TP
 .B \-t \fIsec
@@ -109,7 +111,7 @@ tries to rewind stdin to the beginning using
 before starting
 .I prog
 again. Default is 5.
-.SH MULTILOG PROCESSOR
+.SH PROCESSOR
 If
 .B tryto
 sees the
@@ -117,6 +119,8 @@ sees the
 option,
 .B tryto
 runs as a
+.BR svlogd (8)
+or
 .BR multilog (8)
 processor, making use of filedescriptors 4 and 5:
 .LP
@@ -128,7 +132,7 @@ moves the filedescriptor 5 to 2, so all error messages from
 and
 .I prog
 will be saved in
-.BR multilog (8)'s
+.BR svlogd (8)'s
 .I state
 to be processed on the next run of
 .B tryto 
@@ -158,7 +162,7 @@ itself fails, it returns 111.
 If
 .B tryto
 runs as a
-.BR multilog (8)
+.BR svlogd (8)
 processor,
 .B tryto
 returns 0 in all other cases.
@@ -184,9 +188,10 @@ returns the last exit code from
 .IR prog .
 .LP
 .SH SEE ALSO
-multilog(8),
 socklog(8),
 uncat(1),
+svlogd(8),
+multilog(8),
 lseek(2),
 timelimit(8)
 .LP

@@ -1,6 +1,12 @@
 socklog-1.1.0
-Wed, 07 May 2003 13:26:33 +0200
+Thu, 19 Jun 2003 15:40:52 +0200
   * man/socklog-conf.8, man/socklog.8, man/tryto.1: typos.
+  * doc/benefits.html, doc/configuration.html, doc/examples.html,
+    doc/index.html, doc/network.html, doc/notify.html,
+    doc/readme.solaris.html, man/socklog-conf.8, man/socklog.8, man/tryto.1,
+    man/uncat.1: utilize runit package instead of daemontools package.
+  * src/socklog-conf.c: create service directories for the use with the
+    runit package.
 
 socklog-1.0.0
 Thu, 30 Jan 2003 13:32:24 +0100

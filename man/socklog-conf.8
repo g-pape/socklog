@@ -60,15 +60,15 @@ It also creates automatically rotated log directories in
 The logs are owned by
 .IR logacct .
 The corresponding
-.BR multilog (8)
-processes run under the uid and gid of
+.BR svlogd (8)
+process runs under the uid and gid of
 .IR logacct .
 .LP
 You can run the service under
-.BR svscan (8)
+.BR runsvdir (8)
 by creating a symbolic link in the service directory:
 .LP
-ln \-s /etc/socklog/unix /service/socklog-unix
+ln \-s /etc/socklog/unix /var/service/socklog-unix
 .LP
 .SH INET SERVICE
 .B socklog-conf
@@ -99,15 +99,15 @@ It also creates automatically rotated log directories in
 The logs are owned by
 .IR logacct .
 The corresponding
-.BR multilog (8)
-processes run under the uid and gid of
+.BR svlogd (8)
+process runs under the uid and gid of
 .IR logacct .
 .LP
 You can run the service under
-.BR svscan (8)
+.BR runsvdir (8)
 by creating a symbolic link in the service directory:
 .LP
-ln \-s /etc/socklog/inet /service/socklog-inet
+ln \-s /etc/socklog/inet /var/service/socklog-inet
 .LP
 .SH KLOG SERVICE
 .B socklog-conf
@@ -141,15 +141,15 @@ It also creates automatically rotated log directories in
 The logs are owned by
 .IR logacct .
 The corresponding
-.BR multilog (8)
-processes run under the uid and gid of
+.BR svlogd (8)
+process runs under the uid and gid of
 .IR logacct .
 .LP
 You can run the service under
-.BR svscan (8)
+.BR runsvdir (8)
 by creating a symbolic link in the service directory:
 .LP
-ln \-s /etc/socklog/klog /service/socklog-klog
+ln \-s /etc/socklog/klog /var/service/socklog-klog
 .LP
 .SH UCSPI-TCP SERVICE
 .B socklog-conf
@@ -169,7 +169,7 @@ and the log directory
 .LP
 .B socklog-conf
 arranges for
-.BR tcpserver (1)
+.BR tcpsvd (1)
 to run
 .BR socklog (8)
 under the uid and gid of
@@ -182,15 +182,15 @@ It also creates automatically rotated log directories in
 The logs are owned by
 .IR logacct .
 The corresponding
-.BR multilog (8)
-processes run under the uid and gid of
+.BR svlogd (8)
+process runs under the uid and gid of
 .IR logacct .
 .LP
 You can run the service under
-.BR svscan (8)
+.BR runsvdir (8)
 by creating a symbolic link in the service directory:
 .LP
-ln \-s /etc/socklog/ucspi-tcp /service/socklog-ucspi-tcp
+ln \-s /etc/socklog/ucspi-tcp /var/service/socklog-ucspi-tcp
 .LP
 .SH NOTIFY SERVICE
 .B socklog-conf
@@ -223,19 +223,19 @@ socklog-notify service must be member of the group
 .IR grp .
 .LP
 You can run the service under
-.BR svscan (8)
+.BR runsvdir (8)
 by creating a symbolic link in the service directory:
 .LP
-ln \-s /etc/socklog/notify /service/socklog-notify
+ln \-s /etc/socklog/notify /var/service/socklog-notify
 .LP
 .SH SEE ALSO
 socklog(8),
-multilog(8),
-tcpserver(1),
+svlogd(8),
+nc(1),
 tryto(1),
-uncat(1)
+uncat(1),
+tcpsvd(8)
 .LP
  http://smarden.org/socklog/
- http://cr.yp.to/daemontools.html
 .SH AUTHOR
 Gerrit Pape <pape@smarden.org>

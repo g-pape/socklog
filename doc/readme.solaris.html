@@ -43,8 +43,8 @@ activate the changes.
 <p>
 <i>socklog</i> does prepend the formated '<tt>facility.priority: </tt>' to
 every log message, whether message IDs are used or not.
-This makes it easier to write multilog filters. So this is how a log message
-processed by <i>socklog</i> will look like:
+This makes it easier to write svlogd or multilog filters.
+So this is how a log message processed by <i>socklog</i> will look like:
 <p>
 without message IDs:
 <pre>
@@ -58,7 +58,7 @@ I prefer the first method, because it's much less visual clutter, and I don't
 need message IDs anyway.
 
 <h2>Kernel messages</h2>
-Solaris has no such thing as <tt>/proc/kmesg</tt>, or <tt>/dev/kmesg</tt>.
+Solaris has no such thing as <tt>/proc/kmsg</tt>, or <tt>/dev/klog</tt>.
 Kernel log messages are provided by the same STREAMS device
 (<tt>/dev/log</tt>) as normal log messages. All kernel messages are logged
 with a facility of &quot;kern&quot;:
@@ -67,7 +67,7 @@ with a facility of &quot;kern&quot;:
   kern.info: unix: root nexus = Sun Ultra 5/10 UPA/PCI (UltraSPARC-IIi 360MHz)
   kern.info: unix: pcipsy0 at root: UPA 0x1f 0x0
 </pre>
-The kernel messages does not contain timestamps. It seems that syslog does
+The kernel messages do not contain timestamps. It seems that syslog does
 automatically prepend timestamps to kernel messages, so I might implement
 this in <i>socklog</i> as well.
 <p>
@@ -105,9 +105,11 @@ Then follow the standard installation instructions.
 This will create the following run script:
 <pre>
   #!/bin/sh
-  exec 2>&1
-  exec softlimit -d 2000000 -s 2000000 \
-  envuidgid nobody socklog sun_stream /dev/log /var/run/syslog_door
+  exec 2&gt;&amp;1
+  USRID=`id -u nobody`
+  GRPID=`id -g nobody`
+  exec env UID="$USRID" GID="$GRPID" \
+    socklog sun_stream /dev/log /var/run/syslog_door
 </pre>
 It is possible to run multiple <i>socklog</i> instances, but only one
 <i>socklog</i> can listen on the door file. If another process is in charge

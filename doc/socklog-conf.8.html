@@ -31,28 +31,28 @@ the service directory <I>/etc/socklog/unix</I> and the log directory <I>/var/log
 and to listen for syslog messages on <I>/dev/log</I>. <P>
 It also creates automatically
 rotated log directories in <I>/var/log/socklog</I>. The logs are owned by <I>logacct</I>.
-The corresponding <B><I>multilog</B>(8)</I> processes run under the uid and gid of <I>logacct</I>.
+The corresponding <B><I>svlogd</B>(8)</I> process runs under the uid and gid of <I>logacct</I>.
 <P>
-You can run the service under <B><I>svscan</B>(8)</I> by creating a symbolic link in
+You can run the service under <B><I>runsvdir</B>(8)</I> by creating a symbolic link in
 the service directory: <P>
-ln -s /etc/socklog/unix /service/socklog-unix <P>
+ln -s /etc/socklog/unix /var/service/socklog-unix
+<P>
 
-<H2><A NAME="sect4">Inet
-Service</A></H2>
+<H2><A NAME="sect4">Inet Service</A></H2>
 <B>socklog-conf</B> inet <I>acct</I> <I>logacct</I> <P>
-Running <B>socklog-conf</B> with the 1st argument
-<I>inet</I>, <B>socklog-conf</B> creates the service directory <I>/etc/socklog/inet</I> and the
-log directory <I>/var/log/socklog-inet</I>. <P>
+Running <B>socklog-conf</B> with the
+1st argument <I>inet</I>, <B>socklog-conf</B> creates the service directory <I>/etc/socklog/inet</I>
+and the log directory <I>/var/log/socklog-inet</I>. <P>
 <B>socklog-conf</B> arranges for <B><I>socklog</B>(8)</I>
 to run under the uid and gid of <I>acct</I> and to listen for syslog messages
 on the UDP socket <I>0.0.0.0:514</I>. <P>
 It also creates automatically rotated log directories
 in <I>/var/log/socklog-inet</I>. The logs are owned by <I>logacct</I>. The corresponding
-<B><I>multilog</B>(8)</I> processes run under the uid and gid of <I>logacct</I>. <P>
-You can run
-the service under <B><I>svscan</B>(8)</I> by creating a symbolic link in the service
-directory: <P>
-ln -s /etc/socklog/inet /service/socklog-inet <P>
+<B><I>svlogd</B>(8)</I> process runs under the uid and gid of <I>logacct</I>. <P>
+You can run the
+service under <B><I>runsvdir</B>(8)</I> by creating a symbolic link in the service directory:
+<P>
+ln -s /etc/socklog/inet /var/service/socklog-inet <P>
 
 <H2><A NAME="sect5">Klog Service</A></H2>
 <B>socklog-conf</B>
@@ -64,12 +64,12 @@ creates the service directory <I>/etc/socklog/klog</I> and the log directory <I>
 and to read kernel messages from <I>/proc/kmsg</I> on Linux, or <I>/dev/klog</I> on BSD.
 <P>
 It also creates automatically rotated log directories in <I>/var/log/socklog-klog</I>.
-The logs are owned by <I>logacct</I>. The corresponding <B><I>multilog</B>(8)</I> processes run
+The logs are owned by <I>logacct</I>. The corresponding <B><I>svlogd</B>(8)</I> process runs
 under the uid and gid of <I>logacct</I>. <P>
-You can run the service under <B><I>svscan</B>(8)</I>
+You can run the service under <B><I>runsvdir</B>(8)</I>
 by creating a symbolic link in the service directory: <P>
 ln -s /etc/socklog/klog
-/service/socklog-klog <P>
+/var/service/socklog-klog <P>
 
 <H2><A NAME="sect6">Ucspi-tcp Service</A></H2>
 <B>socklog-conf</B> ucspi-tcp <I>acct</I> <I>logacct</I>
@@ -77,15 +77,15 @@ ln -s /etc/socklog/klog
 Running <B>socklog-conf</B> with the 1st argument <I>ucspi-tcp</I>, <B>socklog-conf</B> creates
 the service directory <I>/etc/socklog/ucspi-tcp</I> and the log directory <I>/var/log/socklog-ucspi-tcp</I>.
 <P>
-<B>socklog-conf</B> arranges for <B><I>tcpserver</B>(1)</I> to run <B><I>socklog</B>(8)</I> under the uid and
+<B>socklog-conf</B> arranges for <B><I>tcpsvd</B>(1)</I> to run <B><I>socklog</B>(8)</I> under the uid and
 gid of <I>acct</I> and to listen on the TCP socket <I>0.0.0.0:10116</I>. <P>
 It also creates
 automatically rotated log directories in <I>/var/log/socklog-ucspi-tcp</I>. The logs
-are owned by <I>logacct</I>. The corresponding <B><I>multilog</B>(8)</I> processes run under
-the uid and gid of <I>logacct</I>. <P>
-You can run the service under <B><I>svscan</B>(8)</I> by creating
+are owned by <I>logacct</I>. The corresponding <B><I>svlogd</B>(8)</I> process runs under the
+uid and gid of <I>logacct</I>. <P>
+You can run the service under <B><I>runsvdir</B>(8)</I> by creating
 a symbolic link in the service directory: <P>
-ln -s /etc/socklog/ucspi-tcp /service/socklog-ucspi-tcp
+ln -s /etc/socklog/ucspi-tcp /var/service/socklog-ucspi-tcp
 <P>
 
 <H2><A NAME="sect7">Notify Service</A></H2>
@@ -99,16 +99,15 @@ will have mode 0620, the uid of <I>acct</I> and the gid of <I>grp</I>. <P>
 All uids running
 a log service that is configured to push log events to the socklog-notify
 service must be member of the group <I>grp</I>. <P>
-You can run the service under <B><I>svscan</B>(8)</I>
+You can run the service under <B><I>runsvdir</B>(8)</I>
 by creating a symbolic link in the service directory: <P>
 ln -s /etc/socklog/notify
-/service/socklog-notify <P>
+/var/service/socklog-notify <P>
 
 <H2><A NAME="sect8">See Also</A></H2>
-<I>socklog(8)</I>, <I>multilog(8)</I>, <I>tcpserver(1)</I>, <I>tryto(1)</I>,
-<I>uncat(1)</I> <P>
+<I>socklog(8)</I>, <I>svlogd(8)</I>, <I>nc(1)</I>, <I>tryto(1)</I>,
+<I>uncat(1)</I>, <I>tcpsvd(8)</I> <P>
  <I>http://smarden.org/socklog/</I><BR>
-  <I>http://cr.yp.to/daemontools.html</I><BR>
  
 <H2><A NAME="sect9">Author</A></H2>
 Gerrit Pape &lt;pape@smarden.org&gt; <P>

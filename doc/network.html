@@ -17,12 +17,12 @@ decision, what to do in such cases.
 <ul>
   <li>
   logging is still done locally through
-  <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>.
   <li>
   the log is transmitted through a network connection (if possible)
-  when <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+  when <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
   decides that <tt>current</tt> is big enough, using
-  <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s
+  <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>'s
   <i>processor</i> feature.
   <li>
   since this transmission cannot be made reliable, there is a tool
@@ -31,16 +31,15 @@ decision, what to do in such cases.
   <li>
   if the transmission of <tt>current</tt> fails, the log will be saved
   locally,
-  <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+  <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
   remembers the failure in its <tt>state</tt> and
   <a href="tryto.1.html">tryto</a> includes the error messages into
   the transmission on the next run, so the remote machine gets the
   information of log transmission failures.
 </ul>
 There are no restrictions on how to transmit the log data, a separate
-process of your choice will do the work, e.g.
-<a href="http://cr.yp.to/ucspi-tcp/tcpclient.html">tcpclient</a>
-or <i>netcat</i>.
+process of your choice will do the work, e.g. <i>netcat</i> or
+<a href="http://cr.yp.to/ucspi-tcp/tcpclient.html">tcpclient</a>.
 This modularity lets you easily insert authentication, compression,
 encryption and other things.
 <h2>Example setup</h2>
@@ -54,21 +53,23 @@ socklog-ucspi-tcp/run:
 <pre>
   #!/bin/sh
   PORT=10116
-  exec 2>&1
-  exec softlimit -m 2000000 \
-    envuidgid log tcpserver -vUHR -l0 0 $PORT socklog ucspi TCPREMOTEIP
+  exec 2&gt;&amp;1
+  exec tcpsvd -vl0 -unobody 0 "$PORT" socklog ucspi TCPREMOTEIP
 </pre>
 socklog-ucspi-tcp/log/run:
 <pre>
   #!/bin/sh
-  LOGDIR=/var/log/socklog-remote
-  exec 2>&1
-  exec setuidgid log multilog ${LOGDIR}/all \
-    -* +'10.0.0.236:*' ${LOGDIR}/10.0.0.236
+  exec setuidgid log svlogd -t main/main main/10.0.0.236
+</pre>
+and socklog-ucspi-tcp/log/main/10.0.0.236/config
+<pre>
+  # cat 10.0.0.236/config
+  -*
+  +10.0.0.236:*
 </pre>
 You will then find all log data from remote hosts that was successfully
-transmitted in <tt>${LOGDIR}/all/</tt>. Log data from <tt>10.0.0.236</tt>
-will also be saved in <tt>${LOGDIR}/10.0.0.236/</tt>.
+transmitted in <tt>main/main</tt>. Log data from <tt>10.0.0.236</tt>
+will additionally be saved in <tt>main/10.0.0.236/</tt>.
 <h3>Log client (machine sending log data)</h3>
 Change the <i>socklog</i> configuration to use a processor to transmit
 the log data:
@@ -76,23 +77,23 @@ the log data:
 socklog-unix/log/run:
 <pre>
   #!/bin/sh
-  LOGDIR=/var/log/socklog
-  LOGSERVERIP=10.0.0.16
-  PORT=10116
-  exec setuidgid log multilog s4096 n20 \
-    !"tryto -pv tcpclient -v $LOGSERVERIP $PORT sh -c 'cat >&7'" \
-    ${LOGDIR}/main
+  exec setuidgid log svlogd ./main/main
+</pre>
+socklog-unix/log/main/main/config
+<pre>
+  s4096
+  n20
+  !tryto -pv nc -q0 10.0.0.16 10116
 </pre>
 and restart the service:
 <pre>
-  # svc -t /service/socklog-unix/log
+  # runsvctrl term /var/service/socklog-unix/log
 </pre>
 On each rotation of
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s
+<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>'s
 <tt>current</tt>, the data will be transmitted to
-<tt>$LOGSERVERIP:$PORT</tt> using <a href="tryto.1.html">tryto</a>
-and <a href="http://cr.yp.to/ucspi-tcp/tcpclient.html">tcpclient</a>,
-failures will be noticed and notified on the next run.
+<tt>10.0.0.16:10116</tt> using <a href="tryto.1.html">tryto</a>
+and <i>netcat</i>, failures will be noticed and notified on the next run.
 <hr>
 <address><a href="mailto:pape@smarden.org">
 Gerrit Pape &lt;pape@smarden.org&gt;

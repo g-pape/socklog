@@ -85,8 +85,12 @@ void finish(void) {
   close(fd);
 }
 
-void perm(int mode) {
-  if (chmod(fn, mode) == -1) fail();
+void perm(int mode) { if (chmod(fn, mode) == -1) fail(); }
+
+void mkfile(const char *f, const char *s) {
+  start(f);
+  outs(s); outs("\n");
+  finish();
 }
 
 void makedir(const char *s) {
@@ -109,49 +113,54 @@ void conf_unix() {
 #endif
 #endif
   makedir("unix");
-  perm(01750);
+  perm(0750);
   makedir("unix/log");
   perm(0755);
 
   makechdir(path);
   if (symlink(path, "unix/log/main") == -1)
     strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
-  
   makechdir("unix/log/main/auth");
+  mkfile("unix/log/main/auth/config", "s999999\nn5\n-*\n+auth.*\n+authpriv.*");
   makechdir("unix/log/main/cron");
+  mkfile("unix/log/main/cron/config", "s999999\nn5\n-*\n+cron.*");
   makechdir("unix/log/main/daemon");
+  mkfile("unix/log/main/daemon/config", "s999999\nn5\n-*\n+daemon.*");
   makechdir("unix/log/main/debug");
+  mkfile("unix/log/main/debug/config", "s999999\nn5\n-*\n+*.debug*");
   makechdir("unix/log/main/ftp");
+  mkfile("unix/log/main/ftp/config", "s999999\nn5\n-*\n+ftp.*");
   makechdir("unix/log/main/kern");
+  mkfile("unix/log/main/kern/config", "s999999\nn5\n-*\n+kern.*");
   makechdir("unix/log/main/local");
+  mkfile("unix/log/main/local/config", "s999999\nn5\n-*\n+local.*");
   makechdir("unix/log/main/mail");
+  mkfile("unix/log/main/mail/config", "s999999\nn5\n-*\n+mail.*");
   makechdir("unix/log/main/main");
+  mkfile("unix/log/main/main/config", "s999999\nn10");
   makechdir("unix/log/main/news");
+  mkfile("unix/log/main/news/config", "s999999\nn5\n-*\n+news.*");
   makechdir("unix/log/main/syslog");
+  mkfile("unix/log/main/syslog/config", "s999999\nn5\n-*\n+syslog.*");
   makechdir("unix/log/main/user");
+  mkfile("unix/log/main/user/config", "s999999\nn5\n-*\n+user.*");
   
   start("unix/run");
   outs("#!/bin/sh\n");
   outs("exec 2>&1\n");
-
+  outs("USRID=`id -u "); outs(user); outs("`\n");
+  outs("GRPID=`id -g "); outs(user); outs("`\n");
 #ifndef SOLARIS
-  outs("exec softlimit -m 2000000 envuidgid ");
-  outs(user);
-  outs(" socklog unix /dev/log\n");
+  outs("exec env UID=\"$USRID\" GID=\"$GRPID\" socklog unix /dev/log\n");
 #else
-  outs("exec softlimit -d 2000000 -s 2000000 \\\n");
-  outs("envuidgid ");
-  outs(user);
+  outs("exec env UID=\"$USRID\" GID=\"$GRPID\" socklog unix");
   outs(" socklog sun_stream /dev/log");
 #if WANT_SUN_DOOR
-  if (sunos_version == 7)
-    outs(" /etc/.syslog_door");
-  if (sunos_version >= 8)
-    outs(" /var/run/syslog_door");
+  if (sunos_version == 7) outs(" /etc/.syslog_door");
+  if (sunos_version >= 8) outs(" /var/run/syslog_door");
 #endif
   outs("\n");
 #endif
-
   finish();
   perm(0750);
 
@@ -159,43 +168,31 @@ void conf_unix() {
   outs("#!/bin/sh\n");
   outs("exec setuidgid ");
   outs(loguser);
-#define MULTILOG "\
- multilog s4999999 n10 ./main/main \\\n\
-  s999999 n5 -* +kern.* ./main/kern \\\n\
-  s999999 n5 -* +user.* ./main/user \\\n\
-  s999999 n5 -* +mail.* ./main/mail \\\n\
-  s999999 n5 -* +daemon.* ./main/daemon \\\n\
-  s999999 n5 -* +auth.* +authpriv.* ./main/auth \\\n\
-  s999999 n5 -* +syslog.* ./main/syslog \\\n\
-  s999999 n5 -* +news.* ./main/news \\\n\
-  s999999 n5 -* +cron.* ./main/cron \\\n\
-  s999999 n5 -* +ftp.* ./main/ftp \\\n\
-  s999999 n5 -* +local*.* ./main/local \\\n\
-  s999999 n5 -* +*.debug* ./main/debug\n\
-"
-  outs(MULTILOG);
+  outs(" svlogd \\\n");
+  outs("  main/main main/auth main/cron main/daemon main/debug main/ftp \\\n");
+  outs("  main/kern main/local main/mail main/news main/syslog main/user\n");
   finish();
   perm(0750);
 }
 
 void conf_inet() {
   makedir("inet");
-  perm(01750);
+  perm(0750);
   makedir("inet/log");
   perm(0755);
 
   makechdir(path);
   if (symlink(path, "inet/log/main") == -1)
     strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
-  
   makechdir("inet/log/main/main");
+  mkfile("inet/log/main/main/config", "s999999\nn10");
 
   start("inet/run");
   outs("#!/bin/sh\n");
   outs("exec 2>&1\n");
-  outs("exec softlimit -m 2000000 envuidgid ");
-  outs(user);
-  outs(" socklog inet 0 514\n");
+  outs("USRID=`id -u "); outs(user); outs("`\n");
+  outs("GRPID=`id -g "); outs(user); outs("`\n");
+  outs("exec env UID=\"$USRID\" GID=\"$GRPID\" socklog inet 0 514\n");
   finish();
   perm(0750);
 
@@ -203,30 +200,30 @@ void conf_inet() {
   outs("#!/bin/sh\n");
   outs("exec setuidgid ");
   outs(loguser);
-  outs(" multilog t ./main/main\n");
+  outs(" svlogd -t main/main\n");
   finish();
   perm(0750);
 }
 
 void conf_ucspi_tcp() {
   makedir("ucspi-tcp");
-  perm(01750);
+  perm(0750);
   makedir("ucspi-tcp/log");
   perm(0755);
 
   makechdir(path);
   if (symlink(path, "ucspi-tcp/log/main") == -1)
     strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
-  
   makechdir("ucspi-tcp/log/main/main");
+  mkfile("ucspi-tcp/log/main/main/config", "s999999\nn10");
 
   start("ucspi-tcp/run");
   outs("#!/bin/sh\n");
-  outs("PORT=10116\n\n");
+  outs("PORT=10116\n");
   outs("exec 2>&1\n");
-  outs("exec softlimit -m 2000000 \\\n  envuidgid ");
+  outs("exec tcpsvd -vllogserver -u");
   outs(user);
-  outs(" tcpserver -vUHR -l0 0 \"$PORT\" socklog ucspi TCPREMOTEIP\n");
+  outs(" 0 \"$PORT\" socklog ucspi TCPREMOTEIP\n");
   finish();
   perm(0750);
 
@@ -234,28 +231,28 @@ void conf_ucspi_tcp() {
   outs("#!/bin/sh\n");
   outs("exec setuidgid ");
   outs(loguser);
-  outs(" multilog t ./main/main\n");
+  outs(" svlogd -t main/main\n");
   finish();
   perm(0750);
 }
 
 void conf_klog() {
   makedir("klog");
-  perm(01750);
+  perm(0750);
   makedir("klog/log");
   perm(0755);
 
   makechdir(path);
   if (symlink(path, "klog/log/main") == -1)
     strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
-  
   makechdir("klog/log/main/main");
-  
+  mkfile("inet/log/main/main/config", "s999999\nn10");
+
   start("klog/run");
   outs("#!/bin/sh\n");
   outs("exec <"); outs(_PATH_KLOG); outs("\n");
   outs("exec 2>&1\n");
-  outs("exec softlimit -m 2000000 setuidgid ");
+  outs("exec setuidgid ");
   outs(user);
   outs(" socklog ucspi\n");
   finish();
@@ -265,7 +262,7 @@ void conf_klog() {
   outs("#!/bin/sh\n");
   outs("exec setuidgid ");
   outs(loguser);
-  outs(" multilog t ./main/main\n");
+  outs(" svlogd -t main/main\n");
   finish();
   perm(0750);
 }
@@ -293,7 +290,7 @@ void conf_notify() {
   outs(user);
   outs(" uncat -s49999 -t180 \\\n");
   outs("  env QMAILUSER=log QMAILNAME='socklog notify' \\\n");
-  outs("  sh -c \"mailsubj socklog-notify $MAILTO\"\n");
+  outs("    mailsubj socklog-notify $MAILTO\n\"\n");
   finish();
   perm(0750);
 }
@@ -353,22 +350,19 @@ int main(int argc, char **argv) {
   }
 
   upw =getpwnam(user);
-  if (!upw)
-    strerr_die3x(111, FATAL, "unknown account ", user);
+  if (!upw) strerr_die3x(111, FATAL, "unknown account ", user);
   if (mode != CONF_NOTIFY) {
     pw =getpwnam(loguser);
-    if (!pw)
-      strerr_die3x(111, FATAL, "unknown account ", loguser);
+    if (!pw) strerr_die3x(111, FATAL, "unknown account ", loguser);
   } else {
     gr =getgrnam(loguser);
-    if (!gr)
-      strerr_die3x(111, FATAL, "unknown group ", loguser);
+    if (!gr) strerr_die3x(111, FATAL, "unknown group ", loguser);
   }
 
   if (chdir(dir) == -1) {
     if (errno != error_noent)
       strerr_die4sys(111, FATAL, "unable to switch to ", dir, ": ");
-  
+
     if (mkdir(dir, 0700) == -1)
       strerr_die4sys(111, FATAL, "unable to create ", dir, ": ");
     if (chmod(dir, 0750) == -1)
