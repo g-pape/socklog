@@ -23,36 +23,14 @@ set -e
 #     `abort-remove' or `abort-deconfigure'.
 
 case "$1" in
-    configure)
-	if ! egrep "^log\:" /etc/passwd > /dev/null ; then
-		cat <<-EOT
-No user 'log' found.
-
-This script will run the following command; without adding the user, the
-socklog services cannot run on this system.
-
-adduser --system --home /var/log/socklog --no-create-home --ingroup adm log
-
-EOT
-		echo -n "Will proceed in 5 seconds, press Ctrl-C to abort... "
-		sleep 5s
-		adduser --system --home /var/log/socklog \
-			--no-create-home --ingroup adm log
-	fi
-	( \
-	cd /package/admin/socklog-0.10.1
-	package/upgrade
-	)
-
+  configure)
+    ( cd /package/admin/socklog-0.10.1; package/upgrade )
     ;;
-
-    abort-upgrade|abort-remove|abort-deconfigure)
-
+  abort-upgrade|abort-remove|abort-deconfigure)
     ;;
-
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 0
+  *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 0
     ;;
 esac
 
