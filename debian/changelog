@@ -1,3 +1,9 @@
+socklog (1.1.2-1) unstable; urgency=low
+
+  * new upstream version.
+
+ -- Gerrit Pape <pape@smarden.org>  Sat,  9 Aug 2003 18:20:13 +0200
+
 socklog (1.1.1-1) unstable; urgency=low
 
   * new upstream version.
