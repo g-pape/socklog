@@ -14,4 +14,5 @@
 /var/log/socklog/local
 /var/log/socklog/debug
 /var/log/socklog-remote/main
+/var/log/socklog-remote/all
 /var/log/socklog/klog

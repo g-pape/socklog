@@ -10,32 +10,32 @@
     <hr>
     <h1>socklog - installation</h1>
     <hr>
-    since version 0.3.0, <i>socklog</i> installs into
+    Since version 0.3.0, <i>socklog</i> installs into
     <a href="http://cr.yp.to/slashpackage.html">/package</a>.
     <p>
-    check that you have the recent version of
+    Check that you have the recent version of
     <a href="http://cr.yp.to/daemontools.html">daemontools</a> installed.
     <p>
-    create a <tt>/package</tt> directory
+    Create a <tt>/package</tt> directory
     <pre>
   # mkdir -p /package
   # chmod 1775 /package
   # cd /package
     </pre>
-    download
-    <a href="ftp://ftp.innominate.org/pub/pape/socklog/socklog-0.3.6.tar.gz">
-    socklog-0.3.6.tar.gz</a> into <tt>/package</tt> and unpack the archive
+    Download
+    <a href="ftp://ftp.innominate.org/pub/pape/socklog/socklog-0.4.0.tar.gz">
+    socklog-0.4.0.tar.gz</a> into <tt>/package</tt> and unpack the archive
     <pre>
-  # gunzip socklog-0.3.6.tar
-  # tar -xpf socklog-0.3.6.tar
-  # rm socklog-0.3.6.tar
-  # cd admin/socklog-0.3.6
+  # gunzip socklog-0.4.0.tar
+  # tar -xpf socklog-0.4.0.tar
+  # rm socklog-0.4.0.tar
+  # cd admin/socklog-0.4.0
     </pre>
-    on solaris, edit the top of <tt>src/Makefile</tt>, add <tt>-DSOLARIS</tt>
+    On solaris, edit the top of <tt>src/Makefile</tt>, add <tt>-DSOLARIS</tt>
     to <tt>CFLAGS</tt> and <tt>-lsocket -lnsl -ldoor -lthread</tt> to
     <tt>LDFLAGS</tt>.
     <p>
-    compile and install the <i>socklog</i> program
+    Compile and install the <i>socklog</i> program
     <pre>
   # package/install
     </pre>
@@ -48,11 +48,11 @@
   # gzip man/tryto.1 && cp -f man/tryto.1.gz /usr/local/man/man1/ 
   # gzip man/uncat.1 && cp -f man/uncat.1.gz /usr/local/man/man1/ 
     </pre>
-    refer to <a href="configuration.html">Configuration</a> for
+    Refer to <a href="configuration.html">Configuration</a> for
     configuring and setting up <i>socklock</i> services.
     <hr>
-    <address><a href="mailto:pape@innominate.com">
-	G. Pape &lt;pape@innominate.com&gt;
+    <address><a href="mailto:pape@smarden.org">
+	G. Pape &lt;pape@smarden.org&gt;
       </a></address>
     <small>$Id$</small>
   </body>

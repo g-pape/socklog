@@ -4,3 +4,6 @@
 /etc/socklog/inet/log/run
 /etc/socklog/klog/run
 /etc/socklog/klog/log/run
+/etc/socklog/ucspi-tcp/run
+/etc/socklog/ucspi-tcp/log/run
+/etc/socklog/notify/run

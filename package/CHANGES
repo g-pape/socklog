@@ -1,3 +1,9 @@
+socklog 0.4.0
+Fri, 21 Sep 2001 17:43:09 +0200
+  * changed to new primary email address <pape@smarden.org>.
+  * BSD license.
+  * minor documentation changes.
+
 socklog 0.3.6
 Mon, 17 Sep 2001 18:26:12 +0200
   * documentation updated.
