@@ -10,7 +10,13 @@
 <h1>socklog - upgrading from previous versions</h1>
 <hr>
 
-<h3>0.7.0 to 0.8.1</h3>
+<h3>0.8.1 or 0.8.2 to 0.9.0</h3>
+This version comes with the new socklog-klog service which provides kernel
+logging on Linux and BSD. You might want to start this service on BSD, or
+replace the <i>klogd</i> service on Linux. The socklog program running in
+ucspi mode now correctly decodes facility and priority to syslog names.
+<hr>
+<h3>0.7.0 to 0.8.1 or 0.8.2</h3>
 No further action from you is required.
 <hr>
 <h3>0.6.0 or 0.6.1 to 0.7.0</h3>
