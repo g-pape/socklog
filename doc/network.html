@@ -62,11 +62,11 @@
   #!/bin/sh
   LOGDIR=/var/log/socklog-remote
   exec 2>&1
-  exec setuidgid log multilog ${LOGDIR}/main \
+  exec setuidgid log multilog ${LOGDIR}/all \
          -* +'10.0.0.236:*' ${LOGDIR}/10.0.0.236
     </pre>
     You will then find all log data from remote hosts that was successfully
-    transmitted in <tt>${LOGDIR}/main/</tt>. Log data from <tt>10.0.0.236</tt>
+    transmitted in <tt>${LOGDIR}/all/</tt>. Log data from <tt>10.0.0.236</tt>
     will also be saved in <tt>${LOGDIR}/10.0.0.236/</tt>.
     <h3>Log client (machine sending log data)</h3>
     Change the <i>socklog</i> configuration to use a processor to transmit

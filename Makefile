@@ -37,10 +37,13 @@ clean:
 	find . -name .??*~ -exec rm -f {} \;
 	find . -name \#?* -exec rm -f {} \;
 
-cleaner:
-	rm -f $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz
+cleaner: clean
+	rm -f $(PACKAGE).tar.gz
 	for i in $(MANPAGES); do rm -f doc/`basename $$i`.html; done
 	rm -f .manpages
+
+cleanest: cleaner
+	rm -f $(DAEMONTOOLS_PD).tar.gz
 
 install-manpages:
 	install -m 0644 doc/socklog.8 /usr/local/man/man8/socklog.8
