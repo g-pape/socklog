@@ -25,15 +25,31 @@
       <li><tt>/etc/socklog/*/log/run</tt>
     </ul>
     <hr>
-    to enable one of <i>socklog</i>'s services, edit the corresponding
-    <tt>run</tt> scripts once for configuration and link the directory to
-    <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
-    <tt>service</tt> directory, e.g. for the unix domain socket service:
+    to enable one of <i>socklog</i>'s services, stop the default syslog
+    service first and ensure that it will not be restarted on runlevel
+    change or system reboot.
+    <p>
+      edit the corresponding
+      <tt>run</tt> scripts once for configuration, e.g. for the unix domain
+      socket service:
     <pre>
   # vi /etc/socklog/unix/run
   # vi /etc/socklog/unix/log/run
+    </pre>
+    check carefully that all log directories you stated in
+    <tt>/etc/socklog/unix/log/run</tt> exist and are writable to the uid
+    running the
+    <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+    process.
+    <p>
+      then link the directory to
+      <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
+      <tt>service</tt> directory, e.g. for the unix domain socket service:
+    <pre>
   # ln -s /etc/socklog/unix /var/service/socklog-unix
     </pre>
+    wait five seconds for the service to start and then check the log
+    directories.
     <hr>
     <address><a href="mailto:pape@innominate.com">G. Pape</a></address>
     <small>$Id$</small>

@@ -18,13 +18,22 @@ scripts:
   * /etc/socklog/*/log/run
 
 -------------------------------------------------------------------------------
-to enable one of socklog's services, edit the corresponding run scripts once
-for configuration and link the directory to daemontools' service directory,
-e.g. for the unix domain socket service:
+to enable one of socklog's services, stop the default syslog service first and
+ensure that it will not be restarted on runlevel change or system reboot.
+
+edit the corresponding run scripts once for configuration, e.g. for the unix
+domain socket service:
   # vi /etc/socklog/unix/run
   # vi /etc/socklog/unix/log/run
+    
+check carefully that all log directories you stated in /etc/socklog/unix/log/
+run exist and are writable to the uid running the multilog process.
+
+then link the directory to daemontools' service directory, e.g. for the unix
+domain socket service:
   # ln -s /etc/socklog/unix /var/service/socklog-unix
     
+wait five seconds for the service to start and then check the log directories.
 -------------------------------------------------------------------------------
 
 G. Pape

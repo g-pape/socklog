@@ -1,3 +1,11 @@
+socklog (0.1.1) unstable; urgency=low
+
+  * deb: provides log directories for default log/run files.
+  * deb: add user 'log' in postinst.
+  * documentation improved.
+
+ -- Gerrit Pape <pape@innominate.com>  Tue, 29 May 2001 13:26:24 +0200
+
 socklog (0.1.0) unstable; urgency=low
 
   * Initial Release.
