@@ -4,8 +4,9 @@ socklog (1.4.2-1) unstable; urgency=low
   * debian/diff/uncat.check.diff: remove; applied upstream.
   * debian/rules: don't apply diff.
   * debian/implicit: update to revision 1.7.
+  * debian/socklog-run.dirs, debian/socklog-run.links: remove; obsolete.
 
- -- Gerrit Pape <pape@smarden.org>  Tue, 23 Mar 2004 18:21:18 +0000
+ -- Gerrit Pape <pape@smarden.org>  Thu, 25 Mar 2004 09:36:27 +0000
 
 socklog (1.4.1-2) unstable; urgency=low
 
