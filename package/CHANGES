@@ -1,5 +1,8 @@
+socklog 1.4.2
+Tue, 23 Mar 2004 18:16:17 +0000
   * doc/install.html: minor.
   * socklog.c: fix sigterm handling in ucspi mode.
+  * uncat.check: tweak timing in program test.
 
 socklog 1.4.1
 Sat, 28 Feb 2004 17:47:13 +0000

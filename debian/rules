@@ -19,9 +19,9 @@ build: deb-checkdir build-arch-stamp build-indep-stamp
 build-arch: deb-checkdir build-arch-stamp
 build-arch-stamp:
 	rm -rf admin
-	tar xzpf socklog-1.4.1.tar.gz
+	tar xzpf socklog-1.4.2.tar.gz
 	-gcc -v
-	rm -f admin/socklog && ln -s socklog-1.4.1 admin/socklog
+	rm -f admin/socklog && ln -s socklog-1.4.2 admin/socklog
 	( cd admin/socklog && patch -p0 ) <debian/diff/uncat.check.diff
 	echo "$(CC) $(CFLAGS)" >admin/socklog/src/conf-cc
 	echo "$(CC) $(LDFLAGS)" >admin/socklog/src/conf-ld

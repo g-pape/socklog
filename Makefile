@@ -1,6 +1,6 @@
 DESTDIR=
 
-PACKAGE=socklog-1.4.1
+PACKAGE=socklog-1.4.2
 DIRS=doc man package src
 MANPAGES=man/socklog.8 man/tryto.1 man/uncat.1 man/socklog-conf.8
 

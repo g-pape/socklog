@@ -7,7 +7,7 @@ echo $?
 
 ( echo foo; sleep 1; echo bar ) |uncat -vot14 cat
 echo $?
-( echo foo; sleep 2; echo bar ) |uncat -vot1 cat
+( echo foo; sleep 3; echo bar ) |uncat -vot2 cat
 echo $?
 ( echo foo; echo bar; echo baz ) |uncat -vos4 cat
 echo $?
