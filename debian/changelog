@@ -1,6 +1,9 @@
 socklog (0.3.2-1) woody; urgency=low
 
-  * 
+  * new: tryto, uncat.
+  * new: network logging concept.
+  * new: log event notification.
+  * deb: cleaner binary package (rm -rf (socklog/{compile,etc,doc,man})
 
  -- Gerrit Pape <pape@innominate.com>  Sun, 16 Sep 2001 20:12:01 +0200
 
