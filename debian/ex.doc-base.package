@@ -1,0 +1,22 @@
+Document: socklog
+Title: Debian socklog Manual
+Author: <insert document author here>
+Abstract: This manual describes what socklog is
+ and how it can be used to
+ manage online manuals on Debian systems.
+Section: unknown
+
+Format: debiandoc-sgml
+Files: /usr/doc/socklog/socklog.sgml.gz
+
+Format: postscript
+Files: /usr/doc/socklog/socklog.ps.gz
+
+Format: text
+Files: /usr/doc/socklog/socklog.text.gz
+
+Format: HTML
+Index: /usr/doc/socklog/html/index.html
+Files: /usr/doc/socklog/html/*.html
+
+  

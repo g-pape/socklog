@@ -1,0 +1,9 @@
+socklog (0.1.0) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Gerrit Pape <pape@innominate.com>  Mon, 28 May 2001 11:39:36 +0200
+
+Local variables:
+mode: debian-changelog
+End:

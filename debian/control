@@ -1,0 +1,12 @@
+Source: socklog
+Section: unknown
+Priority: optional
+Maintainer: Gerrit Pape <pape@innominate.com>
+Standards-Version: 3.0.1
+Build-Depends: debhelper
+
+Package: socklog
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
