@@ -12,8 +12,8 @@
 uncat - continuously reads stdin, splits up the data either by timeout
 or number of bytes read to process it 
 <H2><A NAME="sect1">Synopsis</A></H2>
-<B>uncat</B> [ <B>-v</B> ] [ <B>-t</B> <I>seconds</I> ]
-[ <B>-s</B> <I>size</I> ] <I>prog</I> 
+<B>uncat</B> [ <B>-v</B> ] [ <B>-o</B> ] [ <B>-t</B> <I>seconds</I>
+] [ <B>-s</B> <I>size</I> ] <I>prog</I> 
 <H2><A NAME="sect2">Description</A></H2>
 <B>uncat</B> continuously reads stdin and repeatedly
 processes the data either after <I>seconds</I> timeout or maximal number of bytes
@@ -31,30 +31,35 @@ Note that <B>uncat</B> is not crash proof. <P>
 <DL>
 
 <DT><B>-v</B> </DT>
-<DD>verbose. print verbose messages to stderr.
+<DD>verbose. Print verbose messages to stderr.
 </DD>
 
-<DT><B>-t <I>seconds</B> </I></DT>
-<DD>timeout. Set the timeout to <I>seconds</I> seconds. Default is 300. </DD>
+<DT><B>-o</B> </DT>
+<DD>once. Exit on end of input. Normally <B>uncat</B> continues waiting for data on
+standard input, even on end of file. </DD>
 
-<DT><B>-s <I>size</B>
-</I></DT>
-<DD>Set the maximal number of bytes to <I>size</I>. Default is 1024. </DD>
+<DT><B>-t <I>seconds</B> </I></DT>
+<DD>timeout. Set the timeout to
+<I>seconds</I> seconds. Default is 300. </DD>
+
+<DT><B>-s <I>size</B> </I></DT>
+<DD>Set the maximal number of bytes to
+<I>size</I>. Default is 1024. </DD>
 </DL>
 
 <H2><A NAME="sect4">Signals</A></H2>
-If <B>uncat</B>
-receives a TERM signal, it starts to process the data in memory and exits
-as soon as possible. <P>
-<B>uncat</B> also does this on end of standard input. 
-<H2><A NAME="sect5">Exit
-Codes</A></H2>
-<B>uncat</B> returns 0 on end of standard input or after receiving a TERM
-signal. <B>uncat</B> returns 111 on error. 
+If <B>uncat</B> receives a TERM signal, it starts
+to process the data in memory and exits as soon as possible. <P>
+<B>uncat</B> also
+does this on end of input if the <B>-o</B> option was given. 
+<H2><A NAME="sect5">Exit Codes</A></H2>
+<B>uncat</B> returns
+0 after receiving a TERM signal. <B>uncat</B> returns 111 on error. 
 <H2><A NAME="sect6">See Also</A></H2>
-<I>socklog(8)</I>, <I>supervise(8)</I>, <I>multilog(8)</I>,
-<I>tryto(1)</I> <P>
-<I>http://smarden.org/socklog/</I> 
+<I>socklog(8)</I>,
+<I>socklog-conf(8)</I>, <I>supervise(8)</I>, <I>multilog(8)</I>, <I>tryto(1)</I> <P>
+<I>http://smarden.org/socklog/</I>
+
 <H2><A NAME="sect7">Author</A></H2>
 Gerrit Pape &lt;pape@smarden.org&gt; <P>
 
