@@ -1,8 +1,21 @@
 socklog (1.3.0-1) unstable; urgency=low
 
   * new upstream version.
+  * debian/control: no longer Build-Depends: debhelper; Standards-Version:
+    3.6.1.0; update short description.
+  * debian/rules: stop using debhelper, use implicit rules; install html
+    documentation into /usr/share/doc/socklog/ (no subdirectory).
+  * debian/implicit: new; implicit Makefile rules.
+  * debian/socklog-run.postinst, debian/socklog-run.postrm,
+    debian/socklog-run.prerm: simplify; stop using debhelper.
+  * debian/README.Debian, debian/docs, debian/postinst, debian/postrm: rename
+    to debian/socklog.`basename`.
+  * debian/socklog.postinst, debian/socklog.postrm: simplify; stop using
+    debhelper.
+  * debian/socklog-run.conffiles: new.
+  * debian/dirs: remove; obsolete.
 
- -- Gerrit Pape <pape@smarden.org>  Mon, 12 Jan 2004 19:25:47 +0000
+ -- Gerrit Pape <pape@smarden.org>  Thu, 15 Jan 2004 15:42:50 +0000
 
 socklog (1.2.0-3) unstable; urgency=low
 

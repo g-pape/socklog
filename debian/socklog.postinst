@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+if test "$1" = 'configure'; then
+  getent passwd log >/dev/null || \
+    adduser --system --home /var/log/socklog --no-create-home --ingroup adm log
+fi
+
+exit 0

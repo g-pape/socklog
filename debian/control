@@ -2,14 +2,13 @@ Source: socklog
 Section: admin
 Priority: optional
 Maintainer: Gerrit Pape <pape@smarden.org>
-Standards-Version: 3.6.0
-Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.6.1.0
 
 Package: socklog
 Architecture: any
 Depends: adduser, ${shlibs:Depends}
 Recommends: socklog-run, runit (>> 0.11.2-0), ipsvd
-Description: small and secure replacement for syslogd (binaries)
+Description: system and kernel logging services (binaries)
  socklog cooperates with the runit package to create a small and secure
  replacement for syslogd.  socklog supports system logging through Unix
  domain sockets (/dev/log) and UDP sockets (0.0.0.0:514) with the help of
@@ -28,7 +27,7 @@ Architecture: all
 Depends: socklog, runit (>> 0.11.2-0), ipsvd
 Provides: system-log-daemon, linux-kernel-log-daemon
 Conflicts: system-log-daemon, linux-kernel-log-daemon
-Description: small and secure replacement for syslogd
+Description: system and kernel logging services
  socklog cooperates with the runit package to create a small and secure
  replacement for syslogd.  socklog supports system logging through Unix
  domain sockets (/dev/log) and UDP sockets (0.0.0.0:514) with the help of

@@ -1,114 +1,101 @@
 #!/usr/bin/make -f
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
+STRIP =strip
 
-# This is the debhelper compatability version to use.
-export DH_COMPAT=3
+ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+  STRIP =: nostrip
+endif
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
+DIR =`pwd`/debian/socklog
 
-	touch configure-stamp
+build: deb-checkdir build-arch-stamp build-indep-stamp
 
-build: build-arch build-indep
-
-build-arch: build-arch-stamp
-build-arch-stamp: configure-stamp
-	dh_testdir
-
-	tar xzvpf socklog-1.3.0.tar.gz
+build-arch: deb-checkdir build-arch-stamp
+build-arch-stamp:
+	tar xzpf socklog-1.3.0.tar.gz
 	-gcc -v
-
-	( \
-	set -e; \
-	cd admin/socklog-1.3.0/src; \
-	rm -f socklog; ln -s socklog-1.3.0 socklog; mv socklog ../..; \
-	$(MAKE); \
-	)
-
+	( cd admin/socklog-1.3.0/src && \
+	rm -f socklog && ln -s socklog-1.3.0 socklog && mv socklog ../.. && \
+	$(MAKE); )
 	touch build-arch-stamp
 
-build-indep: build-indep-stamp
+build-indep: deb-checkdir build-indep-stamp
 build-indep-stamp: 
 	touch build-indep-stamp
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-arch-stamp build-indep-stamp configure-stamp
-
+clean: deb-checkdir deb-checkuid
 	rm -rf admin
-	dh_clean
+	rm -rf "$(DIR)" "$(DIR)"-run
+	rm -f build-arch-stamp build-indep-stamp
+	rm -f debian/files debian/substvars changelog
 
 install: install-arch install-indep
 
-install-arch: build-arch
-	dh_testdir
-	dh_testroot
-	dh_clean -a -k
-	dh_installdirs -a
-
+install-arch: deb-checkdir deb-checkuid build-arch-stamp
+	rm -rf "$(DIR)"
+	install -d -m0755 "$(DIR)"/usr/sbin
+	install -d -m0755 "$(DIR)"/usr/bin
 	for i in socklog socklog-conf; do \
-	  install -m0755 admin/socklog/src/$$i \
-	    $(CURDIR)/debian/socklog/usr/sbin/; \
+	  install -m0755 admin/socklog/src/$$i "$(DIR)"/usr/sbin/ || exit 1; \
 	done
+	$(STRIP) -R .comment -R .note "$(DIR)"/usr/sbin/*
 	for i in tryto uncat; do \
-	  install -m0755 admin/socklog/src/$$i \
-	    $(CURDIR)/debian/socklog/usr/bin/; \
+	  install -m0755 admin/socklog/src/$$i "$(DIR)"/usr/bin/ || exit 1; \
 	done
+	$(STRIP) -R .comment -R .note "$(DIR)"/usr/bin/*
+	# man pages
+	install -d -m0755 "$(DIR)"/usr/share/man/man1
+	install -d -m0755 "$(DIR)"/usr/share/man/man8
+	install -m0644 admin/socklog/man/*.1 "$(DIR)"/usr/share/man/man1/
+	gzip -9 "$(DIR)"/usr/share/man/man1/*.1
+	install -m0644 admin/socklog/man/*.8 "$(DIR)"/usr/share/man/man8/
+	gzip -9 "$(DIR)"/usr/share/man/man8/*.8
+	# changelog
+	test -r changelog || ln -s admin/socklog/package/CHANGES changelog
 
-install-indep: build-indep
-	dh_testdir
-	dh_testroot
-	dh_clean -i -k
-	dh_installdirs -i
-
+install-indep: deb-checkdir deb-checkuid build-indep-stamp
+	rm -rf "$(DIR)"-run
 	for i in unix klog inet ucspi-tcp; do \
-	  install -m0750 debian/etc/$$i/run \
-	    $(CURDIR)/debian/socklog-run/etc/socklog/$$i/run; \
-	  install -m0750 debian/etc/$$i/log/run \
-	    $(CURDIR)/debian/socklog-run/etc/socklog/$$i/log/run; \
+	  install -d -m0755 "$(DIR)"-run/etc/socklog/$$i/log && \
+	  install -m0755 debian/etc/$$i/run \
+	    "$(DIR)"-run/etc/socklog/$$i/run && \
+	  install -m0755 debian/etc/$$i/log/run \
+	    "$(DIR)"-run/etc/socklog/$$i/log/run || exit 1; \
 	done
-	install -m0750 debian/etc/notify/run \
-	  $(CURDIR)/debian/socklog-run/etc/socklog/notify/run
+	install -d -m0755 "$(DIR)"-run/etc/socklog/notify
+	install -m0755 debian/etc/notify/run \
+	  "$(DIR)"-run/etc/socklog/notify/run
+	# links
+	for i in unix klog inet ucspi-tcp; do \
+	  install -d -m0755 "$(DIR)"-run/var/run/socklog-$$i && \
+	  install -d -m0755 "$(DIR)"-run/var/run/socklog-$$i.log && \
+	  ln -s /var/run/socklog-$$i \
+	    "$(DIR)"-run/etc/socklog/$$i/supervise && \
+	  ln -s /var/run/socklog-$$i.log \
+	    "$(DIR)"-run/etc/socklog/$$i/log/supervise || exit 1; \
+	done
+	install -d -m0755 "$(DIR)"-run/var/run/socklog-notify
+	ln -s /var/run/socklog-notify "$(DIR)"-run/etc/socklog/notify/supervise
+	for i in klog inet ucspi-tcp; do \
+	  ln -s /var/log/socklog-$$i "$(DIR)"-run/etc/socklog/$$i/log/main \
+	    || exit 1; \
+	done
+	ln -s /var/log/socklog "$(DIR)"-run/etc/socklog/unix/log/main
+	# changelog
+	test -r changelog || ln -s admin/socklog/package/CHANGES changelog
 
-binary-arch: build-arch install-arch
-	dh_testdir -a
-	dh_testroot -a
-#	dh_installdebconf -a	
-	dh_installdocs -a
-#	dh_installexamples -a
-	dh_installman -a admin/socklog/man/*.[18]
-#	dh_undocumented -a
-	dh_installchangelogs  -a
-	dh_link -a
-	dh_strip -a
-	dh_compress -a
-	dh_fixperms -a
-#	dh_makeshlibs -a
-	dh_installdeb -a
-	dh_shlibdeps -a
-	dh_gencontrol -a
-	dh_md5sums -a
-	dh_builddeb -a
+binary-arch: deb-checkdir deb-checkuid install-arch socklog.deb
+	dpkg-shlibdeps "$(DIR)"/usr/bin/* "$(DIR)"/usr/sbin/*
+	dpkg-gencontrol -isp -psocklog -P"$(DIR)" 
+	dpkg -b "$(DIR)" ..
 
-binary-indep: build-indep install-indep
-	dh_testdir -i
-	dh_testroot -i
-	dh_installdocs -i
-	dh_installexamples -i
-	dh_installchangelogs -i
-	dh_link -i
-	dh_strip -i
-	dh_compress -i
-	dh_fixperms -i
-	dh_installdeb -i
-#	dh_shlibdeps -i
-	dh_gencontrol -i
-	dh_md5sums -i
-	dh_builddeb -i
+binary-indep: deb-checkdir deb-checkuid install-indep socklog-run.deb
+	dpkg-gencontrol -isp -psocklog-run -P"$(DIR)"-run
+	dpkg -b "$(DIR)"-run ..
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install install-indep install-arch configure
+
+.PHONY: build binary-arch build-indep clean install install-arch \
+install-indep binary-arch binary-indep binary
+
+include debian/implicit
