@@ -12,10 +12,10 @@ build: deb-checkdir build-arch-stamp build-indep-stamp
 
 build-arch: deb-checkdir build-arch-stamp
 build-arch-stamp:
-	tar xzpf socklog-1.3.0.tar.gz
+	tar xzpf socklog-1.3.1.tar.gz
 	-gcc -v
-	( cd admin/socklog-1.3.0/src && \
-	rm -f socklog && ln -s socklog-1.3.0 socklog && mv socklog ../.. && \
+	( cd admin/socklog-1.3.1/src && \
+	rm -f socklog && ln -s socklog-1.3.1 socklog && mv socklog ../.. && \
 	$(MAKE); )
 	touch build-arch-stamp
 
