@@ -1,3 +1,9 @@
+socklog-0.10.1
+Thu, 08 Aug 2002 22:55:35 +0200
+  * package/versions: new.
+  * doc/network.html: typos.
+  * doc/usedietlibc.html: fix path to conf-cc, conf-ld.
+
 socklog-0.10.0
 Thu, 18 Jul 2002 15:45:58 +0200
   * solaris support rewrite (thx Lars Uffmann):
