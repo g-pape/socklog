@@ -79,7 +79,7 @@ void setuidgid() {
   }
 }
 
-int syslog_names (char *l, int lc) {
+int syslog_names (char *l, int lc, buffer *buf) {
   int i, fp;
   int ok =0;
   int fpr =0;
@@ -103,23 +103,25 @@ int syslog_names (char *l, int lc) {
   fp =LOG_FAC(fpr) <<3;
   for (p =facilitynames; p->c_name; p++) {
     if (p->c_val == fp) {
-      out(p->c_name, ".");
+      buffer_puts(buf, p->c_name);
+      buffer_puts(buf, ".");
       break;
     }
   }
   if (! p->c_name) {
-    out("unknown.", 0);
+    buffer_puts(buf, "unknown.");
     i =0;
   }
   fp =LOG_PRI(fpr);
   for (p =prioritynames; p->c_name; p++) {
     if (p->c_val == fp) {
-      out(p->c_name, ": ");
+      buffer_puts(buf, p->c_name);
+      buffer_puts(buf, ": ");
       break;
     }
   }
   if (! p->c_name) {
-    out("unknown: ", 0);
+    buffer_puts(buf, "unknown: ");
     i =0;
   }
   return(i);
@@ -204,7 +206,7 @@ int read_socket (int s) {
     if (linec == 0) continue;
 
     if (mode == MODE_INET) remote_info(&saf);
-    os =syslog_names(line, linec);
+    os =syslog_names(line, linec, buffer_1);
 
     buffer_put(buffer_1, line +os, linec -os);
     if (linec == LINEC) out("...", 0);
@@ -245,7 +247,7 @@ int read_ucspi (int fd, const char **vars) {
 	  err(envs[i], ": ", 0);
 	}
 	/* could fail on eg <13\0>user.notice: ... */
-	l += syslog_names(l, line -l +linec);
+	l += syslog_names(l, line -l +linec, buffer_2);
 	p =l;
 	flageol =0;
       }
@@ -255,7 +257,7 @@ int read_ucspi (int fd, const char **vars) {
 	flageol =1;
       }
     }
-    if (!flageol) buffer_put(buffer_2, p, l -p);
+    if (!flageol) buffer_putflush(buffer_2, p, l -p);
   }
 }
 

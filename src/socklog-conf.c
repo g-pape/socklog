@@ -9,7 +9,12 @@
 #include "open.h"
 #include "buffer.h"
 
-#define USAGE1 " unix|inet|ucspi-tcp acct logacct [/etc/socklog] [/logdir]"
+#include <paths.h>
+#ifndef _PATH_KLOG
+#define _PATH_KLOG "/dev/klog"
+#endif
+
+#define USAGE1 " unix|inet|klog|ucspi acct logacct [/etc/socklog] [/logdir]"
 #define USAGE2 " notify acct grp [/etc/socklog] [pipe]"
 
 #define VERSION "$Id$"
@@ -20,12 +25,14 @@
 #define LOG_DIR_UNIX "/var/log/socklog"
 #define LOG_DIR_INET "/var/log/socklog-inet"
 #define LOG_DIR_UCSPI_TCP "/var/log/socklog-ucspi-tcp"
+#define LOG_DIR_KLOG "/var/log/socklog-klog"
 #define PATH_NOTIFY "/var/log/socklog/.notify"
 
 #define CONF_UNIX 0
 #define CONF_INET 1
 #define CONF_UCSPI_TCP 2
 #define CONF_NOTIFY 3
+#define CONF_KLOG 4
 
 const char *progname;
 
@@ -201,6 +208,37 @@ void conf_ucspi_tcp() {
   perm(0750);
 }
 
+void conf_klog() {
+  makedir("klog");
+  perm(01750);
+  makedir("klog/log");
+  perm(0755);
+
+  makechdir(path);
+  if (symlink(path, "klog/log/main") == -1)
+    strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
+  
+  makechdir("klog/log/main/main");
+  
+  start("klog/run");
+  outs("#!/bin/sh\n");
+  outs("exec <"); outs(_PATH_KLOG); outs("\n");
+  outs("exec 2>&1\n");
+  outs("exec softlimit -m 2000000 setuidgid ");
+  outs(user);
+  outs(" socklog ucspi\n");
+  finish();
+  perm(0750);
+
+  start("klog/log/run");
+  outs("#!/bin/sh\n");
+  outs("exec setuidgid ");
+  outs(loguser);
+  outs(" multilog t ./main/main\n");
+  finish();
+  perm(0750);
+}
+
 void conf_notify() {
   makedir("notify");
   perm(0755);
@@ -255,6 +293,9 @@ int main(int argc, char **argv) {
     break;
   case 'n':
     mode =CONF_NOTIFY;
+    break;
+  case 'k':
+    mode =CONF_KLOG;
     break;
   case '-':
     if ((*argv)[1] && (*argv)[1] == 'V') {
@@ -317,6 +358,10 @@ int main(int argc, char **argv) {
   case CONF_UCSPI_TCP:
     if (!path) path =LOG_DIR_UCSPI_TCP;
     conf_ucspi_tcp();
+    break;
+  case CONF_KLOG:
+    if (!path) path =LOG_DIR_KLOG;
+    conf_klog();
     break;
   case CONF_NOTIFY:
     if (!path) path =PATH_NOTIFY;

@@ -3,7 +3,7 @@
 socklog-conf \- sets up a socklog(8) service.
 .SH SYNOPSIS
 .B socklog-conf
-unix|inet|ucspi-tcp
+unix|inet|klog|ucspi-tcp
 .I acct
 .I logacct
 .br
@@ -108,6 +108,48 @@ You can run the service under
 by creating a symbolic link in the service directory:
 .LP
 ln -s /etc/socklog/inet /service/socklog-inet
+.LP
+.SH KLOG SERVICE
+.B socklog-conf
+klog
+.I acct
+.I logacct
+.LP
+Running
+.B socklog-conf
+with the 1st argument
+.IR klog ,
+.B socklog-conf
+creates the service directory
+.I /etc/socklog/klog
+and the log directory
+.IR /var/log/socklog-klog .
+.LP
+.B socklog-conf
+aranges for
+.BR socklog (8)
+to run under the uid and gid of
+.I acct
+and to read kernel messages from
+.I /proc/kmsg
+on Linux, or
+.I /dev/klog
+on BSD.
+.LP
+It also creates automatically rotated log directories in
+.IR /var/log/socklog-klog .
+The logs are owned by
+.IR logacct .
+The corresponding
+.BR multilog (8)
+processes run under the uid and gid of
+.IR logacct .
+.LP
+You can run the service under
+.BR svscan (8)
+by creating a symbolic link in the service directory:
+.LP
+ln -s /etc/socklog/klog /service/socklog-klog
 .LP
 .SH UCSPI-TCP SERVICE
 .B socklog-conf

@@ -16,7 +16,7 @@ tryto: load tryto.o unix.a byte.a time.a
 uncat: load uncat.o unix.a byte.a time.a
 	./load uncat unix.a byte.a time.a
 
-socklog-conf.o: compile
+socklog-conf.o: compile socklog-conf.c
 	./compile socklog-conf.c
 
 socklog.o: compile socklog.c
