@@ -2,7 +2,7 @@ socklog-0.8.0
 Tue, 16 Apr 2002 14:11:34 +0200
   * doc/network.html: fix quoting bug, network client sample was not
     working properly.
-  * doc/benefits.html: add more benefits, advertising.
+  * doc/benefits.html: add more descriptions of benefits.
   * no code changes at all.
 
 socklog-0.7.0
