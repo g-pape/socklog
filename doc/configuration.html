@@ -16,23 +16,18 @@
 <a href="http://cr.yp.to/daemontools/faq/create.html#remove">
 Removing socklog services</a>
 <hr>
-The installation of <i>socklog</i> provides four example service
-directories for the use with
-<a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>:
-<ul>
-  <li><tt>/package/admin/socklog/etc/unix/</tt>
-  <li><tt>/package/admin/socklog/etc/inet/</tt>
-  <li><tt>/package/admin/socklog/etc/ucspi-tcp/</tt>
-  <li><tt>/package/admin/socklog/etc/notify/</tt>
-</ul>
-The directory<br>
-<tt>/package/admin/socklog/etc/unix/</tt> handles the service
-listening on unix domain socket (<tt>/dev/log</tt>),<br>
-<tt>/package/admin/socklog/etc/inet/</tt> handles the service listening on
-udp socket (<tt>0.0.0.0:514</tt>),<br>
-<tt>/package/admin/socklog/etc/ucspi-tcp/</tt> handles logs received from
-<a href="network.html">network</a>,<br>
-<tt>/package/admin/socklog/etc/notify/</tt> handles
+<h2>The socklog services</h2>
+The <i>socklog-unix</i> service listens on the unix domain socket
+<tt>/dev/log</tt>.
+<p>
+The <i>socklog-inet</i> service listens on the UDP port
+<tt>0.0.0.0:514</tt>.
+<p>
+The <i>socklog-ucspi-tcp</i> service listens on the TCP port
+<tt>0.0.0.0:10116</tt>, handles socklog logs received from
+<a href="network.html">network</a>.
+<p>
+The <i>socklog-notify</i> handles
 <a href="notify.html">log event notification</a>.
 <hr>
 
@@ -52,8 +47,8 @@ Create the service directory and log directories by running the
   # socklog-conf unix nobody log
 </pre>
 If you are replacing another service providing system logging through the
-configured socket, such as <i>syslogd</i>, stop this service now and ensure
-that it will not be restarted on runlevel change or system reboot.
+socket <tt>/dev/log</tt>, such as <i>syslogd</i>, stop this service now and
+ensure that it will not be restarted on runlevel change or system reboot.
 <p>
 Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
 new service:
@@ -67,8 +62,8 @@ Optionally configure the <i>socklog-unix</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
 the corresponding <tt>run</tt> scripts:
 <ul>
-  <li>/etc/socklog/unix/run
-  <li>/etc/socklog/unix/log/run
+  <li>/service/socklog-unix/run
+  <li>/service/socklog-unix/log/run
 </ul>
 <hr>
 It is possible to replace the unix domain dgram socket listener
@@ -142,7 +137,7 @@ Create the service directory and log directories by running the
   # socklog-conf inet nobody log
 </pre>
 If you are replacing another service providing system logging through the
-configured UDP port, such as <i>syslogd</i>, stop this service now and ensure
+syslog UDP port 514, such as <i>syslogd</i>, stop this service now and ensure
 that it will not be restarted on runlevel change or system reboot.
 <p>
 Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
@@ -157,8 +152,8 @@ Optionally configure the <i>socklog-inet</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
 the corresponding <tt>run</tt> scripts:
 <ul>
-  <li>/etc/socklog/inet/run
-  <li>/etc/socklog/inet/log/run
+  <li>/service/socklog-inet/run
+  <li>/service/socklog-inet/log/run
 </ul>
 <hr>
 
@@ -190,8 +185,8 @@ Optionally configure the <i>socklog-ucspi-tcp</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
 the corresponding <tt>run</tt> scripts:
 <ul>
-  <li>/etc/socklog/ucspi-tcp/run
-  <li>/etc/socklog/ucspi-tcp/log/run
+  <li>/service/socklog-ucspi-tcp/run
+  <li>/service/socklog-ucspi-tcp/log/run
 </ul>
 Refer to <a href="network.html">Network logging</a> for setting up clients.
 <hr>
@@ -225,7 +220,7 @@ Optionally configure the <i>socklog-notify</i> service by
 <a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
 the corresponding <tt>run</tt> script:
 <ul>
-  <li>/etc/socklog/notify/run
+  <li>/service/socklog-notify/run
 </ul>
 Read <a href="notify.html">Log events notification</a> before disabling this
 service and for configuring arbitrary log services to notify events.
