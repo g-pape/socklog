@@ -9,8 +9,8 @@
 <hr>
 <h1>socklog - benefits</h1>
 <hr>
-<a href="#logrotation">Logfile rotation based on file size</a><br>
-<a href="#selecting">Selecting and deselecting log entries</a><br>
+<a href="#logrotation">Log file rotation based on file size</a><br>
+<a href="#selecting">Selecting and de-selecting log entries</a><br>
 <a href="#network">Modular, reliable network logging</a><br>
 <a href="#sortable">Sortable logs</a><br>
 <a href="#smallcode">Small code size</a>
@@ -20,18 +20,18 @@ Most of the benefits described here are actually benefits of
 <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
 But since <i>socklog</i> uses
 <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
-as its backend, the benefits apply
+as its back-end, the benefits apply
 to <i>syslogging</i> with <i>socklog</i>.
 <hr>
-<h2><a name="logrotation">Logfile rotation based on file size</a></h2>
+<h2><a name="logrotation">Log file rotation based on file size</a></h2>
 <p>
 <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
 supports automatically rotated logs, there is no need for any other
 tool running from cron or similar to rotate the logs.
 <p>
 <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
-keeps a specified number of logfiles with a maximum file size, so it is
-possible to calculate a logfile partition properly.
+keeps a specified number of log files with a maximum file size, so it is
+possible to calculate a log file partition properly.
 <p>
 For example, this <tt>log/run</tt> file
 <pre>
@@ -52,8 +52,8 @@ with these log <tt>config</tt> files
 </pre>
 causes
 <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
-to hold maximal 10 logfiles, each of maximal size
-4999999 bytes in <tt>/var/log/socklog/main/</tt>, and maximal 5 logfiles,
+to hold maximal 10 log files, each of maximal size
+4999999 bytes in <tt>/var/log/socklog/main/</tt>, and maximal 5 log files,
 each of maximal size 999999 bytes in <tt>/var/log/socklog/debug/</tt>.
 <p>
 So the maximal used space for these both logs is less then:
@@ -70,9 +70,9 @@ Please note that above numbers could change if you use
 <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
 with a <i>processor</i>.
 <hr>
-<h2><a name="selecting">Selecting and deselecting log entries</a></h2>
+<h2><a name="selecting">Selecting and de-selecting log entries</a></h2>
 <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
-supports selecting and deselecting log lines based on pattern matching.
+supports selecting and de-selecting log lines based on pattern matching.
 <p>
 This is much more flexible than the usual <i>syslogd</i> support for
 selecting log entries by <tt>facility</tt> and <tt>priority</tt>.
@@ -103,7 +103,7 @@ compression, and more, easily.
 <hr>
 <h2><a name="sortable">Sortable logs</a></h2>
 If <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> is
-told to prepend log lines with timestamps, the resulting logs are sortable.
+told to prepend log lines with time-stamps, the resulting logs are sortable.
 So it is possible to merge different logs and sort them chronologically
 without special effort.
 <hr>
