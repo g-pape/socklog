@@ -1,5 +1,5 @@
 socklog 2.0.0
-Sun, 06 Feb 2005 11:44:45 +0000
+Sun, 06 Feb 2005 19:57:04 +0000
   * socklog-check.check: tweak timing in program test.
   * tryto.c: new option -P: run prog in new session, and signal process
     group.

@@ -8,7 +8,7 @@ socklog (2.0.0-1) unstable; urgency=low
     debian/socklog-run.prerm, debian/socklog.postinst,
     debian/socklog.postrm: cleanup.
 
- -- Gerrit Pape <pape@smarden.org>  Sun,  6 Feb 2005 12:18:56 +0000
+ -- Gerrit Pape <pape@smarden.org>  Sun,  6 Feb 2005 19:57:15 +0000
 
 socklog (1.5.0-2) unstable; urgency=low
 
