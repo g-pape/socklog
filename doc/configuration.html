@@ -36,11 +36,11 @@
   # vi /etc/socklog/unix/run
   # vi /etc/socklog/unix/log/run
     </pre>
-    check carefully that all log directories you stated in
-    <tt>/etc/socklog/unix/log/run</tt> exist and are writable to the uid
-    running the
+    create the user you chose to run
     <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
-    process.
+    if not yet done and
+    check carefully that all log directories you stated in
+    <tt>/etc/socklog/unix/log/run</tt> exist and are writable to this user.
     <p>
       then link the directory to
       <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
