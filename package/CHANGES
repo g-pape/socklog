@@ -1,7 +1,6 @@
 socklog-0.6.1
-
-  * bug: error in recvfrom() was not catched, bad condition, fix: test
-    return code for -1 (thx Liviu Daia)
+Thu, 17 Jan 2002 11:33:28 +0100
+  * bug: socklog.c: error in recvfrom() was not catched (thx Liviu Daia)
 
 socklog-0.6.0
 Sat, 12 Jan 2002 14:18:57 +0100
