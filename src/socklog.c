@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
-
+#include "byte.h"
 #include "buffer.h"
 #include "error.h"
 #include "strerr.h"
