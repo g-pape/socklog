@@ -1,0 +1,15 @@
+#!/bin/sh
+
+tryto
+echo $?
+tryto -V
+echo $?
+
+tryto -v sh -c 'sleep 1; exit 0'
+echo $?
+tryto -vn2 sh -c 'sleep 1; exit 1'
+echo $?
+tryto -vt1 sleep 14
+echo $?
+tryto -vt1 -k1 sh -c 'trap : TERM; sleep 3'
+echo $?

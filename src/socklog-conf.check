@@ -1,0 +1,19 @@
+#!/bin/sh
+rm -rf "${ctmp}"
+
+socklog-conf
+echo $?
+socklog-conf -V
+echo $?
+
+mkdir -p "${ctmp}"
+user=`whoami`
+socklog-conf unix "${user}" "${user}" "${ctmp}"/socklog "${ctmp}"/unix
+echo $?
+socklog-conf inet "${user}" "${user}" "${ctmp}"/socklog "${ctmp}"/inet
+echo $?
+socklog-conf klog "${user}" "${user}" "${ctmp}"/socklog "${ctmp}"/klog
+echo $?
+socklog-conf ucspi "${user}" "${user}" "${ctmp}"/socklog "${ctmp}"/ucspi
+echo $?
+rm -rf "${ctmp}"

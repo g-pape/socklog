@@ -1,0 +1,14 @@
+usage: socklog-conf unix|inet|klog|ucspi acct logacct [/etc/socklog] [/logdir]
+usage: socklog-conf notify acct grp [/etc/socklog] [pipe]
+
+1
+$Id$
+
+usage: socklog-conf unix|inet|klog|ucspi acct logacct [/etc/socklog] [/logdir]
+usage: socklog-conf notify acct grp [/etc/socklog] [pipe]
+
+1
+0
+0
+0
+0

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+socklog -V
+echo $?
+
+socklog unix socklog.check.socket &
+pid=$!
+sleep 1
+check-socklog-unix
+sleep 2
+kill -TERM $pid
+wait
+echo $?
+rm -f socklog.check.socket
+
+socklog inet 127.0.0.1 12614 &
+pid=$!
+sleep 1
+check-socklog-inet
+sleep 2
+kill -TERM $pid
+wait
+echo $?
+
+( echo foo; echo bar; echo baz ) |env u=U socklog ucspi u
+echo $?

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+uncat
+echo $?
+uncat -V
+echo $?
+
+( echo foo; sleep 1; echo bar ) |uncat -vot14 cat
+echo $?
+( echo foo; sleep 2; echo bar ) |uncat -vot1 cat
+echo $?
+( echo foo; echo bar; echo baz ) |uncat -vos4 cat
+echo $?
