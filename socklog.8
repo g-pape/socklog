@@ -1,0 +1,123 @@
+.TH socklog 8
+.SH NAME
+socklog \- syslogd replacement for use with djb's daemontools
+.SH SYNOPSIS
+.B socklog
+[
+unix
+] [
+.I path
+]
+.LP
+.B socklog
+inet
+[
+.I ip
+] [
+.I port
+]
+.SH DESCRIPTION
+.B socklog
+should be run under daemontools'
+.BR supervise (8),
+writing syslog messages it receives from unix domain socket
+.I path
+or an inet udp socket
+.IR ip\fR:\fIport
+through a pipe provided by
+.BR svscan (8)
+to a
+.BR multilog (8)
+process.
+.LP
+If the environment variables $UID and/or $GID are present,
+.B socklog
+will drop permissions to those ids after creating and binding the socket.
+.LP
+.B socklog
+converts syslog facility and priority information to names
+(\fIfacility\fR.\fIpriority\fR)
+as found in
+.I /usr/include/syslog.h
+at compile time if present.
+.SH UNIX SOCKET
+.B socklog
+[
+unix
+] [
+.I path
+]
+.LP
+Starting
+.B socklog
+with the 1st argument
+.IR unix ,
+.B socklog
+will listen to the unix domain socket
+.IR path .
+If
+.I path
+is omitted, the default
+.I /dev/log
+is used.
+.LP
+If the 1st argument may be omitted, default is
+.IR unix .
+.SH INET SOCKET
+.B socklog
+inet [
+.I ip
+] [
+.I port
+]
+.LP
+Starting
+.B socklog
+with the 1st argument
+.IR inet ,
+.B socklog
+will listen to the inet udp socket
+.IR ip\fR:\fIport .
+.LP
+If
+.I ip
+starts with 0,
+.B socklog
+will bind to all local interfaces.
+.LP
+If
+.I port
+is less or equal 1024,
+.B socklog
+must be run by root.
+.LP
+.I port
+may be omitted, default is 514.
+.I ip
+may be omitted, default is 0.
+.LP
+.B socklog
+prepends
+.I a.b.c.d:
+to each syslog message it receives, where
+.I a.b.c.d
+is the ip address of the connecting system.
+.SH DAEMONTOOLS
+A proper
+.I run
+file for
+.BR supervise (8)
+is:
+.LP
+  #!/bin/sh
+  exec 2>&1
+  exec envuidgid nobody socklog unix /dev/log
+.SH AUTHOR
+G.Pape <pape@innominate.com>
+.SH SEE ALSO
+svscan(8),
+supervise(8),
+multilog(8)
+
+http://innominate.org/~pape/socklog/
+http://cr.yp.to/daemontools.html

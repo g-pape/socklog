@@ -1,0 +1,32 @@
+socklog - configuration
+
+-------------------------------------------------------------------------------
+the installation of socklog provides three service directories for the use with
+svscan:
+
+  * /etc/socklog/unix/
+  * /etc/socklog/inet/
+  * /etc/socklog/klog/
+
+the directory /etc/socklog/unix/ handles the service listening to unix domain
+socket (/dev/log), /etc/socklog/inet/ handles the service listening to udp
+socket (0.0.0.0:514). For /etc/socklog/klog/ see below.
+-------------------------------------------------------------------------------
+to configure the behaviour of socklog services, edit the appropriate run
+scripts:
+
+  * /etc/socklog/*/run
+  * /etc/socklog/*/log/run
+
+-------------------------------------------------------------------------------
+to enable one of socklog's services, edit the corresponding run scripts once
+for configuration and link the directory to daemontools' service directory,
+e.g. for the unix domain socket service:
+  # vi /etc/socklog/unix/run
+  # vi /etc/socklog/unix/log/run
+  # ln -s /etc/socklog/unix /var/service/socklog-unix
+    
+-------------------------------------------------------------------------------
+
+G. Pape
+$Id$

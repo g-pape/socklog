@@ -1,0 +1,18 @@
+socklog - installation
+
+-------------------------------------------------------------------------------
+check that you have a recent version of daemontools installed.
+
+unpack socklog-x.x.x.tar.gz
+  # tar xfzvp socklog-x.x.x.tar.gz
+  # cd socklog-x.x.x
+    
+run make and make install
+  # make
+  # make install
+    
+refer to Configuration for configuring and setting up socklock services.
+-------------------------------------------------------------------------------
+
+G. Pape
+$Id$

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>socklog - minimal replacement for syslogd</title>
+  </head>
+
+  <body>
+    <h1>socklog - minimal replacement for <i>syslogd</i></h1>
+    <hr>
+    <i>socklog</i> in cooperation with djb's
+    <a href="http://cr.yp.to/daemontools.html">daemontools</a> is a minimal
+    replacement for syslogd. There are three main features,
+    syslogd provides:
+    <ul>
+      <li>
+	receiving syslog messages from a unix domain socket
+	(<tt>/dev/log</tt>) and writing them to various files on disk
+	depending on <tt>facility</tt> and <tt>priority</tt>.
+      <li>
+	receiving syslog messages from an udp socket
+	(<tt>0.0.0.0:514</tt>) and writing them to various files on disk
+	depending on <tt>facility</tt> and <tt>priority</tt>.
+      <li>
+	writing received syslog messages to an udp socket
+	(<tt>x.x.x.x:514</tt>)
+    </ul>
+    <i>socklog</i> refuses the latter but provides the first two features
+    with the help of
+    <a href="http://cr.yp.to/daemontools.html">daemontools</a>`
+    <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>,
+    <a href="http://cr.yp.to/daemontools/supervise.html">supervise</a>
+    and <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
+    <p>
+      <i>socklog</i> is small, secure, reliable and not feature-overloaded.
+    <hr>
+    <i>socklog</i> is run under
+    <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
+    <a href="http://cr.yp.to/daemontools/supervise.html">supervise</a>,
+    writing syslog messages it receives from an unix domain
+    socket <tt>path</tt> (<tt>/dev/log</tt>) or an inet udp socket
+    <tt>ip:port</tt> (<tt>0.0.0.0:514</tt>) through a pipe
+    provided by
+    <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>
+    to a <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+    process.
+    <p>
+      If <i>socklog</i> listens to an udp socket, it prepends
+      <tt>ip:</tt> (<tt>a.b.c.d: </tt>) to each syslog message it receives,
+      where <tt>a.b.c.d</tt> is the ip address of the connecting system.
+    <p>
+      If the environment variables $UID and/or $GID are present,
+      <i>socklog</i> will drop permissions to those ids after creating
+      and binding to the socket.
+    <p>
+      <i>socklog</i>  converts syslog <tt>facility</tt> and <tt>priority</tt>
+      information to names (<tt>facility.priority</tt>) as found in
+      <tt>/usr/include/syslog.h</tt>
+      at compile time if present.
+    <hr>
+    A proper <tt>run</tt> file for
+    <a href="http://cr.yp.to/daemontools/supervise.html">supervise</a> is:
+    <pre>
+  #!/bin/sh
+  exec 2>&1
+  exec envuidgid nobody socklog unix /dev/log
+    </pre>
+    See
+    <a href="http://cr.yp.to/daemontools/envuidgid.html">envuidgid</a>
+    (<tt># man envuidgid</tt>) and <tt>socklog</tt>
+    (<tt># man socklog</tt>).
+    <p>
+      A proper <tt>log/run</tt> file for
+      <a href="http://cr.yp.to/daemontools/supervise.html">supervise</a>
+      is:
+    <pre>
+  #!/bin/sh
+  LOGDIR=/var/log/socklog
+  exec setuidgid log multilog ${LOGDIR}/main \
+    -* +kern.* ${LOGDIR}/kern \
+    -* +user.* ${LOGDIR}/user \
+    -* +mail.* ${LOGDIR}/mail \
+    -* +daemon.* ${LOGDIR}/daemon \
+    -* +auth.* +authpriv.* ${LOGDIR}/auth \
+    -* +syslog.* ${LOGDIR}/syslog \
+    -* +news.* ${LOGDIR}/news \
+    -* +cron.* ${LOGDIR}/cron \
+    -* +ftp.* ${LOGDIR}/ftp \
+    -* +local*.* ${LOGDIR}/local \
+    -* +*.debug* ${LOGDIR}/debug
+    </pre>
+    See 
+    <a href="http://cr.yp.to/daemontools/setuidgid.html">setuidgid</a>
+    (<tt># man setuidgid</tt>) and
+    <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+    (<tt># man multilog</tt>).
+    <hr>
+    See <a href="install.html">INSTALL</a> on how to install <i>socklog</i>
+    and <a href=configuration.html>Configuration</a> for setting up
+    <i>socklog</i> services.
+    <hr>
+    <address><a href="mailto:pape@innominate.com">G. Pape</a></address>
+    <small>$Id$</small>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>socklog - configuration</title>
+  </head>
+  
+  <body>
+    <h1>socklog - configuration</h1>
+    <hr>
+    the installation of <i>socklog</i> provides three service directories
+    for the use with
+    <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>:
+    <ul>
+      <li><tt>/etc/socklog/unix/</tt>
+      <li><tt>/etc/socklog/inet/</tt>
+      <li><tt>/etc/socklog/klog/</tt>
+    </ul>
+    the directory <tt>/etc/socklog/unix/</tt> handles the service listening
+    to unix domain socket (<tt>/dev/log</tt>), <tt>/etc/socklog/inet/</tt>
+    handles the service listening to udp socket (<tt>0.0.0.0:514</tt>).
+    For <tt>/etc/socklog/klog/</tt> see below.
+    <hr>
+    to configure the behaviour of <i>socklog</i> services, edit the
+    appropriate <tt>run</tt> scripts:
+    <ul>
+      <li><tt>/etc/socklog/*/run</tt>
+      <li><tt>/etc/socklog/*/log/run</tt>
+    </ul>
+    <hr>
+    to enable one of <i>socklog</i>'s services, edit the corresponding
+    <tt>run</tt> scripts once for configuration and link the directory to
+    <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
+    <tt>service</tt> directory, e.g. for the unix domain socket service:
+    <pre>
+  # vi /etc/socklog/unix/run
+  # vi /etc/socklog/unix/log/run
+  # ln -s /etc/socklog/unix /var/service/socklog-unix
+    </pre>
+    <hr>
+    <address><a href="mailto:pape@innominate.com">G. Pape</a></address>
+    <small>$Id$</small>
+  </body>
+</html>

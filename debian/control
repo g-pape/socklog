@@ -3,7 +3,7 @@ Section: unknown
 Priority: optional
 Maintainer: Gerrit Pape <pape@innominate.com>
 Standards-Version: 3.0.1
-Build-Depends: debhelper
+Build-Depends: debhelper, w3m
 
 Package: socklog
 Architecture: any

@@ -12,7 +12,6 @@
 
 #define LINEC 1024
 #define USAGE " [unix|inet] [address]"
-#define INFO "listening on "
 #define VERSION "$Id$"
 #define DEFAULTINET "0"
 #define DEFAULTPORT "514"
@@ -99,9 +98,9 @@ int socket_unix (char* f) {
     perror("bind");
     exit(1);
   }
-  write(2, INFO, strlen(INFO));
+  write(2, "listening on ", 13);
   write(2, f, strlen(f));
-  write(2, "\n", 1);
+  write(2, ", ", 2);
   return(s);
 }
 int socket_inet (char* ip, char* port) {
@@ -127,11 +126,11 @@ int socket_inet (char* ip, char* port) {
     exit(1);
   }
   ip =inet_ntoa(sa.sin_addr);
-  write(2, INFO, strlen(INFO));
+  write(2, "listening on ", 13);
   write(2, ip, strlen(ip));
   write(2, ":", 1);
   write(2, port, strlen(port));
-  write(2, "\n", 1);
+  write(2, ", ", 2);
   return(s);
 }
 
@@ -175,18 +174,24 @@ int main(int argc, char** argv) {
 
   // drop permissions
   if ((gid = getenv("GID")) != NULL) {
+    write(2, "gid=", 4);
+    write(2, gid, strlen(gid));
+    write(2, ", ", 2);
     if (setgid(atoi(gid)) == -1) {
       perror("setgid");
       usage();
     }
   }
   if ((uid = getenv("UID")) != NULL) {
+    write(2, "uid=", 4);
+    write(2, uid, strlen(uid));
+    write(2, ", ", 2);
     if (setuid(atoi(uid)) == -1) {
       perror("setuid");
       usage();
     }
   }
-
+  write(2, "starting.\n", 10);
   if (*argv) usage();
 
   for(;;) {

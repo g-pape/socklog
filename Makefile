@@ -6,10 +6,10 @@ CFLAGS=-Wall -O3
 
 TARGET=socklog
 OBJECTS=$(TARGET).o
-
+DOCS=README INSTALL Configuration
 SERVICES=unix inet klog
 
-all: $(TARGET)
+all: docs $(TARGET)
 
 $(TARGET): $(OBJECTS)
 
@@ -35,3 +35,18 @@ install: installdirs
 		install -m 0755 $$i/runlog \
 			$(DESTDIR)/etc/socklog/$$i/log/run ; \
 	done
+
+docs-clean:
+	rm -f $(DOCS)
+
+docs: $(DOCS)
+
+README: doc/index.html
+	w3m -dump doc/index.html > README
+
+INSTALL: doc/install.html
+	w3m -dump doc/install.html > INSTALL
+
+Configuration: doc/configuration.html
+	w3m -dump doc/configuration.html > Configuration
+	
