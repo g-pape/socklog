@@ -4,9 +4,7 @@
 */
 
 #include <unistd.h>
-#include <sys/types.h>
 #include <signal.h>
-#include "env.h"
 #include "strerr.h"
 #include "pathexec.h"
 #include "deepsleep.h"
@@ -125,7 +123,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       strerr_die2sys(111, FATAL, "unable to create pipe for child: ");
     }
     while ((pid =fork()) == -1) {
-      strerr_warn4(WARNING, "unable to fork for \"", *argv, "\" pausing :",
+      strerr_warn4(WARNING, "unable to fork for \"", *argv, "\" pausing: ",
 		   &strerr_sys);
       deepsleep(5);
     }
@@ -221,7 +219,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 	break;
       }
       strerr_warn4(WARNING, "child \"", *argv,
-		   "\" not terminated. sending KILL...: ", 0);
+		   "\" not terminated. sending KILL...", 0);
       kill(pid, SIGKILL);
       break;
     }
