@@ -11,7 +11,7 @@
 <H2><A NAME="sect0">Name</A></H2>
 socklog-conf - sets up a <I>socklog(8)</I> service. 
 <H2><A NAME="sect1">Synopsis</A></H2>
-<B>socklog-conf</B> unix|inet|ucspi-tcp
+<B>socklog-conf</B> unix|inet|klog|ucspi-tcp
 <I>acct</I> <I>logacct</I> <BR>
 <B>socklog-conf</B> notify <I>acct</I> <I>grp</I> 
 <H2><A NAME="sect2">Description</A></H2>
@@ -54,46 +54,63 @@ the service under <B><I>svscan</B>(8)</I> by creating a symbolic link in the ser
 directory: <P>
 ln -s /etc/socklog/inet /service/socklog-inet <P>
 
-<H2><A NAME="sect5">Ucspi-tcp Service</A></H2>
+<H2><A NAME="sect5">Klog Service</A></H2>
 <B>socklog-conf</B>
-ucspi-tcp <I>acct</I> <I>logacct</I> <P>
-Running <B>socklog-conf</B> with the 1st argument <I>ucspi-tcp</I>,
-<B>socklog-conf</B> creates the service directory <I>/etc/socklog/ucspi-tcp</I> and the
-log directory <I>/var/log/socklog-ucspi-tcp</I>. <P>
-<B>socklog-conf</B> aranges for <B><I>tcpserver</B>(1)</I>
-to run <B><I>socklog</B>(8)</I> under the uid and gid of <I>acct</I> and to listen on the TCP
-socket <I>0.0.0.0:10116</I>. <P>
-It also creates automatically rotated log directories
-in <I>/var/log/socklog-ucspi-tcp</I>. The logs are owned by <I>logacct</I>. The corresponding
-<B><I>multilog</B>(8)</I> processes run under the uid and gid of <I>logacct</I>. <P>
-You can run
-the service under <B><I>svscan</B>(8)</I> by creating a symbolic link in the service
-directory: <P>
-ln -s /etc/socklog/ucspi-tcp /service/socklog-ucspi-tcp <P>
+klog <I>acct</I> <I>logacct</I> <P>
+Running <B>socklog-conf</B> with the 1st argument <I>klog</I>, <B>socklog-conf</B>
+creates the service directory <I>/etc/socklog/klog</I> and the log directory <I>/var/log/socklog-klog</I>.
+<P>
+<B>socklog-conf</B> aranges for <B><I>socklog</B>(8)</I> to run under the uid and gid of <I>acct</I>
+and to read kernel messages from <I>/proc/kmsg</I> on Linux, or <I>/dev/klog</I> on BSD.
+<P>
+It also creates automatically rotated log directories in <I>/var/log/socklog-klog</I>.
+The logs are owned by <I>logacct</I>. The corresponding <B><I>multilog</B>(8)</I> processes run
+under the uid and gid of <I>logacct</I>. <P>
+You can run the service under <B><I>svscan</B>(8)</I>
+by creating a symbolic link in the service directory: <P>
+ln -s /etc/socklog/klog
+/service/socklog-klog <P>
 
-<H2><A NAME="sect6">Notify Service</A></H2>
-<B>socklog-conf</B>
-notify <I>acct</I> <I>grp</I> <P>
-Running <B>socklog-conf</B> with the 1st argument <I>notify</I>, <B>socklog-conf</B>
-creates the service directory <I>/etc/socklog/notify</I>. <P>
-<B>socklog-conf</B> aranges for
-<B><I>uncat</B>(1)</I> to run under the uid and gid of <I>acct</I> and to listen on the named
-pipe <I>/var/log/socklog/.notify</I>. The named pipe will have mode 0620, the uid
-of <I>acct</I> and the gid of <I>grp</I>. <P>
-All uids running a log service that is configured
-to push log events to the socklog-notify service must be member of the group
-<I>grp</I>. <P>
-You can run the service under <B><I>svscan</B>(8)</I> by creating a symbolic link
-in the service directory: <P>
-ln -s /etc/socklog/notify /service/socklog-notify
+<H2><A NAME="sect6">Ucspi-tcp Service</A></H2>
+<B>socklog-conf</B> ucspi-tcp <I>acct</I> <I>logacct</I>
+<P>
+Running <B>socklog-conf</B> with the 1st argument <I>ucspi-tcp</I>, <B>socklog-conf</B> creates
+the service directory <I>/etc/socklog/ucspi-tcp</I> and the log directory <I>/var/log/socklog-ucspi-tcp</I>.
+<P>
+<B>socklog-conf</B> aranges for <B><I>tcpserver</B>(1)</I> to run <B><I>socklog</B>(8)</I> under the uid and
+gid of <I>acct</I> and to listen on the TCP socket <I>0.0.0.0:10116</I>. <P>
+It also creates
+automatically rotated log directories in <I>/var/log/socklog-ucspi-tcp</I>. The logs
+are owned by <I>logacct</I>. The corresponding <B><I>multilog</B>(8)</I> processes run under
+the uid and gid of <I>logacct</I>. <P>
+You can run the service under <B><I>svscan</B>(8)</I> by creating
+a symbolic link in the service directory: <P>
+ln -s /etc/socklog/ucspi-tcp /service/socklog-ucspi-tcp
 <P>
 
-<H2><A NAME="sect7">See Also</A></H2>
-<I>socklog(8)</I>, <I>multilog(8)</I>, <I>tcpserver(1)</I>, <I>tryto(1)</I>, <I>uncat(1)</I> <P>
+<H2><A NAME="sect7">Notify Service</A></H2>
+<B>socklog-conf</B> notify <I>acct</I> <I>grp</I> <P>
+Running <B>socklog-conf</B> with the
+1st argument <I>notify</I>, <B>socklog-conf</B> creates the service directory <I>/etc/socklog/notify</I>.
+<P>
+<B>socklog-conf</B> aranges for <B><I>uncat</B>(1)</I> to run under the uid and gid of <I>acct</I> and
+to listen on the named pipe <I>/var/log/socklog/.notify</I>. The named pipe will
+have mode 0620, the uid of <I>acct</I> and the gid of <I>grp</I>. <P>
+All uids running a log
+service that is configured to push log events to the socklog-notify service
+must be member of the group <I>grp</I>. <P>
+You can run the service under <B><I>svscan</B>(8)</I>
+by creating a symbolic link in the service directory: <P>
+ln -s /etc/socklog/notify
+/service/socklog-notify <P>
+
+<H2><A NAME="sect8">See Also</A></H2>
+<I>socklog(8)</I>, <I>multilog(8)</I>, <I>tcpserver(1)</I>, <I>tryto(1)</I>,
+<I>uncat(1)</I> <P>
  <I>http://smarden.org/socklog/</I><BR>
   <I>http://cr.yp.to/daemontools.html</I><BR>
  
-<H2><A NAME="sect8">Author</A></H2>
+<H2><A NAME="sect9">Author</A></H2>
 Gerrit Pape &lt;pape@smarden.org&gt; <P>
 
 <HR><P>
@@ -104,9 +121,10 @@ Gerrit Pape &lt;pape@smarden.org&gt; <P>
 <LI><A NAME="toc2" HREF="#sect2">Description</A></LI>
 <LI><A NAME="toc3" HREF="#sect3">Unix Service</A></LI>
 <LI><A NAME="toc4" HREF="#sect4">Inet Service</A></LI>
-<LI><A NAME="toc5" HREF="#sect5">Ucspi-tcp Service</A></LI>
-<LI><A NAME="toc6" HREF="#sect6">Notify Service</A></LI>
-<LI><A NAME="toc7" HREF="#sect7">See Also</A></LI>
-<LI><A NAME="toc8" HREF="#sect8">Author</A></LI>
+<LI><A NAME="toc5" HREF="#sect5">Klog Service</A></LI>
+<LI><A NAME="toc6" HREF="#sect6">Ucspi-tcp Service</A></LI>
+<LI><A NAME="toc7" HREF="#sect7">Notify Service</A></LI>
+<LI><A NAME="toc8" HREF="#sect8">See Also</A></LI>
+<LI><A NAME="toc9" HREF="#sect9">Author</A></LI>
 </UL>
 </BODY></HTML>
