@@ -1,0 +1,18 @@
+socklog-check.check: tweak timing in program test.
+
+Index: src/socklog-check.check
+===================================================================
+RCS file: /var/lib/cvs/socklog/src/socklog-check.check,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -u -r1.1 -r1.2
+--- src/socklog-check.check	26 Jun 2004 09:31:42 -0000	1.1
++++ src/socklog-check.check	27 Jun 2004 18:25:39 -0000	1.2
+@@ -5,6 +5,7 @@
+ 
+ socklog unix socklog.check.socket &
+ pid=$!
++sleep 1
+ socklog-check unix socklog.check.socket
+ echo $?
+ socklog-check -v unix socklog.check.socket
