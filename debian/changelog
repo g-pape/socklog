@@ -1,3 +1,9 @@
+socklog (0.9.1-1) woody; urgency=low
+
+  * See /package/admin/socklog/package/CHANGES.
+
+ -- Gerrit Pape <pape@smarden.org>  Wed, 26 Jun 2002 15:54:52 +0200
+
 socklog (0.9.0-1) woody; urgency=low
 
   * See /package/admin/socklog/package/CHANGES.
