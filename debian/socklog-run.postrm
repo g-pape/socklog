@@ -1,14 +1,13 @@
-#! /bin/sh
+#!/bin/sh
 set -e
 
-if test "$1" = 'purge'; then
-  for i in unix klog inet ucspi-tcp; do
-    rm -rf /var/run/socklog-$i /var/run/socklog-$i.log
-    rmdir /etc/socklog/$i/log && rmdir /etc/socklog/$i || true
-  done
-  rmdir /etc/socklog/notify || true
-  rmdir /etc/socklog || true
-  # remove?: /var/log/socklog*
-fi
+test "$1" = 'purge' || exit 0
+
+for i in unix klog inet ucspi-tcp; do
+  rm -rf /var/run/socklog-$i /var/run/socklog-$i.log
+  rmdir /etc/socklog/$i/log && rmdir /etc/socklog/$i || :
+done
+rmdir /etc/socklog/notify || :
+rmdir /etc/socklog || :
 
 exit 0

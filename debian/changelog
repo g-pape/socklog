@@ -1,11 +1,14 @@
 socklog (2.0.0-1) unstable; urgency=low
 
   * new upstream release.
-  * debian/diff/socklog-check.check.diff: remove; included upstream.
+  * debian/diff/socklog-check.check.diff: remove; applied upstream.
   * debian/rules: don't apply patch; cleanup.
   * debian/implicit: update to revision 1.10.
+  * debian/socklog-run.postinst, debian/socklog-run.postrm,
+    debian/socklog-run.prerm, debian/socklog.postinst,
+    debian/socklog.postrm: cleanup.
 
- -- Gerrit Pape <pape@smarden.org>  Sun,  6 Feb 2005 12:00:45 +0000
+ -- Gerrit Pape <pape@smarden.org>  Sun,  6 Feb 2005 12:18:56 +0000
 
 socklog (1.5.0-2) unstable; urgency=low
 

@@ -1,8 +1,8 @@
-#! /bin/sh
+#!/bin/sh
 set -e
 
-if test "$1" = 'purge'; then
-  getent passwd log >/dev/null && deluser log
-fi
+test "$1" = 'purge' || exit 0
+
+! getent passwd log >/dev/null || deluser log
 
 exit 0
