@@ -15,6 +15,14 @@
 #define SYSLOG_NAMES
 #include <syslog.h>
 
+#ifdef SOLARIS
+# include <stropts.h>
+# include <sys/strlog.h>
+# include <fcntl.h>
+# include <door.h>
+# include "syslognames.h"
+#endif
+
 #define LINEC 1024
 #define USAGE " [unix|inet|ucspi] [args]"
 #define VERSION "$Id$"
@@ -43,6 +51,34 @@ void usage() {
   exit(1);
 }
 
+void setuidgid() {
+  /* drop permissions */
+  if ((gid = getenv("GID")) != NULL) {
+    int g =atoi(gid);
+    
+    write(2, "gid=", 4);
+    write(2, gid, strlen(gid));
+    write(2, ", ", 2);
+    if (setgroups(1, &g)) {
+      perror("setgroups");
+      usage();
+    }
+    if (setgid(g) == -1) {
+      perror("setgid");
+      usage();
+    }
+  }
+  if ((uid = getenv("UID")) != NULL) {
+    write(2, "uid=", 4);
+    write(2, uid, strlen(uid));
+    write(2, ", ", 2);
+    if (setuid(atoi(uid)) == -1) {
+      perror("setuid");
+      usage();
+    }
+  }
+}
+
 int syslog_names (char *line, int linec) {
   int i, fp;
   int ok =0;
@@ -63,7 +99,7 @@ int syslog_names (char *line, int linec) {
   }
   if (!ok || !fpr) return(0);
   i++;
-
+  
   fp =LOG_FAC(fpr) <<3;
   for (p =facilitynames; p->c_name; p++) {
     if (p->c_val == fp) {
@@ -99,6 +135,7 @@ void remote_info (struct sockaddr_in *sa) {
   fdbuffer_write(&fdbuf, ": ", 2);
 }
 
+#ifndef SOLARIS
 int socket_unix (char* f) {
   int s;
   struct sockaddr_un sa;
@@ -120,17 +157,23 @@ int socket_unix (char* f) {
   write(2, ", ", 2);
   return(s);
 }
+#endif
+
 int socket_inet (char* ip, char* port) {
   int s;
   struct sockaddr_in sa;
-
+  
   if (ip[0] == '0') {
     sa.sin_addr.s_addr =INADDR_ANY;
   } else {
+#ifndef SOLARIS
     if (inet_aton(ip, &sa.sin_addr) == 0) {
       perror("inet_aton");
       usage();
     }
+#else
+    sa.sin_addr.s_addr =inet_addr(ip);
+#endif
   }
   if ((s =socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
     perror("socket");
@@ -154,31 +197,9 @@ int socket_inet (char* ip, char* port) {
 int read_socket (int s) {
   fdbuffer_init(&fdbuf, buf, 1024, 1);
 
-  // drop permissions
-  if ((gid = getenv("GID")) != NULL) {
-    int g =atoi(gid);
-    
-    write(2, "gid=", 4);
-    write(2, gid, strlen(gid));
-    write(2, ", ", 2);
-    if (setgroups(1, &g)) {
-      perror("setgroups");
-      usage();
-    }
-    if (setgid(g) == -1) {
-      perror("setgid");
-      usage();
-    }
-  }
-  if ((uid = getenv("UID")) != NULL) {
-    write(2, "uid=", 4);
-    write(2, uid, strlen(uid));
-    write(2, ", ", 2);
-    if (setuid(atoi(uid)) == -1) {
-      perror("setuid");
-      usage();
-    }
-  }
+  /* drop permissions */
+  setuidgid();
+
   write(2, "starting.\n", 10);
 
   for(;;) {
@@ -186,7 +207,7 @@ int read_socket (int s) {
     int dummy =sizeof saf;
     int linec;
     int os;
-
+    
     linec =recvfrom(s, line, LINEC, 0, (struct sockaddr *) &saf, &dummy);
     if (! (0 <= linec <= LINEC)) {
       perror("recvfrom");
@@ -197,7 +218,6 @@ int read_socket (int s) {
     if (mode == MODE_INET) remote_info(&saf);
     os =syslog_names(line, linec);
 
-    //    write(2, line +os, linec -os);
     fdbuffer_write(&fdbuf, line +os, linec -os);
     if (linec == LINEC) fdbuffer_write(&fdbuf, "...", 3);
     if (line[linec -1] != '\n') fdbuffer_write(&fdbuf, "\n", 1);
@@ -209,16 +229,16 @@ int read_ucspi (int fd, char** vars) {
   char *envs[9];
   int flageol =1;
   int i;
-
+  
   fdbuffer_init(&fdbuf, buf, 1024, 2);
-
+  
   for (i =0; *vars && (i < 8); vars++) {
     if ((envs[i] =getenv(*vars)) != NULL) {
       i++;
     }
   }
   envs[i] =NULL;
-
+  
   for(;;) {
     int linec;
     char *l, *p;
@@ -242,7 +262,7 @@ int read_ucspi (int fd, char** vars) {
 	  fdbuffer_write(&fdbuf, envs[i], strlen(envs[i]));
 	  fdbuffer_write(&fdbuf, ": ", 2);
 	}
-	// could fail on eg <13\0>user.notice: ...
+	/* could fail on eg <13\0>user.notice: ... */
 	l += syslog_names(l, line -l +linec);
 	p =l;
 	flageol =0;
@@ -257,9 +277,97 @@ int read_ucspi (int fd, char** vars) {
     if (!flageol) fdbuffer_write(&fdbuf, p, l -p);
   }
 }
+
+#ifdef SOLARIS
+static void door_proc(void *cookie, char *argp, size_t arg_size,
+		      door_desc_t *dp, uint_t ndesc) {
+  door_return(NULL, 0, NULL, 0);
+}
+
+static int stream_sun(char *address, char *door, int *dfd) {
+  int fd;
+  struct strioctl sc;
+  struct stat st;
+  if ((fd = open(address, O_RDONLY | O_NOCTTY)) == -1) {
+    perror("open");
+    exit(1);
+  }
   
+  memset(&sc, 0, sizeof(sc));
+  sc.ic_cmd =I_CONSLOG;
+  if (ioctl(fd, I_STR, &sc) < 0) {
+    perror("ioctl");
+    exit(1);
+  }
+  if (door) {
+    if (stat(door, &st) == -1) {
+      /* The door file doesn't exist, create a new one */
+      if ((*dfd =creat(door, 0666)) == -1) {
+	perror("creat");
+	exit(1);
+      }
+      close(*dfd);
+    }
+    fdetach(door);
+    if ((*dfd =door_create(door_proc, NULL, 0)) == -1) {
+      perror("door_create");
+      exit(1);
+    }
+    if (fattach(*dfd, door) == -1) {
+      perror("fattach");
+      exit(1);
+    }
+  }
+  else *dfd = -1;
+  write(2, "listening on ", 13);
+  write(2, address, strlen(address));
+  write(2, ", ", 2);
+  return fd;
+}
+
+static void read_stream_sun(int fd) {
+  struct strbuf ctl, data;
+  struct log_ctl logctl;
+  int flags;
+  
+  /* Initialize buffer */
+  fdbuffer_init(&fdbuf, buf, LINEC, 1);
+  
+  ctl.maxlen =ctl.len =sizeof(logctl);
+  ctl.buf =(char *) &logctl;
+  data.maxlen =LINEC;
+  data.len =0;
+  data.buf =line;
+  flags =0;
+  
+  setuidgid();
+  
+  write(2, "starting.\n", 10);
+  
+  /* read the messages */
+  for (;;) {
+    if ((getmsg(fd, &ctl, &data, &flags) & MORECTL)) {
+      perror("getmsg");
+      return;
+    }
+    if (data.len) {
+      int shorten =data.len;
+      if (!line[shorten-1]) shorten--;
+      
+      fdbuffer_write(&fdbuf, line, shorten);
+      if (data.len == LINEC) fdbuffer_write(&fdbuf, "...", 3);
+      if (line[shorten-1] != '\n') fdbuffer_write(&fdbuf, "\n", 1);
+      fdbuffer_flush(&fdbuf);
+    }
+  }
+}
+#endif
+
 int main(int argc, char** argv) {
   int s =0;
+#ifdef SOLARIS
+  int dfd;
+#endif
   
   progname =*argv++;
   if (*argv) {
@@ -307,12 +415,19 @@ int main(int argc, char** argv) {
   case MODE_UNIX:
     if (*argv) usage();
     if (!address) address =DEFAULTUNIX;
+#ifndef SOLARIS
     s =socket_unix(address);
     return(read_socket(s));
+#else
+    s =stream_sun(address, "/etc/.syslog_door", &dfd);
+    read_stream_sun(s);
+    if (dfd != -1) door_revoke(dfd);
+    return 0;
+#endif
   case MODE_UCSPI:
     s =0;
     return(read_ucspi(0, argv));
   }
-  // not reached
+  /* not reached */
   return(1);
 }

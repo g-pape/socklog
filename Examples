@@ -8,7 +8,7 @@ listening on unix domain dgram socket /dev/log:
       #!/bin/sh
       exec 2>&1
       exec envuidgid nobody socklog unix /dev/log
-
+          
   * a sample socklog-unix/log/run script:
       #!/bin/sh
       LOGDIR=/var/log/socklog
@@ -24,7 +24,7 @@ listening on unix domain dgram socket /dev/log:
         -* +ftp.* ${LOGDIR}/ftp \
         -* +local*.* ${LOGDIR}/local \
         -* +*.debug* ${LOGDIR}/debug
-
+          
   * if you want additional tai64n (# man tai64n) timestamps prepended to each
     message, use this socklog-unix/log/run script as example:
       #!/bin/sh
@@ -41,7 +41,7 @@ listening on unix domain dgram socket /dev/log:
         -* +'* ftp.*' ${LOGDIR}/ftp \
         -* +'* local*.*' ${LOGDIR}/local \
         -* +'* *.debug*' ${LOGDIR}/debug
-
+          
     note that multilog (# man multilog) patterns apply to the timestamps.
 
 -------------------------------------------------------------------------------
@@ -52,14 +52,14 @@ listening on udp network socket 0.0.0.0:514:
       #!/bin/sh
       exec 2>&1
       exec envuidgid nobody socklog inet 0 514
-
+          
   * a sample socklog-inet/log/run script is:
       #!/bin/sh
       LOGDIR=/var/log/socklog-remote
       exec setuidgid log multilog t ${LOGDIR}/main \
         -* +'* 10.0.0.2:' ${LOGDIR}/10.0.0.2 \
         -* +'* 10.0.0.17:' ${LOGDIR}/10.0.0.17
-
+          
 
 -------------------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ listening on unix domain stream socket /dev/log:
       exec 2>&1
       exec unixserver -U `id -u nobody` /dev/log -- \
         socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
-
+          
   * a sample socklog-ucspi-unix/log/run script:
       #!/bin/sh
       LOGDIR=/var/log/socklog
@@ -86,7 +86,7 @@ listening on unix domain stream socket /dev/log:
         -* +'*: *: ftp.*' ${LOGDIR}/ftp \
         -* +'*: *: local*.*' ${LOGDIR}/local \
         -* +'*: *: *.debug*' ${LOGDIR}/debug
-
+          
 
 -------------------------------------------------------------------------------
 

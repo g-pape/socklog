@@ -1,7 +1,10 @@
 DESTDIR=
 
 CC=gcc
-CFLAGS=-Wall -O3
+
+# add -DSOLARIS to CFLAGS on solaris
+CFLAGS=-Wall -O3 # -DSOLARIS
+
 LDFLAGS=-Wall -O3 -s
 
 TARGET=socklog

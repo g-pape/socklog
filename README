@@ -37,7 +37,7 @@ A proper run file for supervise is:
   #!/bin/sh
   exec 2>&1
   exec envuidgid nobody socklog unix /dev/log
-
+    
 See envuidgid (# man envuidgid) and socklog (# man socklog).
 
 A proper log/run file for supervise is:
@@ -55,17 +55,17 @@ A proper log/run file for supervise is:
     -* +ftp.* ${LOGDIR}/ftp \
     -* +local*.* ${LOGDIR}/local \
     -* +*.debug* ${LOGDIR}/debug
-
+    
 See setuidgid (# man setuidgid) and multilog (# man multilog).
 -------------------------------------------------------------------------------
 you can download the package via ftp. socklog is also available as Debian GNU/
 Linux package, just add
   deb ftp://ftp.innominate.org/pub/pape/Debian potato innominate
   deb-src ftp://ftp.innominate.org/pub/pape/Debian potato innominate
-
+    
 to /etc/apt/sources.list and
   # apt-get update
-
+    
 Then install the package socklog as usual with apt, dpkg or dselect.
 -------------------------------------------------------------------------------
 See INSTALL on how to install socklog and Configuration for setting up socklog

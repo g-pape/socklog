@@ -6,11 +6,11 @@ check that you have a recent version of daemontools installed.
 unpack socklog_x.x.x.tar.gz
   # tar xfzvp socklog_x.x.x.tar.gz
   # cd socklog-x.x.x
-
+    
 run make and make install
   # make
   # make install
-
+    
 refer to Configuration for configuring and setting up socklock services.
 -------------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 socklog - configuration
 
 -------------------------------------------------------------------------------
-the installation of socklog provides two service directories for the use with
+the installation of socklog provides two service directories for the use with 
 svscan:
 
   * /etc/socklog/unix/
@@ -46,7 +46,7 @@ the correspnding run scripts:
       exec 2>&1
       exec unixserver -U `id -u nobody` /dev/log -- \
         socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
-
+          
   * a sample socklog-ucspi-unix/log/run script:
       #!/bin/sh
       LOGDIR=/var/log/socklog
@@ -62,7 +62,7 @@ the correspnding run scripts:
         -* +'*: *: ftp.*' ${LOGDIR}/ftp \
         -* +'*: *: local*.*' ${LOGDIR}/local \
         -* +'*: *: *.debug*' ${LOGDIR}/debug
-
+          
 
 disable the service socklog-unix if it is running
   # cd /service/socklog-unix

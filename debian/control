@@ -8,6 +8,7 @@ Build-Depends: debhelper, w3m
 Package: socklog
 Architecture: any
 Depends: ${shlibs:Depends}
+Provides: system-log-daemon
 Description: minimal replacement for syslogd using djb's daemontools
  socklog is run under daemontools' supervise, writing syslog messages it
  receives from an unix domain socket path (/dev/log) or an inet udp socket

@@ -1,3 +1,10 @@
+socklog (0.2.1) unstable; urgency=low
+
+  * support for solaris (thx Gary Gendel).
+  * deb: provides: system-log-daemon (thx Laurent G. Bercot).
+
+ -- Gerrit Pape <pape@innominate.com>  Tue, 19 Jun 2001 11:48:28 +0200
+
 socklog (0.2.0) unstable; urgency=low
 
   * ucspi mode added.
