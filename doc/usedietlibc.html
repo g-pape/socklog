@@ -20,12 +20,11 @@ Change to the package directory of <i>socklog</i>:
 </pre>
 Change the <tt>conf-cc</tt> and <tt>conf-ld</tt> to use <tt>diet</tt>:
 <pre>
-  # echo 'diet gcc -O2 -Wall' &gt; conf-cc
-  # echo 'diet gcc -s -Os -pipe' &gt; conf-ld
+  # echo 'diet gcc -O2 -Wall' &gt;src/conf-cc
+  # echo 'diet gcc -s -Os -pipe' &gt;src/conf-ld
 </pre>
 Rebuild and install the <i>socklog</i> programs:
 <pre>
-  # rm -rf compile
   # package/install
 </pre>
 <hr>
