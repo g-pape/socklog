@@ -41,7 +41,7 @@ EOT
 	fi
 	chown log.adm /var/log/socklog/* /var/log/socklog-remote/*
 	( \
-	cd /package/admin/socklog-0.3.0
+	cd /package/admin/socklog-0.3.2
 	package/upgrade
 	)
 
