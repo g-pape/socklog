@@ -6,12 +6,16 @@
 #include <sys/un.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 
 #include "buffer.h"
+#include "error.h"
 #include "strerr.h"
 #include "scan.h"
 #include "env.h"
 #include "prot.h"
+#include "sig.h"
+#include "open.h"
 
 #define SYSLOG_NAMES
 #include <syslog.h>
@@ -20,13 +24,20 @@
 # include <stropts.h>
 # include <sys/strlog.h>
 # include <fcntl.h>
-# include <door.h>
 # include "syslognames.h"
+#if WANT_SUN_DOOR
+# include <door.h>
+#endif
 #endif
 
 /* #define WARNING "socklog: warning: " */
 #define FATAL "socklog: fatal: "
+
+#ifdef SOLARIS
+#define USAGE " [unix|inet|ucspi|sun_stream] [args]"
+#else
 #define USAGE " [unix|inet|ucspi] [args]"
+#endif
 
 #define VERSION "$Id$"
 #define DEFAULTINET "0"
@@ -39,11 +50,19 @@ const char *progname;
 #define MODE_UNIX 0
 #define MODE_INET 1
 #define MODE_UCSPI 2
+#ifdef SOLARIS
+#define MODE_SUN_STREAM 3
+#endif
 
 int mode =MODE_UNIX;
 char line[LINEC];
 const char *address =NULL;
 char *uid, *gid;
+
+int flag_exitasap = 0;
+void sig_term_catch(void) {
+  flag_exitasap = 1;
+}
 
 void usage() {
   strerr_die4x(1, "usage: ", progname, USAGE, "\n");
@@ -79,11 +98,40 @@ void setuidgid() {
   }
 }
 
-int syslog_names (char *l, int lc, buffer *buf) {
-  int i, fp;
+int print_syslog_names(int fpr, buffer *buf) {
+  int fp =LOG_FAC(fpr) <<3;
+  CODE *p;
+  int rc =1;
+  for (p =facilitynames; p->c_name; p++) {
+    if (p->c_val == fp) {
+      buffer_puts(buf, p->c_name);
+      buffer_puts(buf, ".");
+      break;
+    }
+  }
+  if (! p->c_name) {
+    buffer_puts(buf, "unknown.");
+    rc =0;
+  }
+  fp =LOG_PRI(fpr);
+  for (p =prioritynames; p->c_name; p++) {
+    if (p->c_val == fp) {
+      buffer_puts(buf, p->c_name);
+      buffer_puts(buf, ": ");
+      break;
+    }
+  }
+  if (! p->c_name) {
+    buffer_puts(buf, "unknown: ");
+    rc =0;
+  }
+  return(rc);
+}
+
+int scan_syslog_names (char *l, int lc, buffer *buf) {
+  int i;
   int ok =0;
   int fpr =0;
-  CODE *p;
 
   if (l[0] != '<') return(0);
   for (i =1; (i < 5) && (i < lc); i++) {
@@ -98,33 +146,7 @@ int syslog_names (char *l, int lc, buffer *buf) {
     }
   }
   if (!ok || !fpr) return(0);
-  i++;
-  
-  fp =LOG_FAC(fpr) <<3;
-  for (p =facilitynames; p->c_name; p++) {
-    if (p->c_val == fp) {
-      buffer_puts(buf, p->c_name);
-      buffer_puts(buf, ".");
-      break;
-    }
-  }
-  if (! p->c_name) {
-    buffer_puts(buf, "unknown.");
-    i =0;
-  }
-  fp =LOG_PRI(fpr);
-  for (p =prioritynames; p->c_name; p++) {
-    if (p->c_val == fp) {
-      buffer_puts(buf, p->c_name);
-      buffer_puts(buf, ": ");
-      break;
-    }
-  }
-  if (! p->c_name) {
-    buffer_puts(buf, "unknown: ");
-    i =0;
-  }
-  return(i);
+  return(print_syslog_names(fpr, buf) ? ++i : 0);
 }
 
 void remote_info (struct sockaddr_in *sa) {
@@ -134,7 +156,6 @@ void remote_info (struct sockaddr_in *sa) {
   out(host, ": ");
 }
 
-#ifndef SOLARIS
 int socket_unix (const char* f) {
   int s;
   struct sockaddr_un sa;
@@ -152,7 +173,6 @@ int socket_unix (const char* f) {
   err("listening on ", f, ", ");
   return(s);
 }
-#endif
 
 int socket_inet (const char* ip, const char* port) {
   int s;
@@ -206,7 +226,7 @@ int read_socket (int s) {
     if (linec == 0) continue;
 
     if (mode == MODE_INET) remote_info(&saf);
-    os =syslog_names(line, linec, buffer_1);
+    os =scan_syslog_names(line, linec, buffer_1);
 
     buffer_put(buffer_1, line +os, linec -os);
     if (linec == LINEC) out("...", 0);
@@ -247,7 +267,7 @@ int read_ucspi (int fd, const char **vars) {
 	  err(envs[i], ": ", 0);
 	}
 	/* could fail on eg <13\0>user.notice: ... */
-	l += syslog_names(l, line -l +linec, buffer_2);
+	l += scan_syslog_names(l, line -l +linec, buffer_2);
 	p =l;
 	flageol =0;
       }
@@ -262,42 +282,58 @@ int read_ucspi (int fd, const char **vars) {
 }
 
 #ifdef SOLARIS
+#if WANT_SUN_DOOR
 static void door_proc(void *cookie, char *argp, size_t arg_size,
 		      door_desc_t *dp, uint_t ndesc) {
   door_return(NULL, 0, NULL, 0);
+  return;
 }
 
-static int stream_sun(char *address, char *door, int *dfd) {
-  int fd;
+static int door_setup(const char *door) {
+  int dfd;
+  struct door_info di;
+
+  if ( (dfd = open_trunc(door)) == -1)
+    strerr_die2sys(111, FATAL, "open_trunc(): ");
+
+  if (door_info(dfd, &di) == -1) {
+    if (errno != EBADF)
+      strerr_die2sys(111, FATAL, "door_info(): ");
+  }
+  else {
+    /*XXX: could log the pid of the door owner. */
+    if (di.di_target != -1)
+      strerr_die4x(100, FATAL, "door ", door, " allready in use.");
+  }
+  
+  close(dfd);
+  fdetach(door); /* highjack the door file */
+
+  if ((dfd =door_create(door_proc, NULL, 0)) == -1)
+    strerr_die2sys(111, FATAL, "door_create(): ");
+
+  if (fattach(dfd, door) == -1)
+    strerr_die2sys(111, FATAL, "fattach(): ");
+
+  err("door path is ", door, ", ");
+  return(dfd);
+}
+#endif /*WANT_SUN_DOOR*/
+
+static int stream_sun(const char *address) {
+  int sfd;
   struct strioctl sc;
-  struct stat st;
-  if ((fd = open(address, O_RDONLY | O_NOCTTY)) == -1)
+
+  if ((sfd = open(address, O_RDONLY | O_NOCTTY)) == -1)
     strerr_die2sys(111, FATAL, "open(): ");
   
   memset(&sc, 0, sizeof(sc));
   sc.ic_cmd =I_CONSLOG;
-  if (ioctl(fd, I_STR, &sc) < 0)
+  if (ioctl(sfd, I_STR, &sc) < 0)
     strerr_die2sys(111, FATAL, "ioctl(): ");
 
-  if (door) {
-    if (stat(door, &st) == -1) {
-      /* The door file doesn't exist, create a new one */
-      if ((*dfd =creat(door, 0666)) == -1)
-	strerr_die2sys(111, FATAL, "creat(): ");
-
-      close(*dfd);
-    }
-    fdetach(door);
-    if ((*dfd =door_create(door_proc, NULL, 0)) == -1)
-      strerr_die2sys(111, FATAL, "door_create(): ");
-
-    if (fattach(*dfd, door) == -1)
-      strerr_die2sys(111, FATAL, "fattach(): ");
-  }
-  else *dfd = -1;
-
-  err("listening on ", address, ", ");
-  return fd;
+  err("sun_stream is ", address, ", ");
+  return(sfd);
 }
 
 static void read_stream_sun(int fd) {
@@ -318,27 +354,35 @@ static void read_stream_sun(int fd) {
   
   /* read the messages */
   for (;;) {
-    if ((getmsg(fd, &ctl, &data, &flags) & MORECTL))
+
+    if ((getmsg(fd, &ctl, &data, &flags) & MORECTL) && (errno != error_intr))
       strerr_die2sys(111, FATAL, "getmsg(): ");
+
+    if (flag_exitasap)
+      return;
 
     if (data.len) {
       int shorten =data.len;
-      if (!line[shorten-1]) shorten--;
-      
+      if (!line[shorten-1])
+        shorten--;
+      while (line[shorten-1] == '\n')
+        shorten--;
+
+      (void) print_syslog_names(logctl.pri, buffer_1);
+
       buffer_put(buffer_1, line, shorten);
       if (data.len == LINEC) out("...", 0);
-      if (line[shorten-1] != '\n') out("\n", 0);
+      out("\n", 0);
+
       buffer_flush(buffer_1);
     }
   }
 }
+
 #endif
 
 int main(int argc, const char **argv, const char *const *envp) {
   int s =0;
-#ifdef SOLARIS
-  int dfd;
-#endif
   
   progname =*argv++;
   if (*argv) {
@@ -360,6 +404,11 @@ int main(int argc, const char **argv, const char *const *envp) {
     case 'i':
       mode =MODE_INET;
       break;
+#ifdef SOLARIS
+    case 's':
+      mode =MODE_SUN_STREAM;
+      break;
+#endif
     case '-':
       if ((*argv)[1] && (*argv)[1] == 'V') {
 	err(VERSION, 0, 0);
@@ -370,6 +419,7 @@ int main(int argc, const char **argv, const char *const *envp) {
     }
     argv++;
   }
+
   if (*argv) address =*argv++;
 
   switch (mode) {
@@ -383,18 +433,45 @@ int main(int argc, const char **argv, const char *const *envp) {
     s =socket_inet(address, port);
     return(read_socket(s));
   }
-  case MODE_UNIX:
+  case MODE_UNIX: {
     if (*argv) usage();
     if (!address) address =DEFAULTUNIX;
-#ifndef SOLARIS
     s =socket_unix(address);
     return(read_socket(s));
-#else
-    s =stream_sun(address, "/etc/.syslog_door", &dfd);
-    read_stream_sun(s);
-    if (dfd != -1) door_revoke(dfd);
-    return 0;
+  }
+#ifdef SOLARIS
+  case MODE_SUN_STREAM: {
+#if WANT_SUN_DOOR
+    const char *door =NULL;
+    int dfd =-1;
+    if (*argv) door =*argv++;
 #endif
+    if (!address) address =DEFAULTUNIX;
+    if (*argv) usage();
+
+    sig_catch(sig_term, sig_term_catch);
+    sig_catch(sig_int, sig_term_catch);
+
+    s =stream_sun(address);
+
+#if WANT_SUN_DOOR
+    if (door)
+      dfd = door_setup(door);
+#endif
+
+    read_stream_sun(s);
+
+#if WANT_SUN_DOOR
+    if (dfd != -1)
+      door_revoke(dfd);
+    /*
+    ** syslogd does unlink() the door file, but we can't, since we droped
+    ** all privs before.
+    */
+#endif
+    return 0;
+  }
+#endif /*SOLARIS*/
   case MODE_UCSPI:
     s =0;
     return(read_ucspi(0, argv));

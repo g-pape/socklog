@@ -27,42 +27,44 @@ variables $UID and/or $GID are present, <B>socklog</B> will drop permissions to
 those ids after creating and binding the socket (not in <I>ucspi</I> mode). <P>
 <B>socklog</B>
 converts syslog facility and priority information to names (<I>facility</I>.<I>priority</I>:)
-as found in <I>/usr/include/syslog.h</I> at compile time if present. 
+as found in <I>/usr/include/syslog.h</I> at compile time if present. <P>
+On solaris
+<B>socklog</B> also accepts <I>sun_stream</I> as first argument. Please see the web page
+for details. 
 <H2><A NAME="sect3">Unix Socket</A></H2>
-<B>socklog</B>
-[ unix ] [ <I>path</I> ] <P>
-Starting <B>socklog</B> with the 1st argument <I>unix</I>, <B>socklog</B>
-will listen to the unix domain socket <I>path</I>. If <I>path</I> is omitted, the default
-<I>/dev/log</I> is used. <P>
-The 1st argument may be omitted, default is <I>unix</I>. 
-<H2><A NAME="sect4">Inet
-Socket</A></H2>
+<B>socklog</B> [ unix ] [ <I>path</I> ] <P>
+Starting <B>socklog</B> with
+the 1st argument <I>unix</I>, <B>socklog</B> will listen to the unix domain socket <I>path</I>.
+If <I>path</I> is omitted, the default <I>/dev/log</I> is used. <P>
+The 1st argument may be
+omitted, default is <I>unix</I>. 
+<H2><A NAME="sect4">Inet Socket</A></H2>
 <B>socklog</B> inet [ <I>ip</I> ] [ <I>port</I> ] <P>
-Starting <B>socklog</B> with the 1st argument
-<I>inet</I>, <B>socklog</B> will listen to the inet udp socket <I>ip:<I>port</I>.</I> <P>
-If <I>ip</I> starts with
-0, <B>socklog</B> will bind to all local interfaces. <P>
-If <I>port</I> is less or equal 1024,
-<B>socklog</B> must be run by root. <P>
-<I>port</I> may be omitted, default is 514. <I>ip</I> may
-be omitted, default is 0. <P>
-<B>socklog</B> prepends <I>a.b.c.d:</I> to each syslog message
-it receives, where <I>a.b.c.d</I> is the ip address of the connecting system. 
-<H2><A NAME="sect5">Ucspi
-Mode</A></H2>
+Starting
+<B>socklog</B> with the 1st argument <I>inet</I>, <B>socklog</B> will listen to the inet udp
+socket <I>ip:<I>port</I>.</I> <P>
+If <I>ip</I> starts with 0, <B>socklog</B> will bind to all local interfaces.
+<P>
+If <I>port</I> is less or equal 1024, <B>socklog</B> must be run by root. <P>
+<I>port</I> may be
+omitted, default is 514. <I>ip</I> may be omitted, default is 0. <P>
+<B>socklog</B> prepends
+<I>a.b.c.d:</I> to each syslog message it receives, where <I>a.b.c.d</I> is the ip address
+of the connecting system. 
+<H2><A NAME="sect5">Ucspi Mode</A></H2>
 <B>socklog</B> ucspi [ <I>args</I> ] <P>
-Starting <B>socklog</B> with the 1st argument <I>ucspi</I>,
-<B>socklog</B> will run as an ucspi application. Normally <B>socklog</B> will only be
-started in <I>ucspi</I> mode by an ucspi server tool, such as <B><I>tcpserver</B>(1)</I> or
-<B>unixserver</B>. <P>
-For each <I>arg</I>, <B>socklog</B> will prepend $<I>arg</I>: to each syslog message,
-if the environment variable $<I>arg</I> is present (maximum is 8). <P>
+Starting <B>socklog</B>
+with the 1st argument <I>ucspi</I>, <B>socklog</B> will run as an ucspi application. Normally
+<B>socklog</B> will only be started in <I>ucspi</I> mode by an ucspi server tool, such
+as <B><I>tcpserver</B>(1)</I> or <B>unixserver</B>. <P>
+For each <I>arg</I>, <B>socklog</B> will prepend $<I>arg</I>:
+to each syslog message, if the environment variable $<I>arg</I> is present (maximum
+is 8). <P>
  <P>
  
 <H2><A NAME="sect6">Examples</A></H2>
-<I>unix</I>
-mode for listening on unix domain dgram socket <I>/dev/log</I>. a proper <I>run</I> file
-for <B><I>supervise</B>(8)</I> is: <P>
+<I>unix</I> mode for listening on unix domain dgram socket <I>/dev/log</I>.
+a proper <I>run</I> file for <B><I>supervise</B>(8)</I> is: <P>
   #!/bin/sh<BR>
    exec 2&gt;&amp;1<BR>
    exec envuidgid nobody socklog unix /dev/log<BR>

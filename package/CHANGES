@@ -1,3 +1,13 @@
+socklog-0.10.0
+Thu, 18 Jul 2002 15:45:58 +0200
+  * solaris support rewrite (thx Lars Uffmann):
+    * socklog.c: new option sun_stream; new optional option door; rewrite
+      solaris related code.
+    * socklog-conf.c: option unix: create special run script on solaris.
+    * doc/readme.solaris.html: new.
+    * (thx Lars Uffmann).
+  * documentation adapted.
+
 socklog-0.9.1
 Wed, 26 Jun 2002 15:54:06 +0200
   * Makefile: enable target sysdeps.

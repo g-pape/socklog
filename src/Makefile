@@ -86,11 +86,11 @@ byte_diff.o: byte.h byte_diff.c compile
 byte_rchr.o: byte.h byte_rchr.c compile
 	./compile byte_rchr.c
 
-#chkshsgr: chkshsgr.o load
-#	./load chkshsgr 
-#
-#chkshsgr.o: chkshsgr.c compile
-#	./compile chkshsgr.c
+chkshsgr: chkshsgr.o load
+	./load chkshsgr 
+
+chkshsgr.o: chkshsgr.c compile
+	./compile chkshsgr.c
 
 choose: choose.sh warn-auto.sh
 	rm -f choose

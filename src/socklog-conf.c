@@ -9,7 +9,14 @@
 #include "open.h"
 #include "buffer.h"
 
+#ifdef SOLARIS
+#include <sys/utsname.h>
+#include "scan.h"
+#endif
+
+#ifndef SOLARIS
 #include <paths.h>
+#endif
 #ifndef _PATH_KLOG
 #define _PATH_KLOG "/dev/klog"
 #endif
@@ -93,6 +100,14 @@ void makechdir(const char *s) {
 }
 
 void conf_unix() {
+#ifdef SOLARIS
+#if WANT_SUN_DOOR
+  struct utsname u;
+  unsigned long sunos_version;
+  uname(&u);
+  scan_ulong(u.release+strlen(u.release)-1, &sunos_version);
+#endif
+#endif
   makedir("unix");
   perm(01750);
   makedir("unix/log");
@@ -118,9 +133,25 @@ void conf_unix() {
   start("unix/run");
   outs("#!/bin/sh\n");
   outs("exec 2>&1\n");
+
+#ifndef SOLARIS
   outs("exec softlimit -m 2000000 envuidgid ");
   outs(user);
   outs(" socklog unix /dev/log\n");
+#else
+  outs("exec softlimit -d 2000000 -s 2000000 \\\n");
+  outs("envuidgid ");
+  outs(user);
+  outs(" socklog sun_stream /dev/log");
+#if WANT_SUN_DOOR
+  if (sunos_version == 7)
+    outs(" /etc/.syslog_door");
+  if (sunos_version >= 8)
+    outs(" /var/run/syslog_door");
+#endif
+  outs("\n");
+#endif
+
   finish();
   perm(0750);
 

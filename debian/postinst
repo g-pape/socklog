@@ -40,7 +40,7 @@ EOT
 			--no-create-home --ingroup adm log
 	fi
 	( \
-	cd /package/admin/socklog-0.9.1
+	cd /package/admin/socklog-0.10.0
 	package/upgrade
 	)
 
