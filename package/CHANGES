@@ -1,5 +1,5 @@
 socklog-0.7.0
-Fri,  1 Feb 2002 17:54:14 +0100
+Mon,  4 Feb 2002 11:37:13 +0100
   * install-man: symlinks now point into the correct directory:
     /package/admin/socklog/man/ (thx Mike Forster).
   * socklog.c: complete revision: dropped fdbuffer.o, switched to unix.a,
