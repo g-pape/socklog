@@ -7,7 +7,7 @@ Build-Depends: debhelper (>> 3.0.0)
 
 Package: socklog
 Architecture: any
-Depends: daemontools-run (>= 0.76.1), ${shlibs:Depends}
+Depends: daemontools (>= 0.76-1), ${shlibs:Depends}
 Provides: system-log-daemon
 Description: minimal replacement for syslogd using djb's daemontools
  socklog is run under daemontools' supervise, writing syslog messages it
