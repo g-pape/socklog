@@ -1,3 +1,11 @@
+socklog (1.4.1-2) unstable; urgency=low
+
+  * debian/diff/uncat.check.diff: new; extend timeout while checking uncat
+    program (fixes build failure on hppa).
+  * debian/rules: apply diff.
+
+ -- Gerrit Pape <pape@smarden.org>  Sun, 29 Feb 2004 16:52:17 +0000
+
 socklog (1.4.1-1) unstable; urgency=low
 
   * new upstream version.

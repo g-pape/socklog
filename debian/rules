@@ -22,6 +22,7 @@ build-arch-stamp:
 	tar xzpf socklog-1.4.1.tar.gz
 	-gcc -v
 	rm -f admin/socklog && ln -s socklog-1.4.1 admin/socklog
+	( cd admin/socklog && patch -p0 ) <debian/diff/uncat.check.diff
 	echo "$(CC) $(CFLAGS)" >admin/socklog/src/conf-cc
 	echo "$(CC) $(LDFLAGS)" >admin/socklog/src/conf-ld
 	$(MAKE) -Cadmin/socklog/src
