@@ -37,11 +37,10 @@ EOT
 		echo -n "Will proceed in 5 seconds, press Ctrl-C to abort..."
 		sleep 5s
 		adduser --system --home /var/log/socklog \
-			--no-create-home log
+			--no-create-home --group adm log
 	fi
-	chown log.adm /var/log/socklog/* /var/log/socklog-remote/*
 	( \
-	cd /package/admin/socklog-0.4.3
+	cd /package/admin/socklog-0.5.0
 	package/upgrade
 	)
 
@@ -63,5 +62,3 @@ esac
 #DEBHELPER#
 
 exit 0
-
-

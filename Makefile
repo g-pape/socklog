@@ -1,7 +1,7 @@
 DESTDIR=
 
-PACKAGE=socklog-0.4.3
-DIRS=doc man etc package src
+PACKAGE=socklog-0.5.0
+DIRS=doc man package src
 MANPAGES=man/socklog.8 man/tryto.1 man/uncat.1 man/socklog-conf.8
 DAEMONTOOLS_PD=daemontools-pd-0.76
 
@@ -27,7 +27,6 @@ $(PACKAGE).tar.gz:
 	cp -a $(DIRS) TEMP/admin/$(PACKAGE)/
 	chmod -R g-ws TEMP/admin
 	chmod +t TEMP/admin
-	chmod +t TEMP/admin/$(PACKAGE)/etc/{inet,klog,unix,ucspi-tcp}
 	find TEMP -exec touch {} \;
 	su -c 'chown -R root:root TEMP/admin ; \
 		( cd TEMP ; tar cpfz ../$(PACKAGE).tar.gz admin --exclude CVS ) ; \

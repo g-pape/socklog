@@ -9,12 +9,15 @@
 <hr>
 <h1>socklog - upgrading from previous versions</h1>
 <hr>
-<h2>0.4.0 or 0.4.1 to 0.4.3</h2>
+<h2>0.4.0 or 0.4.1 to 0.5.0</h2>
 The named pipe for log events notification has now more strict permissions
 for security reasons. It is recommended to upgrade this service if it is
-running by recreating the service directory following the instructions.
+running by stopping it, removing /etc/socklog/notify and
+/var/log/socklog/.notify and recreating the service, following the
+instructions.
 <p>
-The socklog program and the uncat program are now run by softlimit.
+The socklog program is now run by softlimit, you may consider adapting your
+run scripts.
 <hr>
 <address><a href="mailto:pape@smarden.org">
 Gerrit Pape &lt;pape@smarden.org&gt;

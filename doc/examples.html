@@ -17,7 +17,7 @@ listening on unix domain dgram socket <tt>/dev/log</tt>:
   <pre>
   #!/bin/sh
   exec 2>&1
-  exec envuidgid nobody socklog unix /dev/log
+  exec softlimit -m 2000000 envuidgid nobody socklog unix /dev/log
   </pre>
   <li>a sample <tt>socklog-unix/log/run</tt> script:
   <pre>
@@ -69,15 +69,15 @@ listening on udp network socket <tt>0.0.0.0</tt>:<tt>514</tt>:
   <pre>
   #!/bin/sh
   exec 2>&1
-  exec envuidgid nobody socklog inet 0 514
+  exec softlimit -m 2000000 envuidgid nobody socklog inet 0 514
   </pre>
   <li>a sample <tt>socklog-inet/log/run</tt> script is:
   <pre>
   #!/bin/sh
   LOGDIR=/var/log/socklog-remote
   exec setuidgid log multilog t ${LOGDIR}/main \
-    s4999999 n10 -* +'* 10.0.0.2:' ${LOGDIR}/10.0.0.2 \
-    s4999999 n10 -* +'* 10.0.0.17:' ${LOGDIR}/10.0.0.17
+    s4999999 n10 -* +'* 10.0.0.2:*' ${LOGDIR}/10.0.0.2 \
+    s4999999 n10 -* +'* 10.0.0.17:*' ${LOGDIR}/10.0.0.17
   </pre>
 </ul>
 <hr>
@@ -89,7 +89,8 @@ listening on unix domain stream socket <tt>/dev/log</tt>:
   <pre>
   #!/bin/sh
   exec 2>&1
-  exec unixserver -U `id -u nobody` /dev/log -- \
+  exec exec softlimit -m 2000000 \
+    unixserver -U `id -u nobody` /dev/log -- \
     socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
   </pre>
   <li>a sample <tt>socklog-ucspi-unix/log/run</tt> script:
@@ -112,21 +113,19 @@ listening on unix domain stream socket <tt>/dev/log</tt>:
 </ul>
 <hr>
 <h2>
-<a href="notify.html">log events notification</a> with <i>mailsubj</i>:
+A client for <a href="network.html">socklog network logging</a>:
 </h2>
 <ul>
-  <li>a sample <tt>socklog-notify/run</tt> script that injects mail using
-  <i>mailsubj</i> for notification is:
+  <li>a sample <tt>socklog-unix/log/run</tt> script that transmits the logs
+  to a network logging server running the <i>socklog-ucspi-tcp</i> service is:
   <pre>
-  #!/bin/sh -e
-  MAILTO=root
-  PIPE=/var/log/socklog/.notify
-  if [ ! -p "$PIPE" ]; then mknod "$PIPE" p; fi
-  chmod 666 "$PIPE"
-  exec < "$PIPE"
-  exec setuidgid log uncat -s49999 -t180 \
-    env QMAILUSER=log QMAILNAME='socklog notify' \
-    sh -c "mailsubj socklog-notify $MAILTO"
+  #!/bin/sh
+  LOGDIR=/var/log/socklog
+  LOGSERVERIP=10.0.0.16
+  PORT=10116
+  exec setuidgid log multilog s4096 n20 \
+    !'tryto -pv tcpclient -v $LOGSERVERIP $PORT sh -c "cat >&7"' \
+    ${LOGDIR}/main
   </pre>
 </ul>
 <hr>
