@@ -1,5 +1,5 @@
 socklog-1.1.1
-
+Mon, 07 Jul 2003 09:59:08 +0200
   * socklog-conf.c: fix typos (thx Hleil Liu); use mail -s instead of
     mailsubj for the notify service.
 
