@@ -86,6 +86,7 @@ void conf_unix() {
   makedir("unix");
   perm(01750);
   makedir("unix/log");
+  perm(0755);
   makechdir("unix/log/main");
   if (rename("unix/log/main", path) != -1) {
     if (symlink(path, "unix/log/main") == -1)
@@ -143,6 +144,7 @@ void conf_inet() {
   makedir("inet");
   perm(01750);
   makedir("inet/log");
+  perm(0755);
   makechdir("inet/log/main");
   if (rename("inet/log/main", path) != -1) {
     if (symlink(path, "inet/log/main") == -1)
@@ -175,6 +177,7 @@ void conf_ucspi_tcp() {
   makedir("ucspi-tcp");
   perm(01750);
   makedir("ucspi-tcp/log");
+  perm(0755);
   makechdir("ucspi-tcp/log/main");
   if (rename("ucspi-tcp/log/main", path) != -1) {
     if (symlink(path, "ucspi-tcp/log/main") == -1)
@@ -207,7 +210,7 @@ void conf_ucspi_tcp() {
 
 void conf_notify() {
   makedir("notify");
-  perm(01750);
+  perm(0755);
 
   umask(007);
   if (mkfifo(path, 0620) == -1)
