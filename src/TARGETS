@@ -1,5 +1,7 @@
 socklog
 socklog.o
+socklog-conf
+socklog-conf.o
 tryto
 tryto.o
 uncat

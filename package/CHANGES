@@ -1,3 +1,12 @@
+socklog 0.4.3
+Thu,  8 Nov 2001 13:55:07 +0100
+  * socklog: changed undocumented option -v to -V
+  * Makefile: does not require gnu make (thx Jordan Krushen)
+  * socklog-conf added
+  * run socklog with softlimit
+  * socklog-group mandatory, notify pipe mode 0620
+  * doc: adapted.
+
 socklog 0.4.1
 Fri, 12 Oct 2001 11:04:29 +0200
   * uncat: continue; on error_again, fixes wrong timeouts

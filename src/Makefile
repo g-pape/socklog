@@ -16,6 +16,10 @@ socklog: socklog.o fdbuffer.o
 
 socklog.o: socklog.c
 
+socklog-conf:	djb-publicdomain socklog-conf.o
+	$(CC) $(LDFLAGS) -o socklog-conf \
+		socklog-conf.o support/unix.a support/byte.a
+
 fdbuffer.o: fdbuffer.c fdbuffer.h
 
 tryto:	djb-publicdomain tryto.o
@@ -31,7 +35,7 @@ uncat:	djb-publicdomain uncat.o
 #uncat.o:	uncat.c
 
 djb-publicdomain:
-	$(MAKE) -C support
+	( cd support ; make )
 
 clean:
 	find . -name \*~ -exec rm -f {} \;

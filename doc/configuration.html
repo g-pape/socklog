@@ -9,7 +9,6 @@
 <hr>
 <h1>socklog - configuration</h1>
 <hr>
-<a href="#prepare">Prepare socklog services</a><br><br>
 <a href="#unix">The socklog-unix service</a><br>
 <a href="#inet">The socklog-inet service</a><br>
 <a href="#ucspi-tcp">The socklog-ucspi-tcp service</a><br>
@@ -37,46 +36,40 @@ udp socket (<tt>0.0.0.0:514</tt>),<br>
 <a href="notify.html">log event notification</a>.
 <hr>
 
-<a name="prepare"><br>
-To prepare running one or more <i>socklog</i> services</a>, create a
-<tt>/etc/socklog</tt> directory
-<pre>
-  # mkdir -p /etc/socklog
-</pre>
-and copy the example service directories into <tt>/etc/socklog</tt>:
-<pre>
-  # cp -pr /package/admin/socklog/etc/* /etc/socklog/
-</pre>
-To configure the services, edit the appropriate <tt>run</tt> scripts:
+<a name="unix"><br>Before starting the <i>socklog-unix</i> service</a>, you
+will have to make two decisions:
 <ul>
-  <li><tt>/etc/socklog/*/run</tt>
-  <li><tt>/etc/socklog/*/log/run</tt>
+  <li>The <i>socklog-unix</i> account name, normally <tt>nobody</tt>. The
+  <tt>socklog</tt> program runs under this account. If this account does not
+  exist, create it now.
+  <li>The <i>socklog</i> account name, normally <tt>log</tt>. Logging
+  programs run under this account. If this account does not exist, create
+  it now.
 </ul>
-<hr>
-
-<a name="unix"><br>To enable the <i>socklog-unix</i> service</a>, edit the
-corresponding <tt>run</tt> scripts for configuration:
+Create the service directory and log directories by running the
+<a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
 <pre>
-  # vi /etc/socklog/unix/run
-  # vi /etc/socklog/unix/log/run
+  # socklog-conf unix nobody log
 </pre>
-Create the users you chose to run the service daemon and
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
-if not yet done and check carefully that all log directories you stated in
-<tt>/etc/socklog/unix/log/run</tt> exist and are writable to this user.
-<p>
 If you are replacing another service providing system logging through the
-configured socket, such as syslogd, stop this service now and ensure that it
-will not be restarted on runlevel change or system reboot.
+configured socket, such as <i>syslogd</i>, stop this service now and ensure
+that it will not be restarted on runlevel change or system reboot.
 <p>
-Then link the <i>socklog-unix</i> service directory to
-<a href="http://cr.yp.to/daemontools/svscan.html">svscans</a>'s
-<i>service</i> directory:
+Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
+new service:
 <pre>
   # ln -s /etc/socklog/unix /service/socklog-unix
 </pre>
 Wait five seconds for the service to start and then check the log
 directories.
+<p>
+Optionally configure the <i>socklog-unix</i> service by
+<a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
+the corresponding <tt>run</tt> scripts:
+<ul>
+  <li>/etc/socklog/unix/run
+  <li>/etc/socklog/unix/log/run
+</ul>
 <hr>
 It is possible to replace the unix domain dgram socket listener
 <i>socklog-unix</i> with a unix domain stream socket listener using the
@@ -133,75 +126,111 @@ Wait five seconds for the service to start and then check the log
 directories.
 <hr>
 
-<a name="inet"><br>To enable the <i>socklog-inet</i> service</a>, edit the
-corresponding <tt>run</tt> scripts for configuration:
+<a name="inet"><br>Before starting the <i>socklog-inet</i> service</a>, you
+will have to make two decisions:
+<ul>
+  <li>The <i>socklog-inet</i> account name, normally <tt>nobody</tt>. The
+  <tt>socklog</tt> program runs under this account. If this account does not
+  exist, create it now.
+  <li>The <i>socklog</i> account name, normally <tt>log</tt>. Logging
+  programs run under this account. If this account does not exist, create
+  it now.
+</ul>
+Create the service directory and log directories by running the
+<a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
 <pre>
-  # vi /etc/socklog/inet/run
-  # vi /etc/socklog/inet/log/run
+  # socklog-conf inet nobody log
 </pre>
-Create the users you chose to run the service daemon and
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
-if not yet done and check carefully that all log directories you stated in
-<tt>/etc/socklog/inet/log/run</tt> exist and are writable to this user.
-<p>
 If you are replacing another service providing system logging through the
-configured udp port, such as syslogd, stop this service now and ensure that it
-will not be restarted on runlevel change or system reboot.
+configured UDP port, such as <i>syslogd</i>, stop this service now and ensure
+that it will not be restarted on runlevel change or system reboot.
 <p>
-Then link the <i>socklog-inet</i> service directory to
-<a href="http://cr.yp.to/daemontools/svscan.html">svscans</a>'s
-<i>service</i> directory:
+Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
+new service:
 <pre>
   # ln -s /etc/socklog/inet /service/socklog-inet
 </pre>
 Wait five seconds for the service to start and then check the log
 directories.
+<p>
+Optionally configure the <i>socklog-inet</i> service by
+<a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
+the corresponding <tt>run</tt> scripts:
+<ul>
+  <li>/etc/socklog/inet/run
+  <li>/etc/socklog/inet/log/run
+</ul>
 <hr>
 
-<a name="ucspi-tcp"><br>To enable the <i>socklog-ucspi-tcp</i> service</a>,
-edit the corresponding <tt>run</tt> scripts for configuration:
+<a name="ucspi-tcp">
+<br>Before starting the <i>socklog-ucspi-tcp</i> service</a>, you will have
+to make two decisions:
+<ul>
+  <li>The <i>socklog-ucspi-tcp</i> account name, normally <tt>nobody</tt>. The
+  <tt>socklog</tt> program runs under this account. If this account does not
+  exist, create it now.
+  <li>The <i>socklog</i> account name, normally <tt>log</tt>. Logging
+  programs run under this account. If this account does not exist, create
+  it now.
+</ul>
+Create the service directory and log directories by running the
+<a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
 <pre>
-  # vi /etc/socklog/ucspi-tcp/run
-  # vi /etc/socklog/ucspi-tcp/log/run
+  # socklog-conf ucspi-tcp nobody log
 </pre>
-Create the users you chose to run the service daemon and
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
-if not yet done and check carefully that all log directories you stated in
-<tt>/etc/socklog/ucspi-tcp/log/run</tt> exist and are writable to this user.
-<p>
-Then link the <i>socklog-ucspi-tcp</i> service directory to
-<a href="http://cr.yp.to/daemontools/svscan.html">svscans</a>'s
-<i>service</i> directory:
+Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
+new service:
 <pre>
   # ln -s /etc/socklog/ucspi-tcp /service/socklog-ucspi-tcp
 </pre>
 Wait five seconds for the service to start and then check the log
 directories.
+<p>
+Optionally configure the <i>socklog-ucspi-tcp</i> service by
+<a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
+the corresponding <tt>run</tt> scripts:
+<ul>
+  <li>/etc/socklog/ucspi-tcp/run
+  <li>/etc/socklog/ucspi-tcp/log/run
+</ul>
+Refer to <a href="network.html">Network logging</a> for setting up clients.
 <hr>
 
-<a name="notify"><br>To enable the <i>socklog-notify</i> service</a>, edit
-the corresponding <tt>run</tt> script for configuration:
+<a name="notify"><br>Before starting the <i>socklog-notify</i> service</a>,
+you will have to make two decisions:
+<ul>
+  <li>The <i>socklog</i> account name, normally <tt>log</tt>. The
+  <tt>uncat</tt> program runs under this account. If this account does not
+  exist, create it now.
+  <li>The <i>socklog</i> group name, normally <tt>adm</tt>. Logging
+  programs that report <a href="notify.html">log events</a> to the
+  <i>socklog-notify</i> service must run under an account that is member of
+  this group. If this group does not exist, create it now.
+</ul>
+Create the service directory by running the
+<a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
 <pre>
-  # vi /etc/socklog/notify/run
+  # socklog-conf notify log adm
 </pre>
-Create the user you chose to run the service daemon if not yet done.
-<p>
-Then link the <i>socklog-notify</i> service directory to
-<a href="http://cr.yp.to/daemontools/svscan.html">svscans</a>'s
-<i>service</i> directory:
+Tell <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a> about the
+new service:
 <pre>
   # ln -s /etc/socklog/notify /service/socklog-notify
 </pre>
-Wait five seconds for the service to start.
-<p>
-You can check the <i>socklog-notify</i> service with
+Wait five seconds for the service to start, you can test the service with:
 <pre>
   # echo test | tai64n > /var/log/socklog/.notify
 </pre>
+Optionally configure the <i>socklog-notify</i> service by
+<a href="http://cr.yp.to/daemontools/faq/create.html#upgrade">editing</a>
+the corresponding <tt>run</tt> script:
+<ul>
+  <li>/etc/socklog/notify/run
+</ul>
+Read <a href="notify.html">Log events notification</a> before disabling this
+service and for configuring arbitrary log services to notify events.
 <hr>
-See <a href="examples.html">Examples</a> for more sample <tt>run</tt>
-and <tt>log/run</tt> scripts.
-<hr>
+
 <address><a href="mailto:pape@smarden.org">
 Gerrit Pape &lt;pape@smarden.org&gt;
 </a></address>

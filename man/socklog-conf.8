@@ -1,0 +1,199 @@
+.TH socklog-conf 8
+.SH NAME
+socklog-conf \- sets up a socklog(8) service.
+.SH SYNOPSIS
+.B socklog-conf
+unix|inet|ucspi-tcp
+.I acct
+.I logacct
+.br
+.B socklog-conf
+notify
+.I acct
+.I grp
+.SH DESCRIPTION
+.B socklog-conf
+creates
+.I /etc/socklog
+if necessary and a subdirectory that runs the
+.BR unix ,
+.BR inet ,
+.B ucspi-tcp
+or
+.B notify
+service (see below for each service).
+Except for the notify service,
+.B socklog-conf
+also creates a log directory with subdirectories.
+.LP
+.IR acct ,
+.I logacct
+and
+.I grp
+must not contain any special characters.
+.SH UNIX SERVICE
+.B socklog-conf
+unix
+.I acct
+.I logacct
+.LP
+Running
+.B socklog-conf
+with the 1st argument
+.IR unix ,
+.B socklog-conf
+creates the service directory
+.I /etc/socklog/unix
+and the log directory
+.IR /var/log/socklog .
+.LP
+.B socklog-conf
+aranges for
+.BR socklog (8)
+to run under the uid and gid of
+.I acct
+and to listen for syslog messages on
+.IR /dev/log .
+.LP
+It also creates automatically rotated log directories in
+.IR /var/log/socklog .
+The logs are owned by
+.IR logacct .
+The corresponding
+.BR multilog (8)
+processes run under the uid and gid of
+.IR logacct .
+.LP
+You can run the service under
+.BR svscan (8)
+by creating a symbolic link in the service directory:
+.LP
+ln -s /etc/socklog/unix /service/socklog-unix
+.LP
+.SH INET SERVICE
+.B socklog-conf
+inet
+.I acct
+.I logacct
+.LP
+Running
+.B socklog-conf
+with the 1st argument
+.IR inet ,
+.B socklog-conf
+creates the service directory
+.I /etc/socklog/inet
+and the log directory
+.IR /var/log/socklog-inet .
+.LP
+.B socklog-conf
+aranges for
+.BR socklog (8)
+to run under the uid and gid of
+.I acct
+and to listen for syslog messages on the UDP socket
+.IR 0.0.0.0:514 .
+.LP
+It also creates automatically rotated log directories in
+.IR /var/log/socklog-inet .
+The logs are owned by
+.IR logacct .
+The corresponding
+.BR multilog (8)
+processes run under the uid and gid of
+.IR logacct .
+.LP
+You can run the service under
+.BR svscan (8)
+by creating a symbolic link in the service directory:
+.LP
+ln -s /etc/socklog/inet /service/socklog-inet
+.LP
+.SH UCSPI-TCP SERVICE
+.B socklog-conf
+ucspi-tcp
+.I acct
+.I logacct
+.LP
+Running
+.B socklog-conf
+with the 1st argument
+.IR ucspi-tcp ,
+.B socklog-conf
+creates the service directory
+.I /etc/socklog/ucspi-tcp
+and the log directory
+.IR /var/log/socklog-ucspi-tcp .
+.LP
+.B socklog-conf
+aranges for
+.BR tcpserver (1)
+to run
+.BR socklog (8)
+under the uid and gid of
+.I acct
+and to listen on the TCP socket
+.IR 0.0.0.0:10116 .
+.LP
+It also creates automatically rotated log directories in
+.IR /var/log/socklog-ucspi-tcp .
+The logs are owned by
+.IR logacct .
+The corresponding
+.BR multilog (8)
+processes run under the uid and gid of
+.IR logacct .
+.LP
+You can run the service under
+.BR svscan (8)
+by creating a symbolic link in the service directory:
+.LP
+ln -s /etc/socklog/ucspi-tcp /service/socklog-ucspi-tcp
+.LP
+.SH NOTIFY SERVICE
+.B socklog-conf
+notify
+.I acct
+.I grp
+.LP
+Running
+.B socklog-conf
+with the 1st argument
+.IR notify ,
+.B socklog-conf
+creates the service directory
+.IR /etc/socklog/notify .
+.LP
+.B socklog-conf
+aranges for
+.BR uncat (1)
+to run under the uid and gid of
+.I acct
+and to listen on the named pipe
+.IR /var/log/socklog/.notify .
+The named pipe will have mode 0620, the uid of
+.I acct
+and the gid of
+.IR grp .
+.LP
+All uids running a log service that is configured to push log events to the
+socklog-notify service must be member of the group
+.IR grp .
+.LP
+You can run the service under
+.BR svscan (8)
+by creating a symbolic link in the service directory:
+.LP
+ln -s /etc/socklog/notify /service/socklog-notify
+.LP
+.SH SEE ALSO
+socklog(8),
+multilog(8),
+tcpserver(1),
+tryto(1),
+uncat(1)
+.LP
+ http://innominate.org/~pape/socklog/
+ http://cr.yp.to/daemontools.html
+.SH AUTHOR
+Gerrit Pape <pape@smarden.org>

@@ -390,9 +390,9 @@ int main(int argc, char** argv) {
       mode =MODE_INET;
       break;
     case '-':
-      if ((*argv)[1] && (*argv)[1] == 'v') {
+      if ((*argv)[1] && (*argv)[1] == 'V') {
 	write(2, VERSION, strlen(VERSION));
-	write(2, "\n", 1);
+	write(2, "\n\n", 2);
       }
     default:
       usage();

@@ -29,7 +29,9 @@ Choose a log controlled by
 <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
 to be watched for log events, say <tt>/service/dnscache/log/main/</tt>.
 <p>
-Make sure that the service <i>socklog-notify</i> is running.
+Make sure the account running this log service is member of the
+<i>socklog</i> group <tt>adm</tt>. If it isn't, change it now. Make sure
+that the <i>socklog-notify</i> service is running.
 <p>
 Redirect the standard error output <tt>stderr</tt> of
 <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>

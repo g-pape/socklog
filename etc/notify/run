@@ -3,8 +3,8 @@
 MAILTO=root
 PIPE=/var/log/socklog/.notify
 
-if [ ! -p "$PIPE" ]; then mknod "$PIPE" p; fi
-chmod 666 "$PIPE"
+if [ ! -p "$PIPE" ]; then mkfifo -m0620 "$PIPE"; fi
+chown log:adm "$PIPE"
 
 exec < "$PIPE"
 exec setuidgid log uncat -s49999 -t180 \

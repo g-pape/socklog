@@ -1,8 +1,8 @@
 DESTDIR=
 
-PACKAGE=socklog-0.4.1
+PACKAGE=socklog-0.4.3
 DIRS=doc man etc package src
-MANPAGES=man/socklog.8 man/tryto.1 man/uncat.1
+MANPAGES=man/socklog.8 man/tryto.1 man/uncat.1 man/socklog-conf.8
 DAEMONTOOLS_PD=daemontools-pd-0.76
 
 all: clean .manpages $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz

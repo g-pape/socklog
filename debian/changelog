@@ -1,3 +1,14 @@
+socklog (0.4.3-1) woody; urgency=low
+
+  * socklog: changed undocumented option -v to -V
+  * Makefile: does not require gnu make (thx Jordan Krushen)
+  * socklog-conf added
+  * run socklog with softlimit
+  * socklog-group mandatory, notify fifo mode 0620
+  * doc: adapted.
+
+ -- Gerrit Pape <pape@smarden.org>  Sat, 10 Nov 2001 13:15:07 +0100
+
 socklog (0.4.1-1) woody; urgency=low
 
   * uncat: continue; on error_again, fixes wrong timeouts
