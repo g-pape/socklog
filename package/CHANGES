@@ -1,6 +1,7 @@
 socklog-1.1.1
 
-  * socklog-conf.c: fix typos (thx Hleil Liu).
+  * socklog-conf.c: fix typos (thx Hleil Liu); use mail -s instead of
+    mailsubj for the notify service.
 
 socklog-1.1.0
 Thu, 19 Jun 2003 15:40:52 +0200

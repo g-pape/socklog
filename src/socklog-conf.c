@@ -289,8 +289,8 @@ void conf_notify() {
   outs("exec setuidgid ");
   outs(user);
   outs(" uncat -s49999 -t180 \\\n");
-  outs("  env QMAILUSER=log QMAILNAME='socklog notify' \\\n");
-  outs("    mailsubj socklog-notify $MAILTO\n");
+  outs("  env MAILUSER=log MAILNAME='socklog notify' \\\n");
+  outs("    mail -s socklog-notify $MAILTO\n");
   finish();
   perm(0750);
 }
