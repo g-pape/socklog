@@ -17,7 +17,7 @@
 #define TIMEOUT 300
 #define SIZEMAX 1024
 
-#define USAGE " [ -v ] [ -t timeout ] [ -s size ] prog"
+#define USAGE " [ -v ] [ -o ] [ -t timeout ] [ -s size ] prog"
 #define WARNING "uncat: warning: "
 #define FATAL "uncat: fatal: "
 
@@ -37,6 +37,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
   unsigned long timeout =TIMEOUT;
   unsigned long sizemax =SIZEMAX;
   int verbose =0;
+  int once =0;
   static stralloc sa;
   int eof =0;
 
@@ -45,7 +46,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
   sig_block(sig_term);
   sig_catch(sig_term, exit_asap);
 
-  while ((opt =getopt(argc, argv, "t:s:vV")) != opteof) {
+  while ((opt =getopt(argc, argv, "t:s:voV")) != opteof) {
     switch(opt) {
     case 'V':
       strerr_warn1("$Id$\n", 0);
@@ -61,6 +62,9 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       break;
     case 'v':
       verbose =1;
+      break;
+    case 'o':
+      once =1;
       break;
     }
   }
@@ -113,8 +117,8 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 	strerr_die2sys(111, FATAL, "unable to read fd 0: ");
       }
       if (r == 0) {
-	++eof;
 	if (verbose) strerr_warn2(WARNING, "end of input.", 0);
+	if (once) eof++;
 	break;
       }
       if (r >= sizemax) r =sizemax;

@@ -31,8 +31,9 @@ The <i>socklog-notify</i> handles
 <a href="notify.html">log event notification</a>.
 <hr>
 
-<a name="unix"><br>Before starting the <i>socklog-unix</i> service</a>, you
-will have to make two decisions:
+<h3><a name="unix">The socklog-unix service</a></h3>
+Before starting the <i>socklog-unix</i> service, you will have to make two
+decisions:
 <ul>
   <li>The <i>socklog-unix</i> account name, normally <tt>nobody</tt>. The
   <tt>socklog</tt> program runs under this account. If this account does not
@@ -121,8 +122,9 @@ Wait five seconds for the service to start and then check the log
 directories.
 <hr>
 
-<a name="inet"><br>Before starting the <i>socklog-inet</i> service</a>, you
-will have to make two decisions:
+<h3><a name="inet">The socklog-inet service</a></h3>
+Before starting the <i>socklog-inet</i> service, you will have to make two
+decisions:
 <ul>
   <li>The <i>socklog-inet</i> account name, normally <tt>nobody</tt>. The
   <tt>socklog</tt> program runs under this account. If this account does not
@@ -157,13 +159,13 @@ the corresponding <tt>run</tt> scripts:
 </ul>
 <hr>
 
-<a name="ucspi-tcp">
-<br>Before starting the <i>socklog-ucspi-tcp</i> service</a>, you will have
+<h3><a name="ucspi-tcp">The socklog-ucspi-tcp service</a></h3>
+Before starting the <i>socklog-ucspi-tcp</i> service</a>, you will have
 to make two decisions:
 <ul>
-  <li>The <i>socklog-ucspi-tcp</i> account name, normally <tt>nobody</tt>. The
-  <tt>socklog</tt> program runs under this account. If this account does not
-  exist, create it now.
+  <li>The <i>socklog-ucspi-tcp</i> account name, normally <tt>nobody</tt>.
+  The <tt>socklog</tt> program runs under this account. If this account
+  does not exist, create it now.
   <li>The <i>socklog</i> account name, normally <tt>log</tt>. Logging
   programs run under this account. If this account does not exist, create
   it now.
@@ -191,8 +193,9 @@ the corresponding <tt>run</tt> scripts:
 Refer to <a href="network.html">Network logging</a> for setting up clients.
 <hr>
 
-<a name="notify"><br>Before starting the <i>socklog-notify</i> service</a>,
-you will have to make two decisions:
+<h3><a name="notify">The socklog-notify service</a></h3>
+Before starting the <i>socklog-notify</i> service</a>, you will have to
+make two decisions:
 <ul>
   <li>The <i>socklog</i> account name, normally <tt>log</tt>. The
   <tt>uncat</tt> program runs under this account. If this account does not

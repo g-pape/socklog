@@ -1,3 +1,9 @@
+socklog 0.5.3
+Sat, 22 Dec 2001 15:45:49 +0100
+  * uncat: new option -o: once, exit on eof
+  * uncat: manpage adapted
+  * doc: minor changes
+
 socklog 0.5.1
 Tue, 20 Nov 2001 11:36:23 +0100
   * package socklog moved to smarden.org
