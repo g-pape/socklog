@@ -14,8 +14,10 @@
     log events. There is an interval in seconds for the creation of
     notifications to prevent a flood.
     <p>
-      For setting up this service, see
-      <a href="configuration.html">Configuration</a>.
+      Set up the <tt>socklog-notify</tt> service as described in
+      <a href="configuration.html">Configuration</a> to ensure that the
+      named pipe <tt>/var/log/socklog/.notify</tt> exists. Do not delete
+      this file after creation.
     <p>
       <tt>socklog-notify</tt> is handled by the
       <a href="uncat.1.html">uncat</a> program.
@@ -24,6 +26,8 @@
     Choose a log controlled by
     <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
     to be watched for log events, say <tt>/service/dnscache/log/main/</tt>.
+    <p>
+      Make sure that the service <tt>socklog-notify</tt> is running.
     <p>
       Redirect the standard error output <tt>stderr</tt> of
       <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
@@ -44,12 +48,16 @@
       If you want to be notified about all log entries showing <tt>stats</tt>,
       add a corresponding <tt>script</tt> to the
       <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
-      configuration in <tt>/service/dnscache/log/run</tt>:
+      configuration in <tt>/service/dnscache/log/run</tt> like this:
     <pre>
   #!/bin/sh
   exec 2> /var/log/socklog/.notify
   exec setuidgid dnslog multilog t s1000000 ./main \
     -* '+* stats *' e
+    </pre>
+    Then restart the log service:
+    <pre>
+  # svc -t /service/dnscache/log
     </pre>
     <hr>
     <h2>how to configure the notification</h2>
@@ -71,8 +79,12 @@
   exec setuidgid log uncat -vs49999 -t90 \
     sh -c 'head -c140 | sms_client pager'
     </pre>
+    Then restart the service:
+    <pre>
+  # svc -t /service/socklog-notify
+    </pre>
     <p>
-      Or try this:
+      Another example using <i>wall</i>:
     <pre>
   exec setuidgid log uncat -vs49999 -t180 \
     sh -c 'head | wall'

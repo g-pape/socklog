@@ -60,8 +60,9 @@
     <p>
       The <tt>socklog-notify</tt> service has no <tt>log/run</tt> script,
       just make sure the user running <a href="uncat.1.html">uncat</a>
-      exists and has permissions to create the named pipe <tt>$PIPE</tt>,
-      see the <tt>run</tt> script.
+      exists and has permissions to create the named pipe
+      <tt>/var/log/socklog/.notify</tt>, <tt>/var/log/socklog/</tt> must
+      exist, see the <tt>run</tt> script.
     <p>
       If you are replacing another service providing system logging, such
       as syslogd, stop this service now and ensure that it will not be
