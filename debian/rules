@@ -5,11 +5,12 @@ ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
   STRIP =: nostrip
 endif
 
-CFLAGS =-O2 -Wall
+CFLAGS =-g -O2 -Wall
 LDFLAGS =
 CC =gcc
 ifneq (,$(findstring diet,$(DEB_BUILD_OPTIONS)))
   CC =diet -v -Os gcc
+  CFLAGS =-Wall
 endif
 
 DIR =`pwd`/debian/socklog
@@ -48,7 +49,7 @@ install-arch: deb-checkdir deb-checkuid build-arch-stamp
 	  install -m0755 admin/socklog/src/$$i "$(DIR)"/usr/sbin/ || exit 1; \
 	done
 	$(STRIP) -R .comment -R .note "$(DIR)"/usr/sbin/*
-	for i in tryto uncat; do \
+	for i in socklog-check tryto uncat; do \
 	  install -m0755 admin/socklog/src/$$i "$(DIR)"/usr/bin/ || exit 1; \
 	done
 	$(STRIP) -R .comment -R .note "$(DIR)"/usr/bin/*
