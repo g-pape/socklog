@@ -15,7 +15,7 @@ configure-stamp:
 build: build-arch build-indep
 
 build-arch: build-arch-stamp
-build-arch-stamp: configure
+build-arch-stamp: configure-stamp
 	dh_testdir
 
 	tar xzvpf socklog-1.2.0.tar.gz
