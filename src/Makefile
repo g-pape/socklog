@@ -19,13 +19,13 @@ uncat: load uncat.o unix.a byte.a time.a
 socklog-conf.o: compile
 	./compile socklog-conf.c
 
-socklog.o: compile
+socklog.o: compile socklog.c
 	./compile socklog.c
 
-tryto.o: compile iopause.h uint64.h
+tryto.o: compile tryto.c iopause.h uint64.h
 	./compile tryto.c
 
-uncat.o: compile
+uncat.o: compile uncat.c iopause.h uint64.h
 	./compile uncat.c
 
 clean:
