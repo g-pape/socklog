@@ -1,4 +1,4 @@
-socklog (0.3.2-1) woody; urgency=low
+socklog (0.3.5-1) woody; urgency=low
 
   * new: tryto, uncat.
   * new: network logging concept.
