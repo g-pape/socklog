@@ -1,3 +1,10 @@
+socklog (0.3.0-1) unstable; urgency=low
+
+  * installs into /package (see http://cr.yp.to/slashpackage.html).
+  * no code changes.
+
+ -- Gerrit Pape <pape@innominate.com>  Tue, 14 Aug 2001 12:26:02 +0200
+
 socklog (0.2.2) unstable; urgency=low
 
   * LDFLAGS for solaris in Makefile.

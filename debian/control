@@ -2,12 +2,12 @@ Source: socklog
 Section: admin
 Priority: optional
 Maintainer: Gerrit Pape <pape@innominate.com>
-Standards-Version: 3.0.1
-Build-Depends: debhelper, w3m
+Standards-Version: 3.5.2
+Build-Depends: debhelper (>> 3.0.0)
 
 Package: socklog
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: daemontools-run (>= 0.76.1), ${shlibs:Depends}
 Provides: system-log-daemon
 Description: minimal replacement for syslogd using djb's daemontools
  socklog is run under daemontools' supervise, writing syslog messages it

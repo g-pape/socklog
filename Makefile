@@ -12,12 +12,11 @@ archive:
 	chmod -R g-ws TEMP/admin
 	chmod +t TEMP/admin
 	chmod +t TEMP/admin/$(PACKAGE)/etc/{inet,klog,unix}
-	chown -R root:root TEMP/admin
-	( cd TEMP ; tar cpfz ../$(PACKAGE).tar.gz admin )
+	su -c 'chown -R root:root TEMP/admin ; \
+		( cd TEMP ; tar cpfz ../$(PACKAGE).tar.gz admin ) ; \
+		rm -rf TEMP'
 
 clean:
-	rm -rf TEMP
-	rm -f $(PACKAGE).tar.gz
 	find . -name \*~ -exec rm -f {} \;
 	find . -name .??*~ -exec rm -f {} \;
 	find . -name \#?* -exec rm -f {} \;
