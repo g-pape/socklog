@@ -6,15 +6,15 @@
 <title>uncat(1) manual page</title>
 </head>
 <body bgcolor='white'>
-<a href='#toc'>Table of Contents</a><p>
+<a href='http://smarden.org/pape/'>G. Pape</a><br><a href='index.html'>socklog</A><hr><p>
 
-<h2><a name='sect0' href='#toc0'>Name</a></h2>
+<h2><a name='sect0'>Name</a></h2>
 uncat - continuously reads stdin, splits up the data either by timeout
 or number of bytes read to process it 
-<h2><a name='sect1' href='#toc1'>Synopsis</a></h2>
+<h2><a name='sect1'>Synopsis</a></h2>
 <b>uncat</b> [ <b>-v</b> ] [ <b>-o</b> ] [ <b>-t</b> <i>seconds</i>
 ] [ <b>-s</b> <i>size</i> ] <i>prog</i> 
-<h2><a name='sect2' href='#toc2'>Description</a></h2>
+<h2><a name='sect2'>Description</a></h2>
 <b>uncat</b> continuously reads stdin and repeatedly
 processes the data either after <i>seconds</i> timeout or maximal number of bytes
 <i>size</i> read. To process the data, <b>uncat</b> starts <i>prog</i> and feeds the data into
@@ -27,7 +27,7 @@ and continues to read stdin. <p>
 Note that <b>uncat</b> is not crash proof. <p>
 <b>uncat</b> is
 used to run the <i>socklog-notify</i> service. 
-<h2><a name='sect3' href='#toc3'>Options</a></h2>
+<h2><a name='sect3'>Options</a></h2>
 
 <dl>
 
@@ -48,20 +48,20 @@ timeout to <i>seconds</i> seconds. Default is 300. </dd>
 of bytes to <i>size</i>. Default is 1024. </dd>
 </dl>
 
-<h2><a name='sect4' href='#toc4'>Signals</a></h2>
+<h2><a name='sect4'>Signals</a></h2>
 If <b>uncat</b> receives a TERM signal,
 it starts to process the data in memory and exits as soon as possible. <p>
 <b>uncat</b>
 also does this on end of input if the <b>-o</b> option was given. 
-<h2><a name='sect5' href='#toc5'>Exit Codes</a></h2>
+<h2><a name='sect5'>Exit Codes</a></h2>
 <b>uncat</b>
 returns 0 after receiving a TERM signal. <b>uncat</b> returns 111 on error. 
-<h2><a name='sect6' href='#toc6'>See
+<h2><a name='sect6'>See
 Also</a></h2>
 <i>socklog(8)</i>, <i>socklog-conf(8)</i>, <i>runsv(8)</i>, <i>svlogd(8)</i>, <i>tryto(1)</i> <p>
 <i>http://smarden.org/socklog/</i>
 
-<h2><a name='sect7' href='#toc7'>Author</a></h2>
+<h2><a name='sect7'>Author</a></h2>
 Gerrit Pape &lt;pape@smarden.org&gt; <p>
 
 <hr><p>

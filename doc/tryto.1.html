@@ -6,15 +6,15 @@
 <title>tryto(1) manual page</title>
 </head>
 <body bgcolor='white'>
-<a href='#toc'>Table of Contents</a><p>
+<a href='http://smarden.org/pape/'>G. Pape</a><br><a href='index.html'>socklog</A><hr><p>
 
-<h2><a name='sect0' href='#toc0'>Name</a></h2>
+<h2><a name='sect0'>Name</a></h2>
 tryto - tries to run a command limited by a timeout or number of tries,
 can be used to run as <i>svlogd(8)</i> processor. 
-<h2><a name='sect1' href='#toc1'>Synopsis</a></h2>
+<h2><a name='sect1'>Synopsis</a></h2>
 <b>tryto</b> [ <b>-pv</b> ] [ <b>-t</b> <i>sec</i>
 ] [ <b>-k</b> <i>ksec</i> ] [ <b>-n</b> <i>tries</i> ] <i>prog</i> 
-<h2><a name='sect2' href='#toc2'>Description</a></h2>
+<h2><a name='sect2'>Description</a></h2>
 <i>prog</i> consist of one or more arguments.
 <p>
 <b>tryto</b> runs and watches <i>prog</i>, feeding its standard input to <i>prog</i>&rsquo;s standard
@@ -30,7 +30,7 @@ The main purpose
 of <b>tryto</b> is to run as <i><b>svlogd</b>(8)</i> or <i><b>multilog</b>(8)</i> processor (see below). Without
 the <b>-p</b> option, <b>tryto</b> does just a subset of what <i><b>timelimit</b>(8)</i> from Peter
 Pentchev provides. 
-<h2><a name='sect3' href='#toc3'>Options</a></h2>
+<h2><a name='sect3'>Options</a></h2>
 
 <dl>
 
@@ -56,7 +56,7 @@ seconds. Default is 5. </dd>
 before starting <i>prog</i> again. Default is 5. </dd>
 </dl>
 
-<h2><a name='sect4' href='#toc4'>Processor</a></h2>
+<h2><a name='sect4'>Processor</a></h2>
 If <b>tryto</b> sees the <b>-p</b> option,
 <b>tryto</b> runs as a <i><b>svlogd</b>(8)</i> or <i><b>multilog</b>(8)</i> processor, making use of filedescriptors
 4 and 5: <p>
@@ -70,7 +70,7 @@ If <i>prog</i> fails by timeout <i>sec</i>
 seconds or maximal number of <i>tries</i>, <b>tryto</b> prints all data from standard
 input to standard output, an error message to standard error and exits
 with 0. 
-<h2><a name='sect5' href='#toc5'>Exit Codes</a></h2>
+<h2><a name='sect5'>Exit Codes</a></h2>
 If <b>tryto</b> itself fails, it returns 111. <p>
 If <b>tryto</b> runs as
 a <i><b>svlogd</b>(8)</i> processor, <b>tryto</b> returns 0 in all other cases. <p>
@@ -81,11 +81,11 @@ If <i>prog</i> failed by timeout, <b>tryto</b> returns
 If <i>prog</i> failed by maximal number of <i>tries</i>, <b>tryto</b> returns the last exit
 code from <i>prog</i>. <p>
 
-<h2><a name='sect6' href='#toc6'>See Also</a></h2>
+<h2><a name='sect6'>See Also</a></h2>
 <i>socklog(8)</i>, <i>uncat(1)</i>, <i>svlogd(8)</i>, <i>multilog(8)</i>, <i>lseek(2)</i>,
 <i>timelimit(8)</i> <p>
 <i>http://smarden.org/socklog/</i> 
-<h2><a name='sect7' href='#toc7'>Author</a></h2>
+<h2><a name='sect7'>Author</a></h2>
 Gerrit Pape &lt;pape@smarden.org&gt;
 <p>
 

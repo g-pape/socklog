@@ -9,9 +9,9 @@ all: clean .manpages $(PACKAGE).tar.gz
 .manpages:
 	for i in $(MANPAGES); do \
 	  rman -S -f html -r '' < $$i | \
-	  sed -e 's}NAME="sect\([0-9]*\)" HREF="#toc[0-9]*">\(.*\)}NAME="sect\1">\2}g ; \
-	  s}<A HREF="#toc">Table of Contents</A>}<a href="http://smarden.org/pape/">G. Pape</a><br><A HREF="index.html">socklog</A><hr>}g ; \
-	  s}<!--.*-->}}g' \
+	  sed -e "s}name='sect\([0-9]*\)' href='#toc[0-9]*'>\(.*\)}name='sect\1'>\2}g ; \
+	  s}<a href='#toc'>Table of Contents</a>}<a href='http://smarden.org/pape/'>G. Pape</a><br><a href='index.html'>socklog</A><hr>}g ; \
+	  s}<!--.*-->}}g" \
 	  > doc/`basename $$i`.html ; \
 	done ; \
 	touch .manpages

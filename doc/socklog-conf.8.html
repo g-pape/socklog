@@ -6,22 +6,22 @@
 <title>socklog-conf(8) manual page</title>
 </head>
 <body bgcolor='white'>
-<a href='#toc'>Table of Contents</a><p>
+<a href='http://smarden.org/pape/'>G. Pape</a><br><a href='index.html'>socklog</A><hr><p>
 
-<h2><a name='sect0' href='#toc0'>Name</a></h2>
+<h2><a name='sect0'>Name</a></h2>
 socklog-conf - sets up a <i>socklog(8)</i> service. 
-<h2><a name='sect1' href='#toc1'>Synopsis</a></h2>
+<h2><a name='sect1'>Synopsis</a></h2>
 <b>socklog-conf</b> unix|inet|klog|ucspi-tcp
 <i>acct</i> <i>logacct</i> <br>
 <b>socklog-conf</b> notify <i>acct</i> <i>grp</i> 
-<h2><a name='sect2' href='#toc2'>Description</a></h2>
+<h2><a name='sect2'>Description</a></h2>
 <b>socklog-conf</b> creates <i>/etc/socklog</i>
 if necessary and a subdirectory that runs the <b>unix</b>, <b>inet</b>, <b>ucspi-tcp</b> or <b>notify</b>
 service (see below for each service). Except for the notify service, <b>socklog-conf</b>
 also creates a log directory with subdirectories. <p>
 <i>acct</i>, <i>logacct</i> and <i>grp</i>
 must not contain any special characters. 
-<h2><a name='sect3' href='#toc3'>UNIX Service</a></h2>
+<h2><a name='sect3'>UNIX Service</a></h2>
 <b>socklog-conf</b> unix <i>acct</i>
 <i>logacct</i> <p>
 Running <b>socklog-conf</b> with the 1st argument <i>unix</i>, <b>socklog-conf</b> creates
@@ -38,7 +38,7 @@ the service directory: <p>
 ln -s /etc/socklog/unix /var/service/socklog-unix
 <p>
 
-<h2><a name='sect4' href='#toc4'>Inet Service</a></h2>
+<h2><a name='sect4'>Inet Service</a></h2>
 <b>socklog-conf</b> inet <i>acct</i> <i>logacct</i> <p>
 Running <b>socklog-conf</b> with the
 1st argument <i>inet</i>, <b>socklog-conf</b> creates the service directory <i>/etc/socklog/inet</i>
@@ -54,7 +54,7 @@ service under <i><b>runsvdir</b>(8)</i> by creating a symbolic link in the servi
 <p>
 ln -s /etc/socklog/inet /var/service/socklog-inet <p>
 
-<h2><a name='sect5' href='#toc5'>Klog Service</a></h2>
+<h2><a name='sect5'>Klog Service</a></h2>
 <b>socklog-conf</b>
 klog <i>acct</i> <i>logacct</i> <p>
 Running <b>socklog-conf</b> with the 1st argument <i>klog</i>, <b>socklog-conf</b>
@@ -71,7 +71,7 @@ by creating a symbolic link in the service directory: <p>
 ln -s /etc/socklog/klog
 /var/service/socklog-klog <p>
 
-<h2><a name='sect6' href='#toc6'>Ucspi-tcp Service</a></h2>
+<h2><a name='sect6'>Ucspi-tcp Service</a></h2>
 <b>socklog-conf</b> ucspi-tcp <i>acct</i> <i>logacct</i>
 <p>
 Running <b>socklog-conf</b> with the 1st argument <i>ucspi-tcp</i>, <b>socklog-conf</b> creates
@@ -88,7 +88,7 @@ a symbolic link in the service directory: <p>
 ln -s /etc/socklog/ucspi-tcp /var/service/socklog-ucspi-tcp
 <p>
 
-<h2><a name='sect7' href='#toc7'>Notify Service</a></h2>
+<h2><a name='sect7'>Notify Service</a></h2>
 <b>socklog-conf</b> notify <i>acct</i> <i>grp</i> <p>
 Running <b>socklog-conf</b> with the
 1st argument <i>notify</i>, <b>socklog-conf</b> creates the service directory <i>/etc/socklog/notify</i>.
@@ -104,12 +104,12 @@ by creating a symbolic link in the service directory: <p>
 ln -s /etc/socklog/notify
 /var/service/socklog-notify <p>
 
-<h2><a name='sect8' href='#toc8'>See Also</a></h2>
+<h2><a name='sect8'>See Also</a></h2>
 <i>socklog(8)</i>, <i>svlogd(8)</i>, <i>nc(1)</i>, <i>tryto(1)</i>,
 <i>uncat(1)</i>, <i>tcpsvd(8)</i> <p>
  <i>http://smarden.org/socklog/</i><br>
  
-<h2><a name='sect9' href='#toc9'>Author</a></h2>
+<h2><a name='sect9'>Author</a></h2>
 Gerrit Pape &lt;pape@smarden.org&gt; <p>
 
 <hr><p>
