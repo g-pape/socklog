@@ -1,11 +1,10 @@
 DESTDIR=
 
-PACKAGE=socklog-0.8.1
+PACKAGE=socklog-0.8.2
 DIRS=doc man package src
 MANPAGES=man/socklog.8 man/tryto.1 man/uncat.1 man/socklog-conf.8
-DAEMONTOOLS_PD=daemontools-pd-0.76
 
-all: clean .manpages $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz
+all: clean .manpages $(PACKAGE).tar.gz
 
 .manpages:
 	for i in $(MANPAGES); do \
@@ -17,13 +16,10 @@ all: clean .manpages $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz
 	done ; \
 	touch .manpages
 
-$(DAEMONTOOLS_PD).tar.gz:
-	tar cpfz $(DAEMONTOOLS_PD).tar.gz $(DAEMONTOOLS_PD) --exclude CVS
-
 $(PACKAGE).tar.gz:
 	rm -rf TEMP
 	mkdir -p TEMP/admin/$(PACKAGE)
-	make -C src clean
+	( cd src ; make clean )
 	cp -a $(DIRS) TEMP/admin/$(PACKAGE)/
 	chmod -R g-ws TEMP/admin
 	chmod +t TEMP/admin
@@ -41,11 +37,3 @@ cleaner: clean
 	rm -f $(PACKAGE).tar.gz
 	for i in $(MANPAGES); do rm -f doc/`basename $$i`.html; done
 	rm -f .manpages
-
-cleanest: cleaner
-	rm -f $(DAEMONTOOLS_PD).tar.gz
-
-install-manpages:
-	install -m 0644 doc/socklog.8 /usr/local/man/man8/socklog.8
-	install -m 0644 doc/tryto.1 /usr/local/man/man1/tryto.1
-	install -m 0644 doc/uncat.1 /usr/local/man/man1/uncat.1
