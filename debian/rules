@@ -59,7 +59,7 @@ binary-arch: build install
 #	dh_installdebconf	
 	dh_installdocs
 #	dh_installexamples
-	dh_installman man/socklog-conf.8 man/socklog.8 man/tryto.1 man/uncat.1
+	dh_installman admin/socklog/man/*.[18]
 #	dh_undocumented
 	dh_installchangelogs 
 	dh_link
