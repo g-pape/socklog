@@ -76,9 +76,8 @@ uses <i>sms_client</i> to notify:
 <pre>
   #!/bin/sh -e
   PIPE=/var/log/socklog/.notify
-  if [ ! -p "$PIPE" ]; then mknod "$PIPE" p; fi
-  chmod 666 "$PIPE"
-  exec < "$PIPE"
+  if [ ! -p "$PIPE" ]; then mkfifo -m0620 "$PIPE"; chown log:adm "$PIPE"; fi
+  exec <> "$PIPE"
   exec setuidgid log uncat -s49999 -t90 \
     sh -c 'head -c140 | sms_client pager'
 </pre>
