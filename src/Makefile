@@ -15,8 +15,8 @@ all: socklog-conf socklog tryto uncat
 socklog-conf: djb-publicdomain socklog-conf.o
 	$(LD) socklog-conf support/unix.a support/byte.a
 
-socklog: socklog.o fdbuffer.o
-	$(LD) socklog fdbuffer.o $(LDFLAGS)
+socklog: djb-publicdomain socklog.o
+	$(LD) socklog support/unix.a support/byte.a $(LDFLAGS)
 
 tryto:	djb-publicdomain tryto.o
 	$(LD) tryto support/unix.a support/byte.a support/time.a

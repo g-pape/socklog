@@ -1,3 +1,10 @@
+socklog-0.6.4
+Fri,  1 Feb 2002 12:07:08 +0100
+  * install-man: symlinks now point into the correct directory:
+    /package/admin/socklog/man/ (thx Mike Forster).
+  * socklog.c: complete revision: dropped fdbuffer.o, switched to unix.a,
+    byte.a support libraries (now in the Public domain).
+
 socklog-0.6.1
 Thu, 17 Jan 2002 11:43:36 +0100
   * bug: socklog.c: error in recvfrom() was not catched (thx Liviu Daia)

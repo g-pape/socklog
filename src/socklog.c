@@ -1,16 +1,15 @@
-#include "fdbuffer.h"
-
 #include <sys/types.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/un.h>
 #include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <grp.h>
+
+#include "buffer.h"
+#include "strerr.h"
+#include "scan.h"
+#include "env.h"
+#include "prot.h"
 
 #define SYSLOG_NAMES
 #include <syslog.h>
@@ -23,15 +22,18 @@
 # include "syslognames.h"
 #endif
 
-#define LINEC 1024
+/* #define WARNING "socklog: warning: " */
+#define FATAL "socklog: fatal: "
 #define USAGE " [unix|inet|ucspi] [args]"
+
 #define VERSION "$Id$"
 #define DEFAULTINET "0"
 #define DEFAULTPORT "514"
 #define DEFAULTUNIX "/dev/log"
 
-char *progname;
+const char *progname;
 
+#define LINEC 1024
 #define MODE_UNIX 0
 #define MODE_INET 1
 #define MODE_UCSPI 2
@@ -40,42 +42,38 @@ int mode =MODE_UNIX;
 char line[LINEC];
 const char *address =NULL;
 char *uid, *gid;
-char buf[1024];
-fdbuffer fdbuf;
 
 void usage() {
-  write(2, "usage: ", 7);
-  write(2, progname, strlen(progname));
-  write(2, USAGE, strlen(USAGE));
-  write(2, "\n\n", 2);
-  exit(1);
+  strerr_die4x(1, "usage: ", progname, USAGE, "\n");
+}
+
+void out(const char *s1, const char *s2) {
+  if (s1) buffer_puts(buffer_1, s1);
+  if (s2) buffer_puts(buffer_1, s2);
+}
+void err(const char *s1, const char *s2, const char *s3) {
+  if (s1) buffer_puts(buffer_2, s1);
+  if (s2) buffer_puts(buffer_2, s2);
+  if (s3) buffer_puts(buffer_2, s3);
 }
 
 void setuidgid() {
   /* drop permissions */
-  if ((gid = getenv("GID")) != NULL) {
-    int g =atoi(gid);
-    
-    write(2, "gid=", 4);
-    write(2, gid, strlen(gid));
-    write(2, ", ", 2);
-    if (setgroups(1, &g)) {
-      perror("setgroups");
-      usage();
-    }
-    if (setgid(g) == -1) {
-      perror("setgid");
-      usage();
-    }
+  if ((gid = env_get("GID")) != NULL) {
+    unsigned long g;
+
+    scan_ulong(gid, &g);
+    err("gid=", gid, ", ");
+    if (prot_gid(g) == -1)
+      strerr_die2sys(111, FATAL, "unable to setgid: ");
   }
-  if ((uid = getenv("UID")) != NULL) {
-    write(2, "uid=", 4);
-    write(2, uid, strlen(uid));
-    write(2, ", ", 2);
-    if (setuid(atoi(uid)) == -1) {
-      perror("setuid");
-      usage();
-    }
+  if ((uid = env_get("UID")) != NULL) {
+    unsigned long u;
+
+    scan_ulong(uid, &u);
+    err("uid=", uid, ", ");
+    if (prot_uid(u) == -1)
+      strerr_die2sys(111, FATAL, "unable to setuid: ");
   }
 }
 
@@ -103,25 +101,23 @@ int syslog_names (char *l, int lc) {
   fp =LOG_FAC(fpr) <<3;
   for (p =facilitynames; p->c_name; p++) {
     if (p->c_val == fp) {
-      fdbuffer_write(&fdbuf, p->c_name, strlen(p->c_name));
-      fdbuffer_write(&fdbuf, ".", 1);
+      out(p->c_name, ".");
       break;
     }
   }
   if (! p->c_name) {
-    fdbuffer_write(&fdbuf, "unknown.", 8);
+    out("unknown.", 0);
     i =0;
   }
   fp =LOG_PRI(fpr);
   for (p =prioritynames; p->c_name; p++) {
     if (p->c_val == fp) {
-      fdbuffer_write(&fdbuf, p->c_name, strlen(p->c_name));
-      fdbuffer_write(&fdbuf, ": ", 2);
+      out(p->c_name, ": ");
       break;
     }
   }
   if (! p->c_name) {
-    fdbuffer_write(&fdbuf, "unknown: ", 9);
+    out("unknown: ", 0);
     i =0;
   }
   return(i);
@@ -131,8 +127,7 @@ void remote_info (struct sockaddr_in *sa) {
   char *host;
 
   host =inet_ntoa(sa->sin_addr);
-  fdbuffer_write(&fdbuf, host, strlen(host));
-  fdbuffer_write(&fdbuf, ": ", 2);
+  out(host, ": ");
 }
 
 #ifndef SOLARIS
@@ -140,27 +135,24 @@ int socket_unix (const char* f) {
   int s;
   struct sockaddr_un sa;
   
-  if ((s =socket(AF_UNIX, SOCK_DGRAM, 0)) == -1) {
-    perror("socket");
-    exit(1);
-  }
+  if ((s =socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
+    strerr_die2sys(111, FATAL, "socket(): ");
+
   sa.sun_family =AF_UNIX;
   strncpy(sa.sun_path, f, sizeof(sa.sun_path));
   unlink(f);
   umask(0);
-  if (bind(s, (struct sockaddr*) &sa, sizeof sa) == -1) {
-    perror("bind");
-    exit(1);
-  }
-  write(2, "listening on ", 13);
-  write(2, f, strlen(f));
-  write(2, ", ", 2);
+  if (bind(s, (struct sockaddr*) &sa, sizeof sa) == -1)
+    strerr_die2sys(111, FATAL, "bind(): ");
+
+  err("listening on ", f, ", ");
   return(s);
 }
 #endif
 
 int socket_inet (const char* ip, const char* port) {
   int s;
+  unsigned long p;
   struct sockaddr_in sa;
   
   if (ip[0] == '0') {
@@ -168,39 +160,33 @@ int socket_inet (const char* ip, const char* port) {
   } else {
 #ifndef SOLARIS
     if (inet_aton(ip, &sa.sin_addr) == 0) {
-      perror("inet_aton");
-      usage();
+      strerr_die2sys(111, FATAL, "inet_aton(): ");
     }
 #else
     sa.sin_addr.s_addr =inet_addr(ip);
 #endif
   }
-  if ((s =socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
-    perror("socket");
-    exit(1);
-  }
+  if ((s =socket(AF_INET, SOCK_DGRAM, 0)) == -1)
+    strerr_die2sys(111, FATAL, "socket(): ");
+  if (scan_ulong(port, &p) == 0)
+    strerr_die3x(111, FATAL, "bad port number: ", port);
+
   sa.sin_family =AF_INET;
-  sa.sin_port =htons(atoi(port));
-  if (bind(s, (struct sockaddr*) &sa, sizeof sa) == -1) {
-    perror("bind");
-    exit(1);
-  }
+  sa.sin_port =htons(p);
+  if (bind(s, (struct sockaddr*) &sa, sizeof sa) == -1)
+    strerr_die2sys(111, FATAL, "bind(): ");
+
   ip =inet_ntoa(sa.sin_addr);
-  write(2, "listening on ", 13);
-  write(2, ip, strlen(ip));
-  write(2, ":", 1);
-  write(2, port, strlen(port));
-  write(2, ", ", 2);
+  err("listening on ", ip, 0);
+  err(":", port, ", ");
   return(s);
 }
 
 int read_socket (int s) {
-  fdbuffer_init(&fdbuf, buf, 1024, 1);
-
   /* drop permissions */
   setuidgid();
 
-  write(2, "starting.\n", 10);
+  buffer_putsflush(buffer_2, "starting.\n");
 
   for(;;) {
     struct sockaddr_in saf;
@@ -209,34 +195,30 @@ int read_socket (int s) {
     int os;
     
     linec =recvfrom(s, line, LINEC, 0, (struct sockaddr *) &saf, &dummy);
-    if (linec == -1) {
-      perror("recvfrom");
-      exit(1);
-    }
+    if (linec == -1)
+      strerr_die2sys(111, FATAL, "recvfrom(): ");
+
     while (linec && (line[linec -1] == 0)) linec--;
     if (linec == 0) continue;
 
     if (mode == MODE_INET) remote_info(&saf);
     os =syslog_names(line, linec);
 
-    fdbuffer_write(&fdbuf, line +os, linec -os);
-    if (linec == LINEC) fdbuffer_write(&fdbuf, "...", 3);
-    if (line[linec -1] != '\n') fdbuffer_write(&fdbuf, "\n", 1);
-    fdbuffer_flush(&fdbuf);
+    buffer_put(buffer_1, line +os, linec -os);
+    if (linec == LINEC) out("...", 0);
+    if (line[linec -1] != '\n') out("\n", 0);
+    buffer_flush(buffer_1);
   }
 }
 
-int read_ucspi (int fd, char** vars) {
+int read_ucspi (int fd, const char **vars) {
   char *envs[9];
   int flageol =1;
   int i;
   
-  fdbuffer_init(&fdbuf, buf, 1024, 2);
-  
   for (i =0; *vars && (i < 8); vars++) {
-    if ((envs[i] =getenv(*vars)) != NULL) {
+    if ((envs[i] =env_get(*vars)) != NULL)
       i++;
-    }
   }
   envs[i] =NULL;
   
@@ -244,15 +226,13 @@ int read_ucspi (int fd, char** vars) {
     int linec;
     char *l, *p;
     
-    linec =read(fd, line, LINEC);
-    if (linec == -1) {
-      fdbuffer_flush(&fdbuf);
-      perror("read");
-      return(1);
-    }
+    linec =buffer_get(buffer_0, line, LINEC);
+    if (linec == -1)
+      strerr_die2sys(111, FATAL, "read(): ");
+
     if (linec == 0) {
-      if (! flageol) fdbuffer_write(&fdbuf, "\n", 1);
-      fdbuffer_flush(&fdbuf);
+      if (! flageol) err("\n", 0, 0);
+      buffer_flush(buffer_2);
       return(0);
     }
     
@@ -260,8 +240,7 @@ int read_ucspi (int fd, char** vars) {
       if (flageol) {
 	if (! *l || (*l == '\n')) continue;
 	for (i =0; envs[i]; i++) {
-	  fdbuffer_write(&fdbuf, envs[i], strlen(envs[i]));
-	  fdbuffer_write(&fdbuf, ": ", 2);
+	  err(envs[i], ": ", 0);
 	}
 	/* could fail on eg <13\0>user.notice: ... */
 	l += syslog_names(l, line -l +linec);
@@ -269,13 +248,12 @@ int read_ucspi (int fd, char** vars) {
 	flageol =0;
       }
       if (! *l || (*l == '\n')) {
-	fdbuffer_write(&fdbuf, p, l -p);
-	fdbuffer_write(&fdbuf, "\n", 1);
-	fdbuffer_flush(&fdbuf);
+	buffer_put(buffer_2, p, l -p);
+	buffer_putsflush(buffer_2, "\n");
 	flageol =1;
       }
     }
-    if (!flageol) fdbuffer_write(&fdbuf, p, l -p);
+    if (!flageol) buffer_put(buffer_2, p, l -p);
   }
 }
 
@@ -289,40 +267,32 @@ static int stream_sun(char *address, char *door, int *dfd) {
   int fd;
   struct strioctl sc;
   struct stat st;
-  if ((fd = open(address, O_RDONLY | O_NOCTTY)) == -1) {
-    perror("open");
-    exit(1);
-  }
+  if ((fd = open(address, O_RDONLY | O_NOCTTY)) == -1)
+    strerr_die2sys(111, FATAL, "open(): ");
   
   memset(&sc, 0, sizeof(sc));
   sc.ic_cmd =I_CONSLOG;
-  if (ioctl(fd, I_STR, &sc) < 0) {
-    perror("ioctl");
-    exit(1);
-  }
+  if (ioctl(fd, I_STR, &sc) < 0)
+    strerr_die2sys(111, FATAL, "ioctl(): ");
+
   if (door) {
     if (stat(door, &st) == -1) {
       /* The door file doesn't exist, create a new one */
-      if ((*dfd =creat(door, 0666)) == -1) {
-	perror("creat");
-	exit(1);
-      }
+      if ((*dfd =creat(door, 0666)) == -1)
+	strerr_die2sys(111, FATAL, "creat(): ");
+
       close(*dfd);
     }
     fdetach(door);
-    if ((*dfd =door_create(door_proc, NULL, 0)) == -1) {
-      perror("door_create");
-      exit(1);
-    }
-    if (fattach(*dfd, door) == -1) {
-      perror("fattach");
-      exit(1);
-    }
+    if ((*dfd =door_create(door_proc, NULL, 0)) == -1)
+      strerr_die2sys(111, FATAL, "door_create(): ");
+
+    if (fattach(*dfd, door) == -1)
+      strerr_die2sys(111, FATAL, "fattach(): ");
   }
   else *dfd = -1;
-  write(2, "listening on ", 13);
-  write(2, address, strlen(address));
-  write(2, ", ", 2);
+
+  err("listening on ", address, ", ");
   return fd;
 }
 
@@ -330,9 +300,6 @@ static void read_stream_sun(int fd) {
   struct strbuf ctl, data;
   struct log_ctl logctl;
   int flags;
-  
-  /* Initialize buffer */
-  fdbuffer_init(&fdbuf, buf, LINEC, 1);
   
   ctl.maxlen =ctl.len =sizeof(logctl);
   ctl.buf =(char *) &logctl;
@@ -343,28 +310,27 @@ static void read_stream_sun(int fd) {
   
   setuidgid();
   
-  write(2, "starting.\n", 10);
+  buffer_putsflush(buffer_2, "starting.\n");
   
   /* read the messages */
   for (;;) {
-    if ((getmsg(fd, &ctl, &data, &flags) & MORECTL)) {
-      perror("getmsg");
-      return;
-    }
+    if ((getmsg(fd, &ctl, &data, &flags) & MORECTL))
+      strerr_die2sys(111, FATAL, "getmsg(): ");
+
     if (data.len) {
       int shorten =data.len;
       if (!line[shorten-1]) shorten--;
       
-      fdbuffer_write(&fdbuf, line, shorten);
-      if (data.len == LINEC) fdbuffer_write(&fdbuf, "...", 3);
-      if (line[shorten-1] != '\n') fdbuffer_write(&fdbuf, "\n", 1);
-      fdbuffer_flush(&fdbuf);
+      buffer_put(buffer_1, line, shorten);
+      if (data.len == LINEC) out("...", 0);
+      if (line[shorten-1] != '\n') out("\n", 0);
+      buffer_flush(buffer_1);
     }
   }
 }
 #endif
 
-int main(int argc, char** argv) {
+int main(int argc, const char **argv, const char *const *envp) {
   int s =0;
 #ifdef SOLARIS
   int dfd;
@@ -392,8 +358,8 @@ int main(int argc, char** argv) {
       break;
     case '-':
       if ((*argv)[1] && (*argv)[1] == 'V') {
-	write(2, VERSION, strlen(VERSION));
-	write(2, "\n\n", 2);
+	err(VERSION, 0, 0);
+	buffer_putsflush(buffer_2, "\n\n");
       }
     default:
       usage();
