@@ -27,7 +27,7 @@ $(PACKAGE).tar.gz:
 	cp -a $(DIRS) TEMP/admin/$(PACKAGE)/
 	chmod -R g-ws TEMP/admin
 	chmod +t TEMP/admin
-	chmod +t TEMP/admin/$(PACKAGE)/etc/{inet,klog,unix}
+	chmod +t TEMP/admin/$(PACKAGE)/etc/{inet,klog,unix,notify,ucspi-tcp}
 	su -c 'chown -R root:root TEMP/admin ; \
 		( cd TEMP ; tar cpfz ../$(PACKAGE).tar.gz admin --exclude CVS ) ; \
 		rm -rf TEMP'
