@@ -9,7 +9,18 @@
 <hr>
 <h1>socklog - benefits</h1>
 <hr>
-<h2>logfile rotation based on file size</h2>
+<a href="#logrotation">Logfile rotation based on file size</a><br>
+<a href="#selecting">Selecting and deselecting log entries</a><br>
+<a href="#network">Modular, reliable network logging</a><br>
+<a href="#sortable">Sortable logs</a><br>
+<a href="#smallcode">Small code size</a>
+<hr>
+Most of the benefits described here are actually benefits of
+<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>. But since
+<i>socklog</i> uses <i>multilog</i> as its backend, the benefits apply
+to <i>syslogging</i> with <i>socklog</i>.
+<hr>
+<h2><a name="logrotation">Logfile rotation based on file size</a></h2>
 <p>
 <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
 supports automatically rotated logs, there is no need for any other
@@ -55,6 +66,56 @@ this service, but will ever have the recent ones.
 Please note that above numbers could change if you use 
 <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
 with a <i>processor</i>.
+<hr>
+<h2><a name="selecting">Selecting and deselecting log entries</a></h2>
+<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a> supports
+selecting and deselecting log lines based on pattern matching, see the
+<a href="http://cr.yp.to/daemontools/multilog.html">multilog documentation</a>
+for details.
+<p>
+This is much more flexible than the usual <i>syslogd</i> support for
+selecting log entries by <tt>facility</tt> and <tt>priority</tt>. Of course,
+selecting entries by <tt>facility</tt> or <tt>priority</tt> is still possible
+with <i>socklog</i> and
+<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>, just like
+the default <i>socklog-unix</i> configuration shows.
+<p>
+This line selection feature is also used for <i>socklog</i>'s instant
+<a href="notify.html">Log events notification</a>.
+<hr>
+<h2><a name="network">Modular, reliable network logging</a></h2>
+The <i>socklog-inet</i> service can be used to replace a <i>syslog</i>
+network server, receiving log messages on UDP port 514. Usually
+<i>syslog</i> clients try to transmit their logs to that port using UDP.
+This is just for compatibility.
+<p>
+<i>socklog</i> does not support this UDP network logging on the client
+side. <i>socklog</i> provides a different modular, reliable
+<a href="network.html">Network logging concept</a> instead. Logs are
+transmitted through network using a TCP connection in the default
+configuration, log transmission failures are catched. The modular design
+of <a href="http://cr.yp.to/daemontools.html">daemontools</a> and
+<i>socklog</i> makes it possible to insert encryption, authentication,
+compression, and more easily.
+<hr>
+<h2><a name="sortable">Sortable logs</a></h2>
+If <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a> is
+told to add timestamps to log lines, the resulting logs are sortable (with
+<tt>sort</tt> for example). So it is possible to merge different logs and
+sort them chronoligically without special efford.
+<hr>
+<h2><a name="smallcode">Small code size</a></h2>
+One of the <i>socklog</i> project's principles is to keep the code size
+minimal. As of version 0.8.0 of <i>socklog</i>, the <tt>socklog.c</tt>
+source contains only about 400 lines of code; the <tt>uncat.c</tt> source is
+about 200 lines of code.
+<p>
+This minimizes the possibility of bugs introduced by programmer's fault,
+and makes it more easy for security related people to proofread the source
+code.
+<p>
+Of course this also means that <i>socklog</i> never will evolve to a
+multi-/overfeatured, blown up project.
 <hr>
 <address><a href="mailto:pape@smarden.org">
 Gerrit Pape &lt;pape@smarden.org&gt;
