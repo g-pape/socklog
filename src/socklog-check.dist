@@ -1,0 +1,10 @@
+$Id$
+usage: socklog-check unix [address]
+
+1
+listening on socklog.check.socket, starting.
+0
+socklog-check: info: successfully connected to socklog.check.socket
+0
+socklog-check: warning: unable to connect socket: socklog.check.socket: connection refused
+111

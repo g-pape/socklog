@@ -40,7 +40,7 @@ deb-checkuid:
 	@if test -r debian/$*.NEWS.Debian; then \
 	  sh -cx 'install -m0644 debian/$*.NEWS.Debian \
 	    debian/$*/usr/share/doc/$*/NEWS.Debian && \
-	      @gzip -9 debian/$*/usr/share/doc/$*/NEWS.Debian'; \
+	      gzip -9 debian/$*/usr/share/doc/$*/NEWS.Debian'; \
 	fi
 %.deb-docs-examples:
 	@rm -rf debian/$*/usr/share/doc/$*/examples

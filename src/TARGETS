@@ -1,5 +1,7 @@
 socklog
 socklog.o
+socklog-check
+socklog-check.o
 socklog-conf
 socklog-conf.o
 tryto
@@ -108,7 +110,8 @@ uint64.h
 unix.a
 wait_nohang.o
 wait_pid.o
-socklog-conf.local
 socklog.local
+socklog-check.local
+socklog-conf.local
 tryto.local
 uncat.local

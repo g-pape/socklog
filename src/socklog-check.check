@@ -1,0 +1,16 @@
+#!/bin/sh
+
+socklog-check -V
+echo $?
+
+socklog unix socklog.check.socket &
+pid=$!
+socklog-check unix socklog.check.socket
+echo $?
+socklog-check -v unix socklog.check.socket
+echo $?
+kill -TERM "$pid"
+wait
+socklog-check unix socklog.check.socket
+echo $?
+rm -f socklog.check.socket

@@ -1,0 +1,57 @@
+
+
+
+<html>
+<head>
+<title>socklog-check(8) manual page</title>
+</head>
+<body bgcolor='white'>
+<a href='http://smarden.org/pape/'>G. Pape</a><br><a href='index.html'>socklog</A><hr><p>
+
+<h2><a name='sect0'>Name</a></h2>
+socklog-check - checks for the availability of a <i>socklog(8)</i> service. 
+<h2><a name='sect1'>Synopsis</a></h2>
+<b>socklog-check</b>
+[ <b>-v</b> ] [ unix [ <i>address</i> ] ] 
+<h2><a name='sect2'>Description</a></h2>
+<b>socklog-check</b> attempts to connect
+to a <i><b>socklog</b>(8)</i> unix service and reports whether the connection attempt
+succeeded or not. <p>
+It connects to the datagram oriented unix domain socket
+<i>address</i>, and reports success through the return code. If <i>address</i> is not
+specified, <b>socklog-check</b> attempts to connect to <i>/dev/log</i>. 
+<h2><a name='sect3'>Options</a></h2>
+
+<dl>
+
+<dt><b>-v</b> </dt>
+<dd>verbose.
+Print verbose message to standard error. </dd>
+</dl>
+
+<h2><a name='sect4'>Exit Codes</a></h2>
+On success <b>socklog-check</b>
+returns 0. <p>
+On error, <b>socklog-check</b> prints a message to standard error and
+exits 111. 
+<h2><a name='sect5'>See Also</a></h2>
+<i>socklog(8)</i>, <i>socklog-conf(8)</i>, <i>svlogd(8)</i>, <i>nc(1)</i>, <i>tryto(1)</i>,
+<i>uncat(1)</i>, <i>tcpsvd(8)</i> <p>
+ <i>http://smarden.org/socklog/</i><br>
+ 
+<h2><a name='sect6'>Author</a></h2>
+Gerrit Pape &lt;pape@smarden.org&gt; <p>
+
+<hr><p>
+<a name='toc'><b>Table of Contents</b></a><p>
+<ul>
+<li><a name='toc0' href='#sect0'>Name</a></li>
+<li><a name='toc1' href='#sect1'>Synopsis</a></li>
+<li><a name='toc2' href='#sect2'>Description</a></li>
+<li><a name='toc3' href='#sect3'>Options</a></li>
+<li><a name='toc4' href='#sect4'>Exit Codes</a></li>
+<li><a name='toc5' href='#sect5'>See Also</a></li>
+<li><a name='toc6' href='#sect6'>Author</a></li>
+</ul>
+</body>
+</html>

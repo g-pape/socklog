@@ -1,6 +1,6 @@
 $Id$
 
-usage: socklog [-rR] [unix|inet|ucspi] [args]
+usage: socklog [-rRU] [unix|inet|ucspi] [args]
 
 1
 listening on socklog.check.socket, starting.

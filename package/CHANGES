@@ -1,3 +1,14 @@
+socklog 1.5.0
+  * socklog-check, man/socklog-check.8: new; check for the availability of
+    a socklog service.
+  * socklog-check.check, socklog-check.dist: new; program test.
+  * byte_zero.c: new.
+  * socklog.c, man/socklog.8: new option -U: don't override umask when
+    creating domain socket.
+  * package/check, package/compile, package/install-man, package/upgrade:
+    minor cleanup.
+  * Makefile, man/socklog-conf.8: adapt.
+
 socklog 1.4.2
 Tue, 23 Mar 2004 18:16:17 +0000
   * doc/index.html, doc/install.html: minor.

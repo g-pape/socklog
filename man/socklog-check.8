@@ -1,0 +1,52 @@
+.TH socklog-check 8
+.SH NAME
+socklog-check \- checks for the availability of a socklog(8) service.
+.SH SYNOPSIS
+.B socklog-check
+[
+.B \-v
+] [
+unix
+[
+.I address
+] ]
+.SH DESCRIPTION
+.B socklog-check
+attempts to connect to a
+.BR socklog (8)
+unix service and reports whether the connection attempt succeeded or not.
+.P
+It connects to the datagram oriented unix domain socket
+.IR address ,
+and reports success through the return code.
+If
+.I address
+is not specified,
+.B socklog-check
+attempts to connect to
+.IR /dev/log .
+.SH OPTIONS
+.TP
+.B \-v
+verbose.
+Print verbose message to standard error.
+.SH EXIT CODES
+On success
+.B socklog-check
+returns 0.
+.P
+On error,
+.B socklog-check
+prints a message to standard error and exits 111.
+.SH SEE ALSO
+socklog(8),
+socklog-conf(8),
+svlogd(8),
+nc(1),
+tryto(1),
+uncat(1),
+tcpsvd(8)
+.LP
+ http://smarden.org/socklog/
+.SH AUTHOR
+Gerrit Pape <pape@smarden.org>

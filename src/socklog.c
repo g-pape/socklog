@@ -36,9 +36,9 @@
 #define FATAL "socklog: fatal: "
 
 #ifdef SOLARIS
-#define USAGE " [-rR] [unix|inet|ucspi|sun_stream] [args]"
+#define USAGE " [-rRU] [unix|inet|ucspi|sun_stream] [args]"
 #else
-#define USAGE " [-rR] [unix|inet|ucspi] [args]"
+#define USAGE " [-rRU] [unix|inet|ucspi] [args]"
 #endif
 
 #define VERSION "$Id$"
@@ -61,6 +61,7 @@ char line[LINEC];
 const char *address =NULL;
 char *uid, *gid;
 unsigned int lograw =0;
+unsigned int noumask =0;
 
 int flag_exitasap = 0;
 void sig_term_catch(void) {
@@ -165,11 +166,11 @@ int socket_unix (const char* f) {
   
   if ((s =socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
     strerr_die2sys(111, FATAL, "socket(): ");
-
+  byte_zero(&sa, sizeof(sa));
   sa.sun_family =AF_UNIX;
   strncpy(sa.sun_path, f, sizeof(sa.sun_path));
   unlink(f);
-  umask(0);
+  if (! noumask) umask(0);
   if (bind(s, (struct sockaddr*) &sa, sizeof sa) == -1)
     strerr_die2sys(111, FATAL, "bind(): ");
 
@@ -182,6 +183,7 @@ int socket_inet (const char* ip, const char* port) {
   unsigned long p;
   struct sockaddr_in sa;
   
+  byte_zero(&sa, sizeof(sa));
   if (ip[0] == '0') {
     sa.sin_addr.s_addr =INADDR_ANY;
   } else {
@@ -412,10 +414,11 @@ int main(int argc, const char **argv, const char *const *envp) {
   
   progname =*argv;
 
-  while ((opt =getopt(argc, argv, "rRV")) != opteof) {
+  while ((opt =getopt(argc, argv, "rRUV")) != opteof) {
     switch(opt) {
     case 'r': lograw =1; break;
     case 'R': lograw =2; break;
+    case 'U': noumask =1; break;
     case 'V':
       err(VERSION, 0, 0);
       buffer_putsflush(buffer_2, "\n\n");

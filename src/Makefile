@@ -1,8 +1,8 @@
-IT=socklog-conf socklog tryto uncat
+IT=socklog socklog-check socklog-conf tryto uncat
 
 default: sysdeps $(IT)
 
-check: $(IT) check-socklog-unix check-socklog-inet
+check: default check-socklog-unix check-socklog-inet
 	./check-local $(IT)
 
 socklog-conf: load socklog-conf.o unix.a byte.a
@@ -10,6 +10,9 @@ socklog-conf: load socklog-conf.o unix.a byte.a
 
 socklog: load socklog.o unix.a byte.a socket.lib
 	./load socklog unix.a byte.a `cat socket.lib`
+
+socklog-check: load socklog-check.o unix.a byte.a socket.lib
+	./load socklog-check unix.a byte.a `cat socket.lib`
 
 tryto: load tryto.o unix.a byte.a time.a
 	./load tryto unix.a byte.a time.a
@@ -28,6 +31,9 @@ socklog-conf.o: compile socklog-conf.c
 
 socklog.o: compile socklog.c
 	./compile socklog.c
+
+socklog-check.o: compile socklog-check.c
+	./compile socklog-check.c
 
 tryto.o: compile tryto.c iopause.h uint64.h
 	./compile tryto.c
@@ -86,12 +92,12 @@ buffer_read.o: buffer.h buffer_read.c compile
 buffer_write.o: buffer.h buffer_write.c compile
 	./compile buffer_write.c
 
-byte.a: byte_chr.o byte_copy.o byte_cr.o byte_diff.o byte_rchr.o \
+byte.a: byte_chr.o byte_copy.o byte_cr.o byte_diff.o byte_rchr.o byte_zero.o \
 fmt_uint.o fmt_uint0.o fmt_ulong.o makelib scan_ulong.o str_chr.o \
 str_diff.o str_len.o str_start.o
 	./makelib byte.a byte_chr.o byte_copy.o byte_cr.o byte_diff.o \
-	byte_rchr.o fmt_uint.o fmt_uint0.o fmt_ulong.o scan_ulong.o str_chr.o \
-	str_diff.o str_len.o str_start.o
+	byte_rchr.o byte_zero.o fmt_uint.o fmt_uint0.o fmt_ulong.o \
+	scan_ulong.o str_chr.o str_diff.o str_len.o str_start.o
 
 byte_chr.o: byte.h byte_chr.c compile
 	./compile byte_chr.c
@@ -107,6 +113,9 @@ byte_diff.o: byte.h byte_diff.c compile
 
 byte_rchr.o: byte.h byte_rchr.c compile
 	./compile byte_rchr.c
+
+byte_zero.o: byte.h byte_zero.c compile
+	./compile byte_zero.c
 
 chkshsgr: chkshsgr.o load
 	./load chkshsgr 

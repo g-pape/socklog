@@ -4,7 +4,7 @@ socklog \- small and secure syslogd replacement for use with runit
 .SH SYNOPSIS
 .B socklog
 [
-.B \-rR
+.B \-rRU
 ] [
 unix
 ] [
@@ -164,12 +164,20 @@ converted to names, to the pipe.
 .B \-R
 raw only.
 Same as \-r above, but write the raw syslog messages only.
+.TP
+.B \-U
+respect umask.
+Don't set umask to 777 before creating a unix domain socket, but respect
+the current setting of
+.BR umask (2).
+This option only takes effect in unix mode.
 .SH SEE ALSO
 runsvdir(8),
 runsv(8),
 svlogd(8),
 tryto(1),
 uncat(1),
+socklog-check(8),
 tcpsvd(8),
 nc(1)
 .LP
