@@ -12,6 +12,7 @@ archive:
 	chmod -R g-ws TEMP/admin
 	chmod +t TEMP/admin
 	chmod +t TEMP/admin/$(PACKAGE)/etc/{inet,klog,unix}
+	chown -R root:root TEMP/admin
 	( cd TEMP ; tar cpfz ../$(PACKAGE).tar.gz admin )
 
 clean:
