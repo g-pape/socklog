@@ -1,6 +1,3 @@
 command:syst
-compile:syst
 package:dist
 src:dist
-doc:dist
-man:dist
