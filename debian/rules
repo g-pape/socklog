@@ -110,7 +110,7 @@ binary-arch: build install
 #	dh_installmime
 #	dh_installinit
 #	dh_installcron
-	dh_installman man/socklog.8 man/tryto.1 man/uncat.1
+	dh_installman man/socklog-conf.8 man/socklog.8 man/tryto.1 man/uncat.1
 #	dh_installinfo
 #	dh_undocumented
 	dh_installchangelogs 
