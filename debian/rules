@@ -47,29 +47,34 @@ install: build
 	#	$(MAKE) install DESTDIR=$(CURDIR)/debian/socklog
 
 	chmod 1755 debian/socklog/package
-	tar xfzvp socklog-0.3.0.tar.gz -C debian/socklog/package
+	tar xfzvp socklog-0.3.2.tar.gz -C debian/socklog/package
+	mkdir -p debian/socklog/package/admin/socklog-0.3.2/compile
+	tar xfzvp daemontools-pd-0.76.tar.gz \
+		-C debian/socklog/package/admin/socklog-0.3.2/compile
+	( cd debian/socklog/package/admin/socklog-0.3.2/compile ; \
+		ln -s daemontools-pd-0.76 support )
 	( \
-	cd debian/socklog/package/admin/socklog-0.3.0 ; \
+	cd debian/socklog/package/admin/socklog-0.3.2 ; \
 	package/compile ; \
-	echo "/package/admin/socklog-0.3.0" > compile/home ; \
+	echo "/package/admin/socklog-0.3.2" > compile/home ; \
 	rm -f compile/src ; \
-	ln -s /package/admin/socklog-0.3.0/src compile/src ; \
+	ln -s /package/admin/socklog-0.3.2/src compile/src ; \
 	)
 
 	# /etc/socklog
-	cp -pr debian/socklog/package/admin/socklog-0.3.0/etc/* \
+	cp -pr debian/socklog/package/admin/socklog-0.3.2/etc/* \
 		debian/socklog/etc/socklog/
 
 	# create debian/links
 	rm -f debian/links
 	for i in \
-	 `cat debian/socklog/package/admin/socklog-0.3.0/package/commands` ; \
+	 `cat debian/socklog/package/admin/socklog-0.3.2/package/commands` ; \
 	do \
 	  echo "/package/admin/socklog/command/$$i /command/$$i" \
 		>> debian/links ; \
 	done
 	for i in \
-	 `cat debian/socklog/package/admin/socklog-0.3.0/package/commands` ; \
+	 `cat debian/socklog/package/admin/socklog-0.3.2/package/commands` ; \
 	do \
 	  echo "/command/$$i /usr/local/bin/$$i" \
 		>> debian/links ; \
@@ -93,7 +98,7 @@ binary-arch: build install
 #	dh_installmime
 #	dh_installinit
 #	dh_installcron
-	dh_installman doc/socklog.8
+	dh_installman man/socklog.8 man/tryto.1 man/uncat.1
 #	dh_installinfo
 #	dh_undocumented
 	dh_installchangelogs 

@@ -1,10 +1,11 @@
 DESTDIR=
 
-PACKAGE=socklog-0.3.1
+PACKAGE=socklog-0.3.2
 DIRS=doc man etc package src
 MANPAGES=man/socklog.8 man/tryto.1 man/uncat.1
+DAEMONTOOLS_PD=daemontools-pd-0.76
 
-all: .manpages archive
+all: .manpages daemontools-pd-archive archive
 
 .manpages: $(MANPAGES)
 	for i in $(MANPAGES); do \
@@ -15,6 +16,9 @@ all: .manpages archive
 	  > doc/`basename $$i`.html ; \
 	done ; \
 	touch .manpages
+
+daemontools-pd-archive:
+	tar cpfz $(DAEMONTOOLS_PD).tar.gz $(DAEMONTOOLS_PD)
 
 archive:
 	rm -rf TEMP
