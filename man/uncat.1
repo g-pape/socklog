@@ -4,20 +4,11 @@ uncat \- continuously reads stdin, splits up the data either by timeout or
 number of bytes read to process it
 .SH SYNOPSIS
 .B uncat
-[
-.B \-v
-]
-[
-.B \-o
-]
-[
-.B \-t
-.I seconds
-]
-[
-.B \-s
-.I size
-]
+[\-vo]
+[\-t
+.IR seconds ]
+[\-s
+.IR size ]
 .I prog
 .SH DESCRIPTION
 .B uncat
@@ -96,6 +87,7 @@ runsv(8),
 svlogd(8),
 tryto(1)
 .LP
-http://smarden.org/socklog/
+ http://smarden.org/socklog/
+ http://smarden.org/runit/
 .SH AUTHOR
 Gerrit Pape <pape@smarden.org>

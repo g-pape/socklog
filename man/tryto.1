@@ -4,21 +4,12 @@ tryto \- tries to run a command limited by a timeout or number of tries,
 can be used to run as svlogd(8) processor.
 .SH SYNOPSIS
 .B tryto
-[
-.B \-pv
-]
-[
-.B \-t
-.I sec
-]
-[
-.B \-k
-.I ksec
-]
-[
-.B \-n
-.I tries
-]
+[\-pPv] [\-t
+.IR sec ]
+[\-k
+.IR ksec ]
+[\-n
+.IR tries ]
 .I prog
 .SH DESCRIPTION
 .I prog
@@ -32,7 +23,7 @@ feeding its standard input to
 standard input.
 If
 .I prog
-exits with an error code other then 0,
+exits with a return code other then 0,
 .B tryto
 runs
 .I prog
@@ -59,58 +50,59 @@ seconds for
 to terminate, then sends a KILL signal if
 .I prog
 still is there, and exits as soon as possible.
-.LP
-The main purpose of
-.B tryto
-is to run as
-.BR svlogd (8)
-or
-.BR multilog (8)
-processor (see below). Without the
-.B \-p
-option,
-.B tryto
-does just a subset of what
-.BR timelimit (8)
-from Peter Pentchev provides.
 .SH OPTIONS
 .TP
-.B \-v
-verbose. Print verbose messages to stderr.
-.TP
-.B \-p
-processor. Use this option if you run
-.B tryto
-as a
-.BR svlogd (8)
-processor (see below).
-.TP
 .B \-t \fIsec
-timeout. Set the timeout to send TERM to
+timeout.
+Set the timeout to send TERM to
 .I prog
 to
 .I sec
-seconds. Default is 180.
+seconds.
+Default is 180.
 .TP
 .B \-k \fIksec
-kill timeout. Set the timeout to send KILL to
+kill timeout.
+Set the timeout to send KILL to
 .I prog
 to
 .I ksec
-seconds. Default is 5.
+seconds.
+Default is 5.
 .TP
 .B \-n \fItries
 Set the maximal number of tries to
 .IR tries .
 If
 .I prog
-has crashed,
+exited with a return code other that 0,
 .B tryto
-tries to rewind stdin to the beginning using
-.IR lseek (2)
+tries to rewind standard input to the beginning using
+.BR lseek (2)
 before starting
 .I prog
-again. Default is 5.
+again.
+Default is 5.
+.TP
+.B \-p
+processor.
+Use this option if you run
+.B tryto
+as a
+.BR svlogd (8)
+processor (see below).
+.TP
+.B \-P
+process group.
+Run
+.I prog
+in a new session and process group, and send signals on timeout to
+.IR prog 's
+process group instead of its pid.
+.TP 
+.B \-v
+verbose.
+Print verbose messages to standard error.
 .SH PROCESSOR
 If
 .B tryto
@@ -153,7 +145,7 @@ seconds or maximal number of
 .IR tries ,
 .B tryto
 prints all data from standard input to standard output, an error message
-to standard error and exits with 0.
+to standard error, and exits with 0.
 .SH EXIT CODES
 If
 .B tryto
@@ -184,7 +176,7 @@ If
 failed by maximal number of
 .IR tries ,
 .B tryto
-returns the last exit code from
+returns the last return code from
 .IR prog .
 .LP
 .SH SEE ALSO
@@ -195,6 +187,7 @@ multilog(8),
 lseek(2),
 timelimit(8)
 .LP
-http://smarden.org/socklog/
+ http://smarden.org/socklog/
+ http://smarden.org/runit/
 .SH AUTHOR
 Gerrit Pape <pape@smarden.org>

@@ -3,29 +3,20 @@
 socklog \- small and secure syslogd replacement for use with runit
 .SH SYNOPSIS
 .B socklog
-[
-.B \-rRU
-] [
-unix
-] [
-.I path
-]
+[\-rRU]
+[unix]
+.RI [ path\fR]
 .br
 .B socklog
-[
-.B \-rR
-] inet [
-.I ip
-] [
-.I port
-]
+[\-rR]
+inet
+.RI [ ip\fR]
+.RI [ port\fR]
 .br
 .B socklog
-[
-.B \-rR
-] ucspi [
-.I args
-]
+[\-rR]
+ucspi
+.RI [ args\fR]
 .SH DESCRIPTION
 .B socklog
 is run under runit's
@@ -179,8 +170,11 @@ tryto(1),
 uncat(1),
 socklog-check(8),
 tcpsvd(8),
+runsv(8),
+runsvdir(8),
 nc(1)
 .LP
  http://smarden.org/socklog/
+ http://smarden.org/runit/
 .SH AUTHOR
 Gerrit Pape <pape@smarden.org>

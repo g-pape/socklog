@@ -48,11 +48,12 @@ int main (int argc, const char * const *argv, const char * const *envp) {
   int verbose =0;
   char ch;
   int processor =0;
+  unsigned int pgroup =0;
   int cpipe[2];
 
   progname =*argv;
 
-  while ((opt =getopt(argc,argv,"t:k:n:pvV")) != opteof) {
+  while ((opt =getopt(argc,argv,"t:k:n:pPvV")) != opteof) {
     switch(opt) {
     case 'V':
       strerr_warn1("$Id$\n", 0);
@@ -71,6 +72,9 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       break;
     case 'p':
       processor =1;
+      break;
+    case 'P':
+      pgroup =1;
       break;
     case 'v':
       verbose =1;
@@ -136,6 +140,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 	fd_move(2, 5);
 	close(4);
       }
+      if (pgroup) setsid();
       pathexec_run(*argv, argv, envp);
       strerr_die2sys(111, FATAL, "unable to start child: ");
     }
@@ -199,7 +204,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       /* child not finished */
       strerr_warn4(WARNING,
 		   "child \"", *argv, "\" timed out. sending TERM...", 0);
-      kill(pid, SIGTERM);
+      kill(pgroup ? -pid : pid, SIGTERM);
 
       /* ktimeout sec timeout */
       taia_now(&now);
@@ -218,7 +223,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       }
       strerr_warn4(WARNING, "child \"", *argv,
 		   "\" not terminated. sending KILL...", 0);
-      kill(pid, SIGKILL);
+      kill(pgroup ? -pid : pid, SIGKILL);
       break;
     }
     if (rc == 0) break;

@@ -1,4 +1,14 @@
+socklog 2.0.0
+
   * socklog-check.check: tweak timing in program test.
+  * tryto.c: new option -P: run prog in new session, and signal process
+    group.
+  * man/tryto.1: adapt; cleanup.
+  * man/socklog-check.8: add hint about runit services using syslog
+    facility; cleanup.
+  * man/socklog-conf.8, man/socklog.8, man/uncat.1: cleanup.
+  * doc/index.html: new stable release.
+  * doc/network.html: typo.
 
 socklog 1.5.0
 Sat, 26 Jun 2004 11:28:33 +0000
