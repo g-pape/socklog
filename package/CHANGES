@@ -1,3 +1,10 @@
+socklog-0.8.0
+Tue, 16 Apr 2002 14:11:34 +0200
+  * doc/network.html: fix quoting bug, network client sample was not
+    working properly.
+  * doc/benefits.html: add more benefits, advertising.
+  * no code changes at all.
+
 socklog-0.7.0
 Mon,  4 Feb 2002 11:37:13 +0100
   * install-man: symlinks now point into the correct directory:
