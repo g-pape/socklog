@@ -102,7 +102,7 @@ Set the maximal number of tries to
 .IR tries .
 If
 .I prog
-has crached,
+has crashed,
 .B tryto
 tries to rewind stdin to the beginning using
 .IR lseek (2)
@@ -120,7 +120,8 @@ runs as a
 .BR multilog (8)
 processor, making use of filedescriptors 4 and 5:
 .LP
-After forking,
+Before starting
+.IR prog ,
 .B tryto
 moves the filedescriptor 5 to 2, so all error messages from
 .B tryto
@@ -136,7 +137,7 @@ to be processed on the next run of
 After starting
 .IR prog ,
 .B tryto
-first feeds all data it reads from filedescriptor 4 to
+first feeds all data it reads from filedescriptor 4 into
 .IR prog 's
 standard input, then all data from filedescriptor 0.
 .LP
@@ -148,7 +149,7 @@ seconds or maximal number of
 .IR tries ,
 .B tryto
 prints all data from standard input to standard output, an error message
-to filedesriptor 5 and exits with 0.
+to standard error and exits with 0.
 .SH EXIT CODES
 If
 .B tryto

@@ -2,11 +2,11 @@ socklog 0.4.0
 Fri, 21 Sep 2001 17:43:09 +0200
   * changed to new primary email address <pape@smarden.org>.
   * BSD license.
-  * minor documentation changes.
+  * doc: minor changes.
 
 socklog 0.3.6
 Mon, 17 Sep 2001 18:26:12 +0200
-  * documentation updated.
+  * doc: updated.
 
 socklog 0.3.5
 Sun, 16 Sep 2001 20:12:01 +0200
@@ -23,7 +23,7 @@ Tue, 14 Aug 2001 12:26:02 +0200
 socklog 0.2.2
 Fri, 22 Jun 2001 11:59:10 +0200  
   * LDFLAGS for solaris in Makefile.
-  * benefits.html added, describing logfile rotation based on file size.
+  * doc: benefits.html added, describing logfile rotation based on file size.
 
 socklog 0.2.1
 Tue, 19 Jun 2001 11:48:28 +0200
@@ -40,14 +40,14 @@ Mon, 11 Jun 2001 13:31:42 +0200
 
 socklog 0.1.2
 Fri,  1 Jun 2001 10:50:36 +0200
-  * documentation improved.
+  * doc: improved.
 
 socklog 0.1.1
 Tue, 29 May 2001 13:26:24 +0200
   * deb: provides log directories for default log/run files.
   * deb: add user 'log' in postinst.
-  * documentation improved.
+  * doc: improved.
 
 socklog 0.1.0
 Mon, 28 May 2001 11:39:36 +0200
-  * Initial Release.
+  * initial release.
