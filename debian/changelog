@@ -1,3 +1,9 @@
+socklog (0.1.2) unstable; urgency=low
+
+  * documentation improved.
+
+ -- Gerrit Pape <pape@innominate.com>  Fri,  1 Jun 2001 10:50:36 +0200
+
 socklog (0.1.1) unstable; urgency=low
 
   * deb: provides log directories for default log/run files.
