@@ -1,3 +1,9 @@
+socklog-0.10.2
+Tue, 14 Jan 2003 11:46:10 +0100
+  * doc/configuration.html, doc/examples.html: remove description for
+    socklog-ucspi-unix service.
+  * doc/benefits.html: typo.
+
 socklog-0.10.1
 Thu, 08 Aug 2002 22:55:35 +0200
   * package/versions: new.

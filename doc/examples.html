@@ -82,37 +82,6 @@ listening on udp network socket <tt>0.0.0.0</tt>:<tt>514</tt>:
 </ul>
 <hr>
 <h2>
-listening on unix domain stream socket <tt>/dev/log</tt>:
-</h2>
-<ul>
-  <li>a sample <tt>socklog-ucspi-unix/run</tt> script:
-  <pre>
-  #!/bin/sh
-  exec 2>&1
-  exec exec softlimit -m 2000000 \
-    unixserver -U `id -u nobody` /dev/log -- \
-    socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
-  </pre>
-  <li>a sample <tt>socklog-ucspi-unix/log/run</tt> script:
-  <pre>
-  #!/bin/sh
-  LOGDIR=/var/log/socklog
-  exec setuidgid log multilog ${LOGDIR}/main \
-    s999999 n10 -* +'*: *: kern.*' ${LOGDIR}/kern \
-    s999999 n10 -* +'*: *: user.*' ${LOGDIR}/user \
-    s999999 n10 -* +'*: *: mail.*' ${LOGDIR}/mail \
-    s999999 n10 -* +'*: *: daemon.*' ${LOGDIR}/daemon \
-    s999999 n10 -* +'*: *: auth.*' +authpriv.* ${LOGDIR}/auth \
-    s999999 n10 -* +'*: *: syslog.*' ${LOGDIR}/syslog \
-    s999999 n10 -* +'*: *: news.*' ${LOGDIR}/news \
-    s999999 n10 -* +'*: *: cron.*' ${LOGDIR}/cron \
-    s999999 n10 -* +'*: *: ftp.*' ${LOGDIR}/ftp \
-    s999999 n10 -* +'*: *: local*.*' ${LOGDIR}/local \
-    s999999 n10 -* +'*: *: *.debug*' ${LOGDIR}/debug
-  </pre>
-</ul>
-<hr>
-<h2>
 reading kernel messages from <tt>/dev/klog</tt> on BSD:
 </h2>
 <ul>

@@ -78,60 +78,6 @@ the corresponding <tt>run</tt> scripts:
   <li>/service/socklog-unix/log/run
 </ul>
 <hr>
-It is possible to replace the unix domain dgram socket listener
-<i>socklog-unix</i> with a unix domain stream socket listener using the
-<tt>ucspi</tt> mode of <i>socklog</i> and <i>ucspi tools</i> such as
-<a href="http://untroubled.org/ucspi-unix/">ucspi-unix</a> and
-<a href="http://www.superscript.com/ucspi-ipc/intro.html">ucspi-icp</a>.
-<p>
-Create a service directory <tt>/etc/socklog/ucspi-unix</tt>
-with a subdirectory <tt>log</tt> and the corresponding <tt>run</tt>
-scripts:
-<ul>
-  <li>a sample <tt>socklog-ucspi-unix/run</tt> script:
-  <pre>
-  #!/bin/sh
-  exec 2>&1
-  exec unixserver -U `id -u nobody` /dev/log -- \
-    socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
-  </pre>
-  <li>a sample <tt>socklog-ucspi-unix/log/run</tt> script:
-  <pre>
-  #!/bin/sh
-  LOGDIR=/var/log/socklog
-  exec setuidgid log multilog ${LOGDIR}/main \
-    -* +'*: *: kern.*' ${LOGDIR}/kern \
-    -* +'*: *: user.*' ${LOGDIR}/user \
-    -* +'*: *: mail.*' ${LOGDIR}/mail \
-    -* +'*: *: daemon.*' ${LOGDIR}/daemon \
-    -* +'*: *: auth.*' +authpriv.* ${LOGDIR}/auth \
-    -* +'*: *: syslog.*' ${LOGDIR}/syslog \
-    -* +'*: *: news.*' ${LOGDIR}/news \
-    -* +'*: *: cron.*' ${LOGDIR}/cron \
-    -* +'*: *: ftp.*' ${LOGDIR}/ftp \
-    -* +'*: *: local*.*' ${LOGDIR}/local \
-    -* +'*: *: *.debug*' ${LOGDIR}/debug
-  </pre>
-</ul>
-Disable the service <i>socklog-unix</i> if it is running:
-<pre>
-  # cd /service/socklog-unix
-  # rm /service/socklog-unix
-  # svc -dx . log
-</pre>
-Check carefully that all log directories you stated in
-<tt>/etc/socklog/ucspi-unix/log/run</tt> exist and are writable
-to the corresponding user.
-<p>
-Then link the <i>socklog-ucspi-unix</i> service directory to
-<a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>'s
-<i>service</i> directory:
-<pre>
-  # ln -s /etc/socklog/ucspi-unix /service/socklog-ucspi-unix
-</pre>
-Wait five seconds for the service to start and then check the log
-directories.
-<hr>
 
 <h3><a name="inet">The socklog-inet service</a></h3>
 Before starting the <i>socklog-inet</i> service, you will have to make two
