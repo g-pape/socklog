@@ -1,3 +1,5 @@
+  * socklog-check.check: tweak timing in program test.
+
 socklog 1.5.0
 Sat, 26 Jun 2004 11:28:33 +0000
   * socklog-check, man/socklog-check.8: new; check for the availability of

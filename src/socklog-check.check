@@ -5,6 +5,7 @@ echo $?
 
 socklog unix socklog.check.socket &
 pid=$!
+sleep 1
 socklog-check unix socklog.check.socket
 echo $?
 socklog-check -v unix socklog.check.socket
