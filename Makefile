@@ -11,7 +11,7 @@ all: clean .manpages $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz
 	for i in $(MANPAGES); do \
 	  rman -S -f html -r '' < $$i | \
 	  sed -e 's}NAME="sect\([0-9]*\)" HREF="#toc[0-9]*">\(.*\)}NAME="sect\1">\2}g ; \
-	  s}<A HREF="#toc">Table of Contents</A>}<a href="http://smarden.org/pape/">G. Pape</a><br><A HREF="index.html">index.html</A><hr>}g ; \
+	  s}<A HREF="#toc">Table of Contents</A>}<a href="http://smarden.org/pape/">G. Pape</a><br><A HREF="index.html">socklog</A><hr>}g ; \
 	  s}<!--.*-->}}g' \
 	  > doc/`basename $$i`.html ; \
 	done ; \
