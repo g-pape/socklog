@@ -7,7 +7,7 @@ DAEMONTOOLS_PD=daemontools-pd-0.76
 
 all: clean .manpages $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz
 
-.manpages: $(MANPAGES)
+.manpages:
 	for i in $(MANPAGES); do \
 	  rman -S -f html -r '' < $$i | \
 	  sed -e 's}NAME="sect\([0-9]*\)" HREF="#toc[0-9]*">\(.*\)}NAME="sect\1">\2}g ; \
