@@ -9,7 +9,11 @@ can be used to run multilog(8) processors.
 ]
 [
 .B \-t
-.I seconds
+.I sec
+]
+[
+.B \-k
+.I ksec
 ]
 [
 .B \-n
@@ -17,6 +21,9 @@ can be used to run multilog(8) processors.
 ]
 .I prog
 .SH DESCRIPTION
+.I prog
+consist of one or more arguments.
+.LP
 .B tryto
 runs and watches
 .IR prog .
@@ -27,26 +34,28 @@ exits with an error code other then 0,
 runs
 .I prog
 again after sleeping one second.
-.P
+.LP
 If the number of retries reaches the maximal
 number of
 .IR tries ,
 .B tryto
 prints an error message and gives up.
-.P
+.LP
 If the timeout
-.I seconds
-is reached and
+.I sec
+seconds is reached and
 .I prog
 is still running,
 .B tryto
 sends a TERM signal to
 .IR prog ,
-waits 5 seconds for
+waits
+.I ksec
+seconds for
 .I prog
-to terminate and then send a KILL signal if
+to terminate, then sends a KILL signal if
 .I prog
-still is there, end exits as soon as possible.
+still is there, and exits as soon as possible.
 .SH OPTIONS
 .TP
 .B \-v
@@ -59,10 +68,19 @@ as a
 .BR multilog (8)
 processor (see below).
 .TP
-.B \-t \fIseconds
-timeout. Set the timeout to
-.I seconds
+.B \-t \fIsec
+timeout. Set the timeout to send TERM to
+.I prog
+to
+.I sec
 seconds. Default is 180.
+.TP
+.B \-k \fIksec
+kill timeout. Set the timeout to send KILL to
+.I prog
+to
+.I ksec
+seconds. Default is 5.
 .TP
 .B \-n \fItries
 Set the maximal number of tries to
@@ -72,7 +90,7 @@ If
 has crached,
 .B tryto
 tries to rewind stdin to the beginning using
-.IR lseek (2),
+.IR lseek (2)
 before starting
 .I prog
 again. Default is 5.
@@ -86,7 +104,7 @@ option,
 runs as a
 .BR multilog (8)
 processor, making use of filedescriptors 4 and 5:
-.P
+.LP
 After forking,
 .B tryto
 moves the filedescriptor 5 to 2, so all error messages from
@@ -94,23 +112,23 @@ moves the filedescriptor 5 to 2, so all error messages from
 and
 .I prog
 will be saved in
-.BR multilog 's(8)
+.BR multilog (8)'s
 .I state
 to be processed on the next run of
 .BR tryto .
-.P
+.LP
 After starting
 .IR prog ,
 .B tryto
 first feeds all data it reads from filedescriptor 4 to
 .IR prog 's
 standard input, then all data from filedescriptor 0.
-.P
+.LP
 If
 .I prog
 fails by timeout
-.I seconds
-or maximal number of
+.I sec
+seconds or maximal number of
 .IR tries ,
 .B tryto
 prints all data from standard input to standard output, an error message
@@ -123,19 +141,19 @@ runs as a
 processor,
 .B tryto
 always returns 0.
-.P
+.LP
 If
 .I prog
 was run successfully,
 .B tryto
 returns 0.
-.P
+.LP
 If
 .I prog
 failed by timeout,
 .B tryto
 returns 10.
-.P
+.LP
 If
 .I prog
 failed by maximal number of
@@ -143,7 +161,7 @@ failed by maximal number of
 .B tryto
 returns the last exit code from
 .IR prog .
-.P
+.LP
 If
 .B tryto
 itself failes, it exists with 111.

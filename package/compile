@@ -16,6 +16,9 @@ do
   test -h compile/$i || ln -s src/$i compile/$i
 done
 
+# support, default: ../daemontools/compile
+test -h compile/support || ln -s ../../daemontools/compile compile/support
+
 echo 'Compiling everything in ./compile...'
 ( cd compile; exec make )
 

@@ -7,7 +7,6 @@
   <body>
     <a href="http://innominate.org/~pape/">G. Pape</a><br>
     <a href="index.html">socklog</a><br>
-    <a href="benefits.html">socklog - benefits</a>
     <hr>
     <h1>socklog - installation</h1>
     <hr>
@@ -40,11 +39,14 @@
     <pre>
   # package/install
     </pre>
-    gzip the man page and copy it into a reasonable directory in your
+    gzip the man pages and copy them into a reasonable directory in your
     <tt>$MANPATH</tt>, e.g.
     <pre>
   # mkdir -p /usr/local/man/man8/
-  # gzip doc/socklog.8 && cp -f doc/socklog.8.gz /usr/local/man/man8/ 
+  # gzip man/socklog.8 && cp -f man/socklog.8.gz /usr/local/man/man8/
+  # mkdir -p /usr/local/man/man1/
+  # gzip man/tryto.1 && cp -f man/tryto.1.gz /usr/local/man/man1/ 
+  # gzip man/uncat.1 && cp -f man/uncat.1.gz /usr/local/man/man1/ 
     </pre>
     refer to <a href="configuration.html">Configuration</a> for
     configuring and setting up <i>socklock</i> services.

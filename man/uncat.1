@@ -1,0 +1,77 @@
+.TH uncat 1
+.SH NAME
+uncat - continuously reads stdin, splits up the data either by timeout or
+number of bytes and processes it
+.SH SYNOPSIS
+.B uncat
+[
+.B \-v
+]
+[
+.B \-t
+.I seconds
+]
+[
+.B \-s
+.I size
+]
+.I prog
+.SH DESCRIPTION
+.B uncat
+continuously reads stdin and repeatedly processes the data either after
+.I seconds
+timeout or maximal number of bytes
+.I size
+read. To process the data,
+.B uncat
+starts
+.I prog
+and feeds
+.IR prog 's
+standard input with that data.
+.LP
+.I prog
+consist of one or more arguments.
+.LP
+If
+.I prog
+exits non-zero,
+.B uncat
+prints an error message, discards the data and continues to read
+stdin.
+.LP
+Note that
+.B uncat
+is not crash proof.
+.SH OPTIONS
+.TP
+.B \-v
+verbose. print verbose messages to stderr.
+.TP
+.B \-t \fIseconds
+timeout. Set the timeout to
+.I seconds
+seconds. Default is 300.
+.TP
+.B \-s \fIsize
+Set the maximal number of bytes to
+.IR size .
+Default is 1024.
+.SH SIGNALS
+If
+.B uncat
+receives a TERM signal, it starts to process the data in memory and exits
+as soon as possible.
+.SH EXIT CODES
+.B uncat
+exits with 0 on end of stdin or after receiving a TERM signal.
+.B uncat
+exits 111 on error.
+.SH SEE ALSO
+multilog(8),
+socklog(8),
+tryto(1)
+
+http://innominate.org/~pape/socklog/
+.SH AUTHOR
+G. Pape <pape@innominate.com>

@@ -7,9 +7,6 @@
   <body>
     <a href="http://innominate.org/~pape/">G. Pape</a><br>
     <a href="index.html">socklog</a><br>
-    <a href="benefits.html">socklog - benefits</a><br>
-    <a href="install.html">socklog - installation</a><br>
-    <a href="configuration.html">socklog - configuration</a>
     <hr>
     <h1>socklog - network logging</h1>
     <hr>
@@ -34,12 +31,15 @@
 	transmission. See below for examples.
       <li>
 	if the transmission of <tt>current</tt> fails, the log will be saved
-	local, <i>socklog</i> remembers the failure and includes the
-	error messages into the transmission on the next run, so the remote
-	machine gets the information of log transmission failures.
+	local,
+	<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+	remembers the failure in it's <tt>state</tt> and
+	<a href="man/tryto.1.html">tryto</a> includes the error messages into
+	the transmission on the next run, so the remote	machine gets the
+	information of log transmission failures.
     </ul>
     There are no restrictions on how to transmit the log data, a separate
-    process of your choice will do the work, e.g. <i>netcat</i>,
+    process of your choice will do the work, e.g. <i>netcat</i> or
     <a href="http://cr.yp.to/ucspi-tcp/tcpclient.html">tcpclient</a>.
     This modularity lets you easily insert authentication, compression,
     encryption and other things.
@@ -82,6 +82,11 @@
 	 !'tryto -pv tcpclient -v $LOGSERVERIP $PORT sh -c "cat >&7"' \
 	 ${LOGDIR}/main
     </pre>
+    On each rotation of
+    <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s
+    <tt>current</tt>, the data will be transmitted to
+    <tt>$LOGSERVERIP:$PORT</tt> using <a href="man/tryto.1.html">tryto</a>
+    and <a href="http://cr.yp.to/ucspi-tcp/tcpclient.html">tcpclient</a>.
     <hr>
     <address><a href="mailto:pape@innominate.com">G. Pape</a></address>
     <small>$Id$</small

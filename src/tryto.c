@@ -1,13 +1,15 @@
 /*
   in /package/admin/daemontools/compile/ :
-  gcc -Wall -c tryto.c && gcc -o tryto tryto.o deepsleep.o time.a unix.a byte.a
+  gcc -Wall -c tryto.c && gcc -o tryto tryto.o time.a unix.a byte.a
 */
 
 #include <unistd.h>
 #include <signal.h>
 #include "strerr.h"
 #include "pathexec.h"
+/*
 #include "deepsleep.h"
+*/
 #include "iopause.h"
 #include "taia.h"
 #include "wait.h"
@@ -22,9 +24,10 @@
 
 /* defaults */
 #define TIMEOUT 180
+#define KTIMEOUT 5
 #define TRYMAX  5
 
-#define USAGE " [ -vp ] [ -t timeout ] [ -n tries ] prog"
+#define USAGE " [ -vp ] [ -t seconds ] [ -k kseconds ] [ -n tries ] prog"
 #define WARNING "tryto: warning: "
 #define FATAL "tryto: fatal: "
 
@@ -48,6 +51,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
   int pid;
   int rc =111;
   unsigned long timeout =TIMEOUT;
+  unsigned long ktimeout =KTIMEOUT;
   unsigned long trymax =TRYMAX;
   int verbose =0;
   char ch;
@@ -56,7 +60,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 
   progname =*argv;
 
-  while ((opt =getopt(argc,argv,"t:n:pvV")) != opteof) {
+  while ((opt =getopt(argc,argv,"t:k:n:pvV")) != opteof) {
     switch(opt) {
     case 'V':
       strerr_warn1("$Id$\n", 0);
@@ -65,6 +69,10 @@ int main (int argc, const char * const *argv, const char * const *envp) {
     case 't':
       scan_ulong(optarg, &timeout);
       if (timeout <= 0) timeout =TIMEOUT;
+      break;
+    case 'k':
+      scan_ulong(optarg, &ktimeout);
+      if (ktimeout <= 0) ktimeout =KTIMEOUT;
       break;
     case 'n':
       scan_ulong(optarg, &trymax);
@@ -125,7 +133,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
     while ((pid =fork()) == -1) {
       strerr_warn4(WARNING, "unable to fork for \"", *argv, "\" pausing: ",
 		   &strerr_sys);
-      deepsleep(5);
+      sleep(5);
     }
     if (!pid) {
       /* child */
@@ -203,9 +211,9 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 		   "child \"", *argv, "\" timed out. sending TERM...", 0);
       kill(pid, SIGTERM);
 
-      /* 5 sec timeout */
+      /* ktimeout sec timeout */
       taia_now(&now);
-      taia_uint(&deadline, 5);
+      taia_uint(&deadline, ktimeout);
       taia_add(&deadline, &now, &deadline);
 
       sig_unblock(sig_child);
@@ -229,7 +237,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 	if (verbose) strerr_warn2(WARNING,
 				  "cannot lseek fd 0: ", &strerr_sys);
     if (try >= trymax) break;
-    deepsleep(1);
+    sleep(1);
   }
 
   if (processor && (rc != 0)) {

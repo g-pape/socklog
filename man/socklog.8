@@ -27,7 +27,7 @@ is run under daemontools'
 writing syslog messages it receives from unix domain socket
 .I path
 or an inet udp socket
-.IR ip\fR:\fIport
+.I ip\fR:\fIport\fR
 through a pipe provided by
 .BR svscan (8)
 to a
@@ -88,7 +88,7 @@ with the 1st argument
 .IR inet ,
 .B socklog
 will listen to the inet udp socket
-.IR ip\fR:\fIport .
+.I ip\fR:\fIport\fR.
 .LP
 If
 .I ip
@@ -173,7 +173,7 @@ is:
 .LP
 .I inet
 mode for listening on udp network socket
-.IR 0.0.0.0\fR:\fI514 .
+.I 0.0.0.0\fR:\fI514\fR.
 a proper
 .I run
 file for

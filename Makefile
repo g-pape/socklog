@@ -1,13 +1,26 @@
 DESTDIR=
 
-PACKAGE=socklog-0.3.0
-DIRS=doc etc package src
+PACKAGE=socklog-0.3.1
+DIRS=doc man etc package src
+MANPAGES=man/socklog.8 man/tryto.1 man/uncat.1
 
-all: archive
+all: .manpages archive
+
+.manpages: $(MANPAGES)
+	for i in $(MANPAGES); do \
+	  rman -S -f html -r '' < $$i | \
+	  sed -e 's}NAME="sect\([0-9]*\)" HREF="#toc[0-9]*">\(.*\)}NAME="sect\1">\2}g ; \
+	  s}<A HREF="#toc">Table of Contents</A>}<a href="http://innominate.org/~pape/">G. Pape</a><br><A HREF="index.html">socklog</A><hr>}g ; \
+	  s}<!--.*-->}}g' \
+	  > doc/`basename $$i`.html ; \
+	done ; \
+	touch .manpages
 
 archive:
 	rm -rf TEMP
 	mkdir -p TEMP/admin/$(PACKAGE)
+	make -C src clean
+	make -C doc/man
 	cp -a $(DIRS) TEMP/admin/$(PACKAGE)/
 	chmod -R g-ws TEMP/admin
 	chmod +t TEMP/admin
@@ -21,3 +34,7 @@ clean:
 	find . -name .??*~ -exec rm -f {} \;
 	find . -name \#?* -exec rm -f {} \;
 
+install-manpages:
+	install -m 0644 doc/socklog.8 /usr/local/man/man8/socklog.8
+	install -m 0644 doc/tryto.1 /usr/local/man/man1/tryto.1
+	install -m 0644 doc/uncat.1 /usr/local/man/man1/uncat.1

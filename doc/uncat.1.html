@@ -1,0 +1,70 @@
+
+
+
+<HTML>
+<HEAD>
+<TITLE>uncat(1) manual page</TITLE>
+</HEAD>
+<BODY bgcolor=white>
+<a href="http://innominate.org/~pape/">G. Pape</a><br><A HREF="index.html">socklog</A><hr><P>
+
+<H2><A NAME="sect0">Name</A></H2>
+uncat - continuously reads stdin, splits up the data either by timeout
+or number of bytes and processes it 
+<H2><A NAME="sect1">Synopsis</A></H2>
+<B>uncat</B> [ <B>-v</B> ] [ <B>-t</B> <I>seconds</I> ] [
+<B>-s</B> <I>size</I> ] <I>prog</I> 
+<H2><A NAME="sect2">Description</A></H2>
+<B>uncat</B> continuously reads stdin and repeatedly
+processes the data either after <I>seconds</I> timeout or maximal number of bytes
+<I>size</I> read. To process the data, <B>uncat</B> starts <I>prog</I> and feeds <I>prog</I>'s standard
+input with that data. <P>
+<I>prog</I> consist of one or more arguments. <P>
+If <I>prog</I> exits
+non-zero, <B>uncat</B> prints an error message, discards the data and continues
+to read stdin. <P>
+Note that <B>uncat</B> is not crash proof. 
+<H2><A NAME="sect3">Options</A></H2>
+
+<DL>
+
+<DT><B>-v</B> </DT>
+<DD>verbose. print
+verbose messages to stderr. </DD>
+
+<DT><B>-t <I>seconds</B> </I></DT>
+<DD>timeout. Set the timeout to <I>seconds</I>
+seconds. Default is 300. </DD>
+
+<DT><B>-s <I>size</B> </I></DT>
+<DD>Set the maximal number of bytes to <I>size</I>. Default
+is 1024. </DD>
+</DL>
+
+<H2><A NAME="sect4">Signals</A></H2>
+If <B>uncat</B> receives a TERM signal, it starts to process the
+data in memory and exits as soon as possible. 
+<H2><A NAME="sect5">Exit Codes</A></H2>
+<B>uncat</B> exits with
+0 on end of stdin or after receiving a TERM signal. <B>uncat</B> exits 111 on error.
+
+<H2><A NAME="sect6">See Also</A></H2>
+<I>multilog(8)</I>, <I>socklog(8)</I>, <I>tryto(1)</I> <P>
+ <I>http://innominate.org/~pape/socklog/</I>
+
+<H2><A NAME="sect7">Author</A></H2>
+G. Pape &lt;pape@innominate.com&gt; <P>
+
+<HR><P>
+<A NAME="toc"><B>Table of Contents</B></A><P>
+<UL>
+<LI><A NAME="toc0" HREF="#sect0">Name</A></LI>
+<LI><A NAME="toc1" HREF="#sect1">Synopsis</A></LI>
+<LI><A NAME="toc2" HREF="#sect2">Description</A></LI>
+<LI><A NAME="toc3" HREF="#sect3">Options</A></LI>
+<LI><A NAME="toc4" HREF="#sect4">Signals</A></LI>
+<LI><A NAME="toc5" HREF="#sect5">Exit Codes</A></LI>
+<LI><A NAME="toc6" HREF="#sect6">See Also</A></LI>
+<LI><A NAME="toc7" HREF="#sect7">Author</A></LI>
+</UL>
+</BODY></HTML>
