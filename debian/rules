@@ -37,7 +37,7 @@ build-indep-stamp:
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp configure-stamp
+	rm -f build-arch-stamp build-indep-stamp configure-stamp
 
 	rm -rf admin
 	dh_clean

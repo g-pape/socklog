@@ -1,2 +1,2 @@
 #!/bin/sh
-exec chpst -ulog svlogd -t main/main
+exec chpst -ulog svlogd -tt main/main

@@ -1,3 +1,13 @@
+socklog (1.2.0-3) unstable; urgency=low
+
+  * debian/rules: target clean: remove all relevant *-stamp files.
+  * debian/etc/klog/log/run: use -tt switch to svlogd instead of -t to do
+    human readable UTC timestamps instead of TAI timestamps for kernel log.
+  * debian/control: package socklog: Recommends: runit (>> 0.11.2-0);
+    package socklog-run: Depends: runit (>> 0.11.2-0) (closes: #211371).
+
+ -- Gerrit Pape <pape@smarden.org>  Thu, 25 Sep 2003 11:35:55 +0000
+
 socklog (1.2.0-2) unstable; urgency=low
 
   * debian/control: new package socklog-run: sets up system and kernel
