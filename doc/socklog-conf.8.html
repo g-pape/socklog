@@ -27,7 +27,7 @@ must not contain any special characters.
 Running <B>socklog-conf</B> with the 1st argument <I>unix</I>, <B>socklog-conf</B> creates
 the service directory <I>/etc/socklog/unix</I> and the log directory <I>/var/log/socklog</I>.
 <P>
-<B>socklog-conf</B> aranges for <B><I>socklog</B>(8)</I> to run under the uid and gid of <I>acct</I>
+<B>socklog-conf</B> arranges for <B><I>socklog</B>(8)</I> to run under the uid and gid of <I>acct</I>
 and to listen for syslog messages on <I>/dev/log</I>. <P>
 It also creates automatically
 rotated log directories in <I>/var/log/socklog</I>. The logs are owned by <I>logacct</I>.
@@ -43,9 +43,9 @@ Service</A></H2>
 Running <B>socklog-conf</B> with the 1st argument
 <I>inet</I>, <B>socklog-conf</B> creates the service directory <I>/etc/socklog/inet</I> and the
 log directory <I>/var/log/socklog-inet</I>. <P>
-<B>socklog-conf</B> aranges for <B><I>socklog</B>(8)</I> to
-run under the uid and gid of <I>acct</I> and to listen for syslog messages on
-the UDP socket <I>0.0.0.0:514</I>. <P>
+<B>socklog-conf</B> arranges for <B><I>socklog</B>(8)</I>
+to run under the uid and gid of <I>acct</I> and to listen for syslog messages
+on the UDP socket <I>0.0.0.0:514</I>. <P>
 It also creates automatically rotated log directories
 in <I>/var/log/socklog-inet</I>. The logs are owned by <I>logacct</I>. The corresponding
 <B><I>multilog</B>(8)</I> processes run under the uid and gid of <I>logacct</I>. <P>
@@ -60,7 +60,7 @@ klog <I>acct</I> <I>logacct</I> <P>
 Running <B>socklog-conf</B> with the 1st argument <I>klog</I>, <B>socklog-conf</B>
 creates the service directory <I>/etc/socklog/klog</I> and the log directory <I>/var/log/socklog-klog</I>.
 <P>
-<B>socklog-conf</B> aranges for <B><I>socklog</B>(8)</I> to run under the uid and gid of <I>acct</I>
+<B>socklog-conf</B> arranges for <B><I>socklog</B>(8)</I> to run under the uid and gid of <I>acct</I>
 and to read kernel messages from <I>/proc/kmsg</I> on Linux, or <I>/dev/klog</I> on BSD.
 <P>
 It also creates automatically rotated log directories in <I>/var/log/socklog-klog</I>.
@@ -77,7 +77,7 @@ ln -s /etc/socklog/klog
 Running <B>socklog-conf</B> with the 1st argument <I>ucspi-tcp</I>, <B>socklog-conf</B> creates
 the service directory <I>/etc/socklog/ucspi-tcp</I> and the log directory <I>/var/log/socklog-ucspi-tcp</I>.
 <P>
-<B>socklog-conf</B> aranges for <B><I>tcpserver</B>(1)</I> to run <B><I>socklog</B>(8)</I> under the uid and
+<B>socklog-conf</B> arranges for <B><I>tcpserver</B>(1)</I> to run <B><I>socklog</B>(8)</I> under the uid and
 gid of <I>acct</I> and to listen on the TCP socket <I>0.0.0.0:10116</I>. <P>
 It also creates
 automatically rotated log directories in <I>/var/log/socklog-ucspi-tcp</I>. The logs
@@ -93,12 +93,12 @@ ln -s /etc/socklog/ucspi-tcp /service/socklog-ucspi-tcp
 Running <B>socklog-conf</B> with the
 1st argument <I>notify</I>, <B>socklog-conf</B> creates the service directory <I>/etc/socklog/notify</I>.
 <P>
-<B>socklog-conf</B> aranges for <B><I>uncat</B>(1)</I> to run under the uid and gid of <I>acct</I> and
-to listen on the named pipe <I>/var/log/socklog/.notify</I>. The named pipe will
-have mode 0620, the uid of <I>acct</I> and the gid of <I>grp</I>. <P>
-All uids running a log
-service that is configured to push log events to the socklog-notify service
-must be member of the group <I>grp</I>. <P>
+<B>socklog-conf</B> arranges for <B><I>uncat</B>(1)</I> to run under the uid and gid of <I>acct</I>
+and to listen on the named pipe <I>/var/log/socklog/.notify</I>. The named pipe
+will have mode 0620, the uid of <I>acct</I> and the gid of <I>grp</I>. <P>
+All uids running
+a log service that is configured to push log events to the socklog-notify
+service must be member of the group <I>grp</I>. <P>
 You can run the service under <B><I>svscan</B>(8)</I>
 by creating a symbolic link in the service directory: <P>
 ln -s /etc/socklog/notify

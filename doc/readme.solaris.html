@@ -42,7 +42,7 @@ or 0, to en- or disable message ID generation. Note: you must reboot to
 activate the changes.
 <p>
 <i>socklog</i> does prepend the formated '<tt>facility.priority: </tt>' to
-every log message, wether messsage IDs are used or not.
+every log message, weather message IDs are used or not.
 This makes it easier to write multilog filters. So this is how a log message
 processed by <i>socklog</i> will look like:
 <p>
@@ -72,7 +72,7 @@ automatically prepend timestamps to kernel messages, so I might implement
 this in <i>socklog</i> as well.
 <p>
 <i>dmesg</i> will not work any longer, since it is just a sh shell script
-wich prints out the last 200 lines from <tt>/var/adm/messages</tt>. If you
+which prints out the last 200 lines from <tt>/var/adm/messages</tt>. If you
 need <i>dmesg</i>, you can easily write your own version :-).
 <p>
 Note that if message IDs are enabled, kernel log messages contain the name of
@@ -84,7 +84,7 @@ the loadable module or driver instead of just "unix:".
 Be sure to enable message IDs to get these.
 
 <h2>How to compile socklog on Solaris</h2>
-You'll have to decide if you wan't &quot;door&quot; support or not.
+You'll have to decide if you want &quot;door&quot; support or not.
 <p>
 1. With syslog_door support
 <pre>
@@ -111,7 +111,7 @@ This will create the following run script:
 </pre>
 It is possible to run multiple <i>socklog</i> instances, but only one
 <i>socklog</i> can listen on the door file. If another process is in charge
-of the door file, <i>socklog</i> will exit immediatly with exit code 100.
+of the door file, <i>socklog</i> will exit immediately with exit code 100.
 Simply remove the last argument (path to door file), to start <i>socklog</i>
 without door support. This way you can run syslogd and <i>socklog</i>
 parallel, to test your <i>socklog</i> setup.
