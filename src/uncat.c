@@ -161,12 +161,10 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       if (wait_pid(&wstat, pid) != pid) {
 	strerr_die2sys(111, FATAL, "wait_pid: ");
       }
-      if (verbose) {
-	if (wait_crashed(wstat)) {
-	  strerr_warn2(WARNING, "child crashed.", 0);
-	} else {
-	  strerr_warn2(WARNING, "child exited.", 0);
-	}
+      if (wait_crashed(wstat)) {
+	strerr_warn2(WARNING, "child crashed.", 0);
+      } else {
+	if (verbose) strerr_warn2(WARNING, "child exited.", 0);
       }
     }
 
