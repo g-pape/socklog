@@ -1,15 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <head>
-<title>socklog - on solaris</title>
+<title>socklog - on Solaris</title>
 </head>
 <body>
 <a href="http://smarden.org/pape/">G. Pape</a><br>
 <a href="index.html">socklog</a><br>
 <hr>
-<h1>socklog - on solaris</h1>
+<h1>socklog - on Solaris</h1>
 <hr>
-<h2>This is a short BLURB about <i>socklog</i> and logging on Solaris</h2>
+<h2>Logging on Solaris</h2>
 <p>
 Solaris uses a STREAMS file, usually <tt>/dev/log</tt> to route locally
 generated syslog messages. See the <i>log</i>(7d) driver manual page for
@@ -23,7 +23,7 @@ notification upon receipt of a log message.
 <p>
 <h2>Format of Solaris syslog messages</h2>
 Starting with Solaris 8, Sun introduced a new log message format
-containing so called MSGIDS (See <i>syslogd</i>(1) and <i>msgid</i>(1)).
+containing so called message IDs (See <i>syslogd</i>(1) and <i>msgid</i>(1)).
 <pre>
  [ID msgid facility.priority]
 
@@ -38,25 +38,53 @@ messages:
 </pre>
 The format is configurable. The <i>log</i>(7d) driver configuration file is
 <tt>/kernel/drv/log.conf</tt>. Set the variable &quot;msgid&quot; to either 1
-or 0, to en- or disable the generation of msgids.
+or 0, to en- or disable message ID generation. Note: you must reboot to
+activate the changes.
 <p>
 <i>socklog</i> does prepend the formated '<tt>facility.priority: </tt>' to
-every log message.
+every log message, wether messsage IDs are used or not.
 This makes it easier to write multilog filters. So this is how a log message
-processed by socklog will look like:
+processed by <i>socklog</i> will look like:
 <p>
-without MSGIDS:
+without message IDs:
 <pre>
   auth.info: Jul 15 21:40:52 sshd[1576]: Accepted publickey for root from 195.71.100.159 port 36621 ssh2
 </pre>
-with MSGIDS (default on Solaris 8 and later):
+with message IDs enabled (default on Solaris 8 and later):
 <pre>
   auth.info: Jul 11 14:10:53 sshd[382]: [ID 800047 auth.info] Accepted rsa for ROOT from 195.71.100.159 port 36177
 </pre>
-I prefer the first method, because it's much less visuall clutter, and I don't
-need the MSGIDS anyway.
+I prefer the first method, because it's much less visual clutter, and I don't
+need message IDs anyway.
+
+<h2>Kernel messages</h2>
+Solaris has no such thing as <tt>/proc/kmesg</tt>, or <tt>/dev/kmesg</tt>.
+Kernel log messages are provided by the same STREAMS device
+(<tt>/dev/log</tt>) as normal log messages. All kernel messages are logged
+with a facility of &quot;kern&quot;:
+<pre>
+  kern.info: unix: avail mem = 250077184
+  kern.info: unix: root nexus = Sun Ultra 5/10 UPA/PCI (UltraSPARC-IIi 360MHz)
+  kern.info: unix: pcipsy0 at root: UPA 0x1f 0x0
+</pre>
+The kernel messages does not contain timestamps. It seems that syslog does
+automatically prepend timestamps to kernel messages, so I might implement
+this in <i>socklog</i> as well.
+<p>
+<i>dmesg</i> will not work any longer, since it is just a sh shell script
+wich prints out the last 200 lines from <tt>/var/adm/messages</tt>. If you
+need <i>dmesg</i>, you can easily write your own version :-).
+<p>
+Note that if message IDs are enabled, kernel log messages contain the name of
+the loadable module or driver instead of just "unix:".
+<pre>
+  kern.info: m64: [ID 308573 kern.info] m64#0: 1280x1024, 4M mappable, rev 4750.7c
+  kern.info: hme: [ID 517527 kern.info] SUNW,hme0 : PCI IO 2.0 (Rev Id = c1) Found
+</pre>
+Be sure to enable message IDs to get these.
+
 <h2>How to compile socklog on Solaris</h2>
-You'll have to Decide if you wan't &quot;door&quot; support or not.
+You'll have to decide if you wan't &quot;door&quot; support or not.
 <p>
 1. With syslog_door support
 <pre>
@@ -86,24 +114,8 @@ It is possible to run multiple <i>socklog</i> instances, but only one
 of the door file, <i>socklog</i> will exit immediatly with exit code 100.
 Simply remove the last argument (path to door file), to start <i>socklog</i>
 without door support. This way you can run syslogd and <i>socklog</i>
-paralell, to test your <i>socklog</i> setup.
-<h2>Kernel Messages</h2>
-Solaris has no such thing as <tt>/proc/kmesg</tt>, or <tt>/dev/kmesg</tt>.
-Kernel log messages are provided by the same STREAMS device
-(<tt>/dev/log</tt>) as normal log messages. All kernel messages are logged
-with facility of &quot;kern&quot;:
-<pre>
-  kern.info: unix: avail mem = 250077184
-  kern.info: unix: root nexus = Sun Ultra 5/10 UPA/PCI (UltraSPARC-IIi 360MHz)
-  kern.info: unix: pcipsy0 at root: UPA 0x1f 0x0
-</pre>
-The kernel messages does not contain timestamps. It seems that syslog does
-automatically prepend timestamps to kernel messages, so I might implement
-this in <i>socklog</i> as well.
-<p>
-<i>dmesg</i> will not work any longer, since it is just a sh shell script
-wich prints out the last 200 lines from <tt>/var/adm/messages</tt>. If you
-need <i>dmesg</i>, you can easily write your own version :-).
+parallel, to test your <i>socklog</i> setup.
+
 <h2>Support</h2>
 If you have problems, questions or suggestions regarding the Solaris support,
 email me:
