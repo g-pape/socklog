@@ -1,2 +1,2 @@
 #!/bin/sh
-exec setuidgid log multilog t s999999 /var/log/klog
+exec setuidgid log multilog t s999999 /var/log/socklog/klog
