@@ -18,7 +18,7 @@ all: .manpages $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz
 	touch .manpages
 
 $(DAEMONTOOLS_PD).tar.gz:
-	tar cpfz $(DAEMONTOOLS_PD).tar.gz $(DAEMONTOOLS_PD)
+	tar cpfz $(DAEMONTOOLS_PD).tar.gz $(DAEMONTOOLS_PD) --exclude CVS
 
 $(PACKAGE).tar.gz:
 	rm -rf TEMP
@@ -29,7 +29,7 @@ $(PACKAGE).tar.gz:
 	chmod +t TEMP/admin
 	chmod +t TEMP/admin/$(PACKAGE)/etc/{inet,klog,unix}
 	su -c 'chown -R root:root TEMP/admin ; \
-		( cd TEMP ; tar cpfz ../$(PACKAGE).tar.gz admin ) ; \
+		( cd TEMP ; tar cpfz ../$(PACKAGE).tar.gz admin --exclude CVS ) ; \
 		rm -rf TEMP'
 
 clean:
