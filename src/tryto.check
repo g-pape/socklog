@@ -1,4 +1,5 @@
 #!/bin/sh
+exec </dev/null
 
 tryto
 echo $?

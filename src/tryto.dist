@@ -8,9 +8,7 @@ usage: tryto [-vp] [-t seconds] [-k kseconds] [-n tries] prog
 1
 0
 tryto: warning: child crashed.
-tryto: warning: unable to lseek fd 0: unseekable descriptor
 tryto: warning: child crashed.
-tryto: warning: unable to lseek fd 0: unseekable descriptor
 tryto: fatal: child crashed, giving up.
 1
 tryto: warning: child "sleep" timed out. sending TERM...
