@@ -5,7 +5,7 @@ DIRS=doc man etc package src
 MANPAGES=man/socklog.8 man/tryto.1 man/uncat.1
 DAEMONTOOLS_PD=daemontools-pd-0.76
 
-all: .manpages $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz
+all: clean .manpages $(DAEMONTOOLS_PD).tar.gz $(PACKAGE).tar.gz
 
 .manpages: $(MANPAGES)
 	for i in $(MANPAGES); do \
