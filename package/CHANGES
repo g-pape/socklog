@@ -1,9 +1,14 @@
-socklog-1.1.1
+socklog 1.1.2
+
+  * socklog-conf.c: use runit's chpst instead of setuidgid.
+  * doc/install.html: remove obsolete note about setuidgid replacement.
+
+socklog 1.1.1
 Mon, 07 Jul 2003 09:59:08 +0200
   * socklog-conf.c: fix typos (thx Hleil Liu); use mail -s instead of
     mailsubj for the notify service.
 
-socklog-1.1.0
+socklog 1.1.0
 Thu, 19 Jun 2003 15:40:52 +0200
   * man/socklog-conf.8, man/socklog.8, man/tryto.1: typos.
   * doc/benefits.html, doc/configuration.html, doc/examples.html,
@@ -13,7 +18,7 @@ Thu, 19 Jun 2003 15:40:52 +0200
   * socklog-conf.c: create service directories for the use with the runit
     package.
 
-socklog-1.0.0
+socklog 1.0.0
 Thu, 30 Jan 2003 13:32:24 +0100
   * doc/configuration.html, doc/examples.html: remove description for
     socklog-ucspi-unix service.
@@ -23,13 +28,13 @@ Thu, 30 Jan 2003 13:32:24 +0100
   * tryto.c: catch possible error in write() to child; minor cleanup.
   * doc/index.html: add NetBSD to supported systems.
 
-socklog-0.10.1
+socklog 0.10.1
 Thu, 08 Aug 2002 22:55:35 +0200
   * package/versions: new.
   * doc/network.html: typos.
   * doc/usedietlibc.html: fix path to conf-cc, conf-ld.
 
-socklog-0.10.0
+socklog 0.10.0
 Thu, 18 Jul 2002 15:45:58 +0200
   * solaris support rewrite (thx Lars Uffmann):
     * socklog.c: new option sun_stream; new optional option door; rewrite
@@ -39,11 +44,11 @@ Thu, 18 Jul 2002 15:45:58 +0200
     * (thx Lars Uffmann).
   * documentation adapted.
 
-socklog-0.9.1
+socklog 0.9.1
 Wed, 26 Jun 2002 15:54:06 +0200
   * Makefile: enable target sysdeps.
 
-socklog-0.9.0
+socklog 0.9.0
 Fri, 31 May 2002 14:07:11 +0200
   * new service socklog-klog doing kernel logging.
   * socklog.c: fix facility and priority decoding in ucspi mode.
@@ -51,25 +56,25 @@ Fri, 31 May 2002 14:07:11 +0200
   * doc/configuration.html, doc/examples.html, man/socklog-conf.8: document
     socklog-klog service.
 
-socklog-0.8.2
+socklog 0.8.2
 Sat, 18 May 2002 15:08:09 +0200
   * src/: include public domain sources to build byte.a, unix.a, time.a:
     socklog builds without having daemontools' sources installed.
   * doc/usedietlibc.html: how to use dietlibc.
 
-socklog-0.8.1
+socklog 0.8.1
 Sun, 28 Apr 2002 10:32:28 +0200
   * tryto.c: change return value on child timeout to 100, add FATAL prefix
     to error message on child timeout/crash.
 
-socklog-0.8.0
+socklog 0.8.0
 Tue, 16 Apr 2002 14:11:34 +0200
   * doc/network.html: fix quoting bug, network client sample was not
     working properly.
   * doc/benefits.html: add more descriptions of benefits.
   * no code changes at all.
 
-socklog-0.7.0
+socklog 0.7.0
 Mon,  4 Feb 2002 11:37:13 +0100
   * install-man: symlinks now point into the correct directory:
     /package/admin/socklog/man/ (thx Mike Forster).
@@ -81,11 +86,11 @@ Mon,  4 Feb 2002 11:37:13 +0100
   * doc: revised.
   * (thx Gary Gendel, support for solaris)
 
-socklog-0.6.1
+socklog 0.6.1
 Thu, 17 Jan 2002 11:43:36 +0100
   * bug: socklog.c: error in recvfrom() was not catched (thx Liviu Daia)
 
-socklog-0.6.0
+socklog 0.6.0
 Sat, 12 Jan 2002 14:18:57 +0100
   * uncat: redirect prog's stdout to stderr; never writes to stdout
   * socklog-conf notify: redirects uncat's stdout to the pipe:

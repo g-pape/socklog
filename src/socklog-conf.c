@@ -166,7 +166,7 @@ void conf_unix() {
 
   start("unix/log/run");
   outs("#!/bin/sh\n");
-  outs("exec setuidgid ");
+  outs("exec chpst -u");
   outs(loguser);
   outs(" svlogd \\\n");
   outs("  main/main main/auth main/cron main/daemon main/debug main/ftp \\\n");
@@ -198,7 +198,7 @@ void conf_inet() {
 
   start("inet/log/run");
   outs("#!/bin/sh\n");
-  outs("exec setuidgid ");
+  outs("exec chpst -u");
   outs(loguser);
   outs(" svlogd -t main/main\n");
   finish();
@@ -229,7 +229,7 @@ void conf_ucspi_tcp() {
 
   start("ucspi-tcp/log/run");
   outs("#!/bin/sh\n");
-  outs("exec setuidgid ");
+  outs("exec chpst -u");
   outs(loguser);
   outs(" svlogd -t main/main\n");
   finish();
@@ -252,7 +252,7 @@ void conf_klog() {
   outs("#!/bin/sh\n");
   outs("exec <"); outs(_PATH_KLOG); outs("\n");
   outs("exec 2>&1\n");
-  outs("exec setuidgid ");
+  outs("exec chpst -u");
   outs(user);
   outs(" socklog ucspi\n");
   finish();
@@ -260,7 +260,7 @@ void conf_klog() {
 
   start("klog/log/run");
   outs("#!/bin/sh\n");
-  outs("exec setuidgid ");
+  outs("exec chpst -u");
   outs(loguser);
   outs(" svlogd -t main/main\n");
   finish();
@@ -286,7 +286,7 @@ void conf_notify() {
   outs(user); outs(":"); outs(loguser);
   outs(" \"$PIPE\"; fi\n");
   outs("exec <> \"$PIPE\"\n");
-  outs("exec setuidgid ");
+  outs("exec chpst -u");
   outs(user);
   outs(" uncat -s49999 -t180 \\\n");
   outs("  env MAILUSER=log MAILNAME='socklog notify' \\\n");
