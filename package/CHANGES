@@ -1,3 +1,5 @@
+  * doc/install.html: minor.
+
 socklog 1.4.1
 Sat, 28 Feb 2004 17:47:13 +0000
   * socklog.c: handle sigterm on other platforms as accurately as already
