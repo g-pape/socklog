@@ -9,16 +9,14 @@ LDFLAGS=-Wall -O3 -s
 #CFLAGS=-Wall -O3 -Isupport -DSOLARIS
 #LDFLAGS=-Wall -O3 -s -lsocket -lnsl -ldoor -lthread
 
-all: socklog tryto uncat
+all: socklog-conf socklog tryto uncat
+
+socklog-conf: djb-publicdomain socklog-conf.o
+	$(CC) $(LDFLAGS) -o socklog-conf \
+		socklog-conf.o support/unix.a support/byte.a
 
 socklog: socklog.o fdbuffer.o
 	$(CC) $(LDFLAGS) -o socklog socklog.o fdbuffer.o
-
-socklog.o: socklog.c
-
-socklog-conf:	djb-publicdomain socklog-conf.o
-	$(CC) $(LDFLAGS) -o socklog-conf \
-		socklog-conf.o support/unix.a support/byte.a
 
 fdbuffer.o: fdbuffer.c fdbuffer.h
 
@@ -26,13 +24,9 @@ tryto:	djb-publicdomain tryto.o
 	$(CC) $(LDFLAGS) -o tryto \
 		tryto.o support/unix.a support/byte.a support/time.a
 
-#tryto.o:	tryto.c
-
 uncat:	djb-publicdomain uncat.o
 	$(CC) $(LDFLAGS) -o uncat \
 		uncat.o support/unix.a support/byte.a support/time.a
-
-#uncat.o:	uncat.c
 
 djb-publicdomain:
 	( cd support ; make )
@@ -41,5 +35,5 @@ clean:
 	find . -name \*~ -exec rm -f {} \;
 	find . -name .??*~ -exec rm -f {} \;
 	find . -name \#?* -exec rm -f {} \;
-	if test -h support; then $(MAKE) -C support clean ; fi
+	if test -h support; then ( cd support ; $(MAKE) clean ); fi
 	rm -f `cat TARGETS`
