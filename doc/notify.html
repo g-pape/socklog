@@ -1,75 +1,74 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
-  <head>
-    <title>socklog - log events notification</title>
-  </head>
-  
-  <body>
-    <a href="http://innominate.org/~pape/">G. Pape</a><br>
-    <a href="index.html">socklog</a><br>
-    <hr>
-    <h1>socklog - log events notification</h1>
-    <hr>
-    The service <tt>socklog-notify</tt> provides instant notification of
-    log events. There is an interval in seconds for the creation of
-    notifications to prevent a flood.
-    <p>
-      Set up the <tt>socklog-notify</tt> service as described in
-      <a href="configuration.html">Configuration</a> to ensure that the
-      named pipe <tt>/var/log/socklog/.notify</tt> exists. Do not delete
-      this file after creation.
-    <p>
-      <tt>socklog-notify</tt> is handled by the
-      <a href="uncat.1.html">uncat</a> program.
-    <hr>
-    <h2>how to configure log events</h2>
-    Choose a log controlled by
-    <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
-    to be watched for log events, say <tt>/service/dnscache/log/main/</tt>.
-    <p>
-      Make sure that the service <tt>socklog-notify</tt> is running.
-    <p>
-      Redirect the standard error output <tt>stderr</tt> of
-      <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
-      to the named pipe <tt>socklog-notify</tt> is reading from. To do so,
-      insert <tt>exec 2> /var/log/socklog/.notify</tt> as second line into
-      <tt>/service/dnscache/log/run</tt>:
-    <pre>
+<head>
+<title>socklog - log events notification</title>
+</head>
+<body>
+<a href="http://innominate.org/~pape/">G. Pape</a><br>
+<a href="index.html">socklog</a><br>
+<hr>
+<h1>socklog - log events notification</h1>
+<hr>
+The service <tt>socklog-notify</tt> provides instant notification of
+log events. There is an interval in seconds for the creation of
+notifications to prevent a flood.
+<p>
+Set up the <tt>socklog-notify</tt> service as described in
+<a href="configuration.html">Configuration</a> to ensure that the
+named pipe <tt>/var/log/socklog/.notify</tt> exists. Do not delete
+this file after creation.
+<p>
+<tt>socklog-notify</tt> is handled by the
+<a href="uncat.1.html">uncat</a> program.
+<hr>
+<h2>how to configure log events</h2>
+Choose a log controlled by
+<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+to be watched for log events, say <tt>/service/dnscache/log/main/</tt>.
+<p>
+Make sure that the service <tt>socklog-notify</tt> is running.
+<p>
+Redirect the standard error output <tt>stderr</tt> of
+<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+to the named pipe <tt>socklog-notify</tt> is reading from. To do so,
+insert <tt>exec 2> /var/log/socklog/.notify</tt> as second line into
+<tt>/service/dnscache/log/run</tt>:
+<pre>
   #!/bin/sh
   exec 2> /var/log/socklog/.notify
   exec setuidgid dnslog multilog t s1000000 ./main
-    </pre>
-    <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s
-    error messages are always log events.
-    <p>
-      To configure additional  log events in
-      <tt>/service/dnscache/log/main/</tt>, use the alert action <tt>e</tt>
-      from <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
-      If you want to be notified about all log entries showing <tt>stats</tt>,
-      add a corresponding <tt>script</tt> to the
-      <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
-      configuration in <tt>/service/dnscache/log/run</tt> like this:
-    <pre>
+</pre>
+<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s
+error messages are always log events.
+<p>
+To configure additional  log events in
+<tt>/service/dnscache/log/main/</tt>, use the alert action <tt>e</tt>
+from <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
+If you want to be notified about all log entries showing <tt>stats</tt>,
+add a corresponding <tt>script</tt> to the
+<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+configuration in <tt>/service/dnscache/log/run</tt> like this:
+<pre>
   #!/bin/sh
   exec 2> /var/log/socklog/.notify
   exec setuidgid dnslog multilog t s1000000 ./main \
     -* '+* stats *' e
-    </pre>
-    Then restart the log service:
-    <pre>
+</pre>
+Then restart the log service:
+<pre>
   # svc -t /service/dnscache/log
-    </pre>
-    <hr>
-    <h2>how to configure the notification</h2>
-    Per default, <tt>socklog-notify</tt> injects a mail to a specified
-    address containing the log events, but the behavior is configurable, so
-    you can change it to use instant or short messaging service for example.
-    <p>
-      To configure the kind of notification, edit
-      <tt>/etc/socklog/notify/run</tt> and change the <tt>prog</tt> argument
-      of <a href="uncat.1.html">uncat</a> to your needs. This example
-      uses <i>sms_client</i> to notify:
-    <pre>
+</pre>
+<hr>
+<h2>how to configure the notification</h2>
+Per default, <tt>socklog-notify</tt> injects a mail to a specified
+address containing the log events, but the behavior is configurable, so
+you can change it to use instant or short messaging service for example.
+<p>
+To configure the kind of notification, edit
+<tt>/etc/socklog/notify/run</tt> and change the <tt>prog</tt> argument
+of <a href="uncat.1.html">uncat</a> to your needs. This example
+uses <i>sms_client</i> to notify:
+<pre>
   #!/bin/sh -e
   MAILTO=root
   PIPE=/var/log/socklog/.notify
@@ -78,21 +77,21 @@
   exec < "$PIPE"
   exec setuidgid log uncat -vs49999 -t90 \
     sh -c 'head -c140 | sms_client pager'
-    </pre>
-    Then restart the service:
-    <pre>
+</pre>
+Then restart the service:
+<pre>
   # svc -t /service/socklog-notify
-    </pre>
-    <p>
-      Another example using <i>wall</i>:
-    <pre>
+</pre>
+<p>
+Another example using <i>wall</i>:
+<pre>
   exec setuidgid log uncat -vs49999 -t180 \
     sh -c 'head | wall'
-    </pre>
-    <hr>
-    <address><a href="mailto:pape@smarden.org">
-	G. Pape &lt;pape@smarden.org&gt;
-      </a></address>
-    <small>$Id$</small
-  </body>
+</pre>
+<hr>
+<address><a href="mailto:pape@smarden.org">
+Gerrit Pape &lt;pape@smarden.org&gt;
+</a></address>
+<small>$Id$</small
+</body>
 </html>
