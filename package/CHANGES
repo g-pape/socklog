@@ -1,4 +1,5 @@
   * doc/install.html: minor.
+  * socklog.c: fix sigterm handling in ucspi mode.
 
 socklog 1.4.1
 Sat, 28 Feb 2004 17:47:13 +0000

@@ -210,9 +210,10 @@ int socket_inet (const char* ip, const char* port) {
 }
 
 int read_socket (int s) {
+  sig_catch(sig_term, sig_term_catch);
+  sig_catch(sig_int, sig_term_catch);
   /* drop permissions */
   setuidgid();
-
   buffer_putsflush(buffer_2, "starting.\n");
 
   for(;;) {
@@ -371,8 +372,9 @@ static void read_stream_sun(int fd) {
   data.buf =line;
   flags =0;
   
+  sig_catch(sig_term, sig_term_catch);
+  sig_catch(sig_int, sig_term_catch);
   setuidgid();
-  
   buffer_putsflush(buffer_2, "starting.\n");
   
   /* read the messages */
@@ -453,9 +455,6 @@ int main(int argc, const char **argv, const char *const *envp) {
   }
 
   if (*argv) address =*argv++;
-
-  sig_catch(sig_term, sig_term_catch);
-  sig_catch(sig_int, sig_term_catch);
 
   switch (mode) {
   case MODE_INET: {
