@@ -167,7 +167,7 @@ Same as \-r above, but write the raw syslog messages only.
 .TP
 .B \-U
 respect umask.
-Don't set umask to 777 before creating a unix domain socket, but respect
+Don't set umask to 0 before creating a unix domain socket, but respect
 the current setting of
 .BR umask (2).
 This option only takes effect in unix mode.
