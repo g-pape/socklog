@@ -28,6 +28,7 @@ $(PACKAGE).tar.gz:
 	chmod -R g-ws TEMP/admin
 	chmod +t TEMP/admin
 	chmod +t TEMP/admin/$(PACKAGE)/etc/{inet,klog,unix,ucspi-tcp}
+	find TEMP -exec touch {} \;
 	su -c 'chown -R root:root TEMP/admin ; \
 		( cd TEMP ; tar cpfz ../$(PACKAGE).tar.gz admin --exclude CVS ) ; \
 		rm -rf TEMP'
