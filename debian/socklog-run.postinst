@@ -3,20 +3,19 @@ set -e
 
 test "$1" = 'configure' || exit 0
 
-if test -z "$2"; then
-  # fresh install, create log directories
-  TEMP=`mktemp -d`
-  test -d /var/log/socklog || socklog-conf unix nobody log "$TEMP"
-  for i in klog inet ucspi-tcp; do
-    test -d /var/log/socklog-$i || socklog-conf $i nobody log "$TEMP" \
-      || exit 1
-  done
-  rm -rf "$TEMP"
-  chown -R log:adm /var/log/socklog
-  for i in klog inet ucspi-tcp; do
-    chown -R log:adm /var/log/socklog-$i || exit 1
-  done
+# create log directories that don't exist
+TEMP=`mktemp -d`
+if ! test -d /var/log/socklog; then
+  socklog-conf unix nobody log "$TEMP" && \
+  chown -R log:adm /var/log/socklog || exit 1
 fi
+for i in klog inet ucspi-tcp; do
+  if ! test -d /var/log/socklog-$i; then
+    socklog-conf $i nobody log "$TEMP" && \
+    chown -R log:adm /var/log/socklog-$i || exit 1
+  fi
+done
+! test -e "$TEMP" || rm -rf "$TEMP"
 
 for i in unix klog; do
   test -e /var/service/socklog-$i || \
