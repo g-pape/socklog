@@ -7,6 +7,8 @@ unpack socklog_x.x.x.tar.gz
   # tar xfzvp socklog_x.x.x.tar.gz
   # cd socklog-x.x.x
     
+on solaris, edit the top of Makefile and add -DSOLARIS to CFLAGS.
+
 run make and make install
   # make
   # make install
