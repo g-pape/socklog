@@ -1,87 +1,100 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
-<head>
-<title>socklog - configuration</title>
-</head>
-
-<body>
-<a href="http://innominate.org/~pape/">G. Pape</a><br>
-<a href="index.html">socklog</a><br>
-<hr>
-<h1>socklog - configuration</h1>
-<hr>
-the installation of <i>socklog</i> provides two example service directories
-for the use with
-<a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>:
-<ul>
-  <li><tt>/package/admin/socklog/etc/unix/</tt>
-  <li><tt>/package/admin/socklog/etc/inet/</tt>
-</ul>
-the directory <tt>/package/admin/socklog/etc/unix/</tt> handles the service
-listening on unix domain socket (<tt>/dev/log</tt>),
-<tt>/package/admin/socklog/etc/inet/</tt> handles the service listening on
-udp socket (<tt>0.0.0.0:514</tt>).
-<hr>
-to configure the behaviour of <i>socklog</i> services, create a
-<tt>/etc/socklog</tt> directory
-<pre>
+  <head>
+    <title>socklog - configuration</title>
+  </head>
+  
+  <body>
+    <a href="http://innominate.org/~pape/">G. Pape</a><br>
+    <a href="index.html">socklog</a><br>
+    <hr>
+    <h1>socklog - configuration</h1>
+    <hr>
+    The installation of <i>socklog</i> provides four example service
+    directories for the use with
+    <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>:
+    <ul>
+      <li><tt>/package/admin/socklog/etc/unix/</tt>
+      <li><tt>/package/admin/socklog/etc/inet/</tt>
+      <li><tt>/package/admin/socklog/etc/notify/</tt>
+      <li><tt>/package/admin/socklog/etc/ucspi-tcp/</tt>
+    </ul>
+    The directory<br>
+    <tt>/package/admin/socklog/etc/unix/</tt> handles the service
+    listening on unix domain socket (<tt>/dev/log</tt>),<br>
+    <tt>/package/admin/socklog/etc/inet/</tt> handles the service listening on
+    udp socket (<tt>0.0.0.0:514</tt>),<br>
+    <tt>/package/admin/socklog/etc/notify/</tt> handles
+    <a href="notify.html">log event notification</a>,<br>
+    <tt>/package/admin/socklog/etc/ucspi-tcp/</tt> handles logs received from
+    <a href="network.html">network</a>.
+    <hr>
+    To prepare running one or more <i>socklog</i> services, create a
+    <tt>/etc/socklog</tt> directory
+    <pre>
   # mkdir -p /etc/socklog
-</pre>
-and copy the example service directories into <tt>/etc/socklog</tt>
-<pre>
+    </pre>
+    and copy the example service directories into <tt>/etc/socklog</tt>:
+    <pre>
   # cp -pr /package/admin/socklog/etc/* /etc/socklog/
-</pre>
-then edit the appropriate <tt>run</tt> scripts:
-<ul>
-  <li><tt>/etc/socklog/*/run</tt>
-  <li><tt>/etc/socklog/*/log/run</tt>
-</ul>
-<hr>
-to enable one of <i>socklog</i>'s services, stop the default syslog
-service first and ensure that it will not be restarted on runlevel
-change or system reboot.
-<p>
-edit the corresponding
-<tt>run</tt> scripts once for configuration, e.g. for the unix domain
-socket service:
-<pre>
+    </pre>
+    To configure the services, edit the appropriate <tt>run</tt> scripts:
+    <ul>
+      <li><tt>/etc/socklog/*/run</tt>
+      <li><tt>/etc/socklog/*/log/run</tt>
+    </ul>
+    <hr>
+    To enable one of <i>socklog</i>'s services, edit the corresponding
+    <tt>run</tt> scripts once for configuration, e.g. for the unix domain
+    socket service <tt>socklog-unix</tt>:
+    <pre>
   # vi /etc/socklog/unix/run
   # vi /etc/socklog/unix/log/run
-</pre>
-create the user you chose to run
-<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
-if not yet done and
-check carefully that all log directories you stated in
-<tt>/etc/socklog/unix/log/run</tt> exist and are writable to
-this user.
-<p>
-then link the directory to
-<a href="http://cr.yp.to/daemontools.html">daemontools</a>'
-<i>service</i> directory, e.g. for the unix domain socket service:
-<pre>
+    </pre>
+    Create the user(s) you chose to run the service daemon and
+    <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+    if not yet done and
+    check carefully that all log directories you stated in
+    <tt>/etc/socklog/unix/log/run</tt> exist and are writable to
+    this user.
+    <p>
+      The <tt>socklog-notify</tt> service has no <tt>log/run</tt> script,
+      just make sure the user running <a href="uncat.1.html">uncat</a>
+      exists and has permissions to create the named pipe <tt>$PIPE</tt>,
+      see the <tt>run</tt> script.
+    <p>
+      If you are replacing another service providing system logging, such
+      as syslogd, stop this service now and ensure that it will not be
+      restarted on runlevel change or system reboot.
+    <p>
+      Then link the directory to
+      <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
+      <i>service</i> directory, e.g. for the unix domain socket service:
+    <pre>
   # ln -s /etc/socklog/unix /service/socklog-unix
-</pre>
-wait five seconds for the service to start and then check the log
-directories.
-<hr>
-it is possible to replace the unix domain dgram socket listener
-<tt>socklog-unix</tt> with a unix domain stream socket listener using the
-<tt>ucspi</tt> mode of <i>socklog</i> and <i>ucspi tools</i> such as
-<a href="http://untroubled.org/ucspi-unix/">ucspi-unix</a> and
-<a href="http://www.superscript.com/ucspi-ipc/intro.html">ucspi-icp</a>.
-<p>
-create a service directory <tt>/etc/socklog/ucspi-unix</tt>
-with a subdirectory <tt>log</tt> and the correspnding <tt>run</tt> scripts:
-<ul>
-  <li>a sample <tt>socklog-ucspi-unix/run</tt> script:
-      <pre>
+    </pre>
+    Wait five seconds for the service to start and then check the log
+    directories.
+    <hr>
+    It is possible to replace the unix domain dgram socket listener
+    <tt>socklog-unix</tt> with a unix domain stream socket listener using the
+    <tt>ucspi</tt> mode of <i>socklog</i> and <i>ucspi tools</i> such as
+    <a href="http://untroubled.org/ucspi-unix/">ucspi-unix</a> and
+    <a href="http://www.superscript.com/ucspi-ipc/intro.html">ucspi-icp</a>.
+    <p>
+      Create a service directory <tt>/etc/socklog/ucspi-unix</tt>
+      with a subdirectory <tt>log</tt> and the correspnding <tt>run</tt>
+      scripts:
+    <ul>
+      <li>a sample <tt>socklog-ucspi-unix/run</tt> script:
+	<pre>
   #!/bin/sh
   exec 2>&1
   exec unixserver -U `id -u nobody` /dev/log -- \
     socklog ucspi UNIXREMOTEEUID UNIXREMOTEEGID
-      </pre>
-  <li>a sample <tt>socklog-ucspi-unix/log/run</tt> script:
-      <pre>
+	</pre>
+      <li>a sample <tt>socklog-ucspi-unix/log/run</tt> script:
+	<pre>
   #!/bin/sh
   LOGDIR=/var/log/socklog
   exec setuidgid log multilog ${LOGDIR}/main \
@@ -96,31 +109,33 @@ with a subdirectory <tt>log</tt> and the correspnding <tt>run</tt> scripts:
     -* +'*: *: ftp.*' ${LOGDIR}/ftp \
     -* +'*: *: local*.*' ${LOGDIR}/local \
     -* +'*: *: *.debug*' ${LOGDIR}/debug
-      </pre>
-</ul>
-disable the service <tt>socklog-unix</tt> if it is running
-<pre>
+	</pre>
+    </ul>
+    Disable the service <tt>socklog-unix</tt> if it is running:
+    <pre>
   # cd /service/socklog-unix
   # rm /service/socklog-unix
   # svc -dx . log
-</pre>
-check carefully that all log directories you stated in
-<tt>/etc/socklog/ucspi-unix/log/run</tt> exist and are writable
-to the corresponding user.
-<p>
-then link the directory to
-<a href="http://cr.yp.to/daemontools.html">daemontools</a>'
-<i>service</i> directory:
-<pre>
+    </pre>
+    Check carefully that all log directories you stated in
+    <tt>/etc/socklog/ucspi-unix/log/run</tt> exist and are writable
+    to the corresponding user.
+    <p>
+      Then link the directory to
+      <a href="http://cr.yp.to/daemontools.html">daemontools</a>'
+      <i>service</i> directory:
+    <pre>
   # ln -s /etc/socklog/ucspi-unix /service/socklog-ucspi-unix
-</pre>
-wait five seconds for the service to start and then check the log
-directories.
-<hr>
-See <a href="examples.html">Examples</a> for more sample <tt>run</tt>
-and <tt>log/run</tt> scripts.
-<hr>
-<address><a href="mailto:pape@innominate.com">G. Pape</a></address>
-<small>$Id$</small>
-</body>
+    </pre>
+    Wait five seconds for the service to start and then check the log
+    directories.
+    <hr>
+    See <a href="examples.html">Examples</a> for more sample <tt>run</tt>
+    and <tt>log/run</tt> scripts.
+    <hr>
+    <address><a href="mailto:pape@innominate.com">
+	G. Pape &lt;pape@innominate.com&gt;
+      </a></address>
+    <small>$Id$</small>
+  </body>
 </html>

@@ -1,7 +1,7 @@
 .TH uncat 1
 .SH NAME
 uncat - continuously reads stdin, splits up the data either by timeout or
-number of bytes and processes it
+number of bytes read to process it
 .SH SYNOPSIS
 .B uncat
 [
@@ -43,6 +43,11 @@ stdin.
 Note that
 .B uncat
 is not crash proof.
+.LP
+.B uncat
+is used to run the
+.I socklog-notify
+service.
 .SH OPTIONS
 .TP
 .B \-v
@@ -62,16 +67,20 @@ If
 .B uncat
 receives a TERM signal, it starts to process the data in memory and exits
 as soon as possible.
+.LP
+.B uncat
+also does this on end of standard input.
 .SH EXIT CODES
 .B uncat
-exits with 0 on end of stdin or after receiving a TERM signal.
+returns 0 on end of standard input or after receiving a TERM signal.
 .B uncat
-exits 111 on error.
+returns 111 on error.
 .SH SEE ALSO
-multilog(8),
 socklog(8),
+supervise(8),
+multilog(8),
 tryto(1)
-
+.LP
 http://innominate.org/~pape/socklog/
 .SH AUTHOR
 G. Pape <pape@innominate.com>

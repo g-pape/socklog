@@ -59,20 +59,28 @@
     <p>
       To configure the kind of notification, edit
       <tt>/etc/socklog/notify/run</tt> and change the <tt>prog</tt> argument
-      to <a href="uncat.1.html">uncat</a> to your needs. This example
+      of <a href="uncat.1.html">uncat</a> to your needs. This example
       uses <i>sms_client</i> to notify:
     <pre>
-  #!/bin/sh
-  if [ ! -p /var/log/socklog/.socklog-mail ]; then
-    mknod /var/log/socklog/.socklog-mail p
-  fi
-  chmod 666 /var/log/socklog/.socklog-mail
-  exec < /var/log/socklog/.socklog-mail
-  exec /package/admin/daemontools/compile/uncat -vs49999 -t90 \
+  #!/bin/sh -e
+  MAILTO=root
+  PIPE=/var/log/socklog/.notify
+  if [ ! -p "$PIPE" ]; then mknod "$PIPE" p; fi
+  chmod 666 "$PIPE"
+  exec < "$PIPE"
+  exec setuidgid log uncat -vs49999 -t90 \
     sh -c 'head -c140 | sms_client pager'
     </pre>
+    <p>
+      Or try this:
+    <pre>
+  exec setuidgid log uncat -vs49999 -t180 \
+    sh -c 'head | wall'
+    </pre>
     <hr>
-    <address><a href="mailto:pape@innominate.com">G. Pape</a></address>
+    <address><a href="mailto:pape@innominate.com">
+	G. Pape &lt;pape@innominate.com&gt;
+      </a></address>
     <small>$Id$</small
   </body>
 </html>

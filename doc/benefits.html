@@ -20,7 +20,7 @@
       keeps a specified number of logfiles with a maximum file size, so it is
       possible to calculate a logfile partition properly.
     <p>
-      for example, this <tt>log/run</tt> file:
+      For example, this <tt>log/run</tt> file
     <pre>
 #!/bin/sh
 LOGDIR=/var/log/socklog
@@ -44,16 +44,22 @@ exec setuidgid log multilog s4999999 n10 ${LOGDIR}/main \
     each of maximal size 999999 bytes in <tt>/var/log/socklog/kern/</tt>,
     <tt>/var/log/socklog/user/</tt>, ...
     <p>
-      so the maximal used space for all these directories is less then:
+      So the maximal used space for all these directories is less then:
     <p>
-      <tt>10 * 5000000 + 11 * 5 * 1000000 = 105000000 bytes < 100 MB</tt>
+      <tt>10 * 5000000 + 11 * 5 * 1000000 = 105000000 bytes < 110 MB</tt>
     <p>
-      if there is any service acting up and filling up your logs rapidly,
+      If there is any service acting up and filling up your logs rapidly,
       you will never run into a filled up log partition, causing loss of new
       log entries, even of other services. you can lose old log entries from
       this service, but will ever have the recent ones.
+    <p>
+      Please note that above numbers could change if you use 
+      <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
+      with a <i>processor</i>.
     <hr>
-    <address><a href="mailto:pape@innominate.com">G. Pape</a></address>
+    <address><a href="mailto:pape@innominate.com">
+	G. Pape &lt;pape@innominate.com&gt;
+      </a></address>
     <small>$Id$</small
   </body>
 </html>

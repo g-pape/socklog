@@ -1,0 +1,13 @@
+#!/bin/sh
+
+LOGDIR=/var/log/socklog-remote
+
+exec 2>&1
+exec setuidgid log multilog t ${LOGDIR}/main
+
+# not reached
+
+# use this f.e. to separate log by client
+exec 2>&1
+exec setuidgid log multilog t ${LOGDIR}/main \
+  -* +'* 10.0.0.236:*' ${LOGDIR}/10.0.0.236

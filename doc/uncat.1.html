@@ -10,10 +10,10 @@
 
 <H2><A NAME="sect0">Name</A></H2>
 uncat - continuously reads stdin, splits up the data either by timeout
-or number of bytes and processes it 
+or number of bytes read to process it 
 <H2><A NAME="sect1">Synopsis</A></H2>
-<B>uncat</B> [ <B>-v</B> ] [ <B>-t</B> <I>seconds</I> ] [
-<B>-s</B> <I>size</I> ] <I>prog</I> 
+<B>uncat</B> [ <B>-v</B> ] [ <B>-t</B> <I>seconds</I> ]
+[ <B>-s</B> <I>size</I> ] <I>prog</I> 
 <H2><A NAME="sect2">Description</A></H2>
 <B>uncat</B> continuously reads stdin and repeatedly
 processes the data either after <I>seconds</I> timeout or maximal number of bytes
@@ -23,37 +23,41 @@ input with that data. <P>
 If <I>prog</I> exits
 non-zero, <B>uncat</B> prints an error message, discards the data and continues
 to read stdin. <P>
-Note that <B>uncat</B> is not crash proof. 
+Note that <B>uncat</B> is not crash proof. <P>
+<B>uncat</B> is used to run the
+<I>socklog-notify</I> service. 
 <H2><A NAME="sect3">Options</A></H2>
 
 <DL>
 
 <DT><B>-v</B> </DT>
-<DD>verbose. print
-verbose messages to stderr. </DD>
+<DD>verbose. print verbose messages to stderr.
+</DD>
 
 <DT><B>-t <I>seconds</B> </I></DT>
-<DD>timeout. Set the timeout to <I>seconds</I>
-seconds. Default is 300. </DD>
+<DD>timeout. Set the timeout to <I>seconds</I> seconds. Default is 300. </DD>
 
-<DT><B>-s <I>size</B> </I></DT>
-<DD>Set the maximal number of bytes to <I>size</I>. Default
-is 1024. </DD>
+<DT><B>-s <I>size</B>
+</I></DT>
+<DD>Set the maximal number of bytes to <I>size</I>. Default is 1024. </DD>
 </DL>
 
 <H2><A NAME="sect4">Signals</A></H2>
-If <B>uncat</B> receives a TERM signal, it starts to process the
-data in memory and exits as soon as possible. 
-<H2><A NAME="sect5">Exit Codes</A></H2>
-<B>uncat</B> exits with
-0 on end of stdin or after receiving a TERM signal. <B>uncat</B> exits 111 on error.
-
+If <B>uncat</B>
+receives a TERM signal, it starts to process the data in memory and exits
+as soon as possible. <P>
+<B>uncat</B> also does this on end of standard input. 
+<H2><A NAME="sect5">Exit
+Codes</A></H2>
+<B>uncat</B> returns 0 on end of standard input or after receiving a TERM
+signal. <B>uncat</B> returns 111 on error. 
 <H2><A NAME="sect6">See Also</A></H2>
-<I>multilog(8)</I>, <I>socklog(8)</I>, <I>tryto(1)</I> <P>
- <I>http://innominate.org/~pape/socklog/</I>
-
+<I>socklog(8)</I>, <I>supervise(8)</I>, <I>multilog(8)</I>,
+<I>tryto(1)</I> <P>
+<I>http://innominate.org/~pape/socklog/</I> 
 <H2><A NAME="sect7">Author</A></H2>
-G. Pape &lt;pape@innominate.com&gt; <P>
+G. Pape &lt;pape@innominate.com&gt;
+<P>
 
 <HR><P>
 <A NAME="toc"><B>Table of Contents</B></A><P>

@@ -40,12 +40,14 @@
 	(<tt>a.b.c.d:514</tt>)
     </ul>
     <p>
-      <i>socklog</i> refuses the latter but provides the first two features
-      with the help of
+      <i>socklog</i> provides the first two features with the help of
       <a href="http://cr.yp.to/daemontools.html">daemontools</a>`
       <a href="http://cr.yp.to/daemontools/svscan.html">svscan</a>,
       <a href="http://cr.yp.to/daemontools/supervise.html">supervise</a>
-      and <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
+      and <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>,
+      provides a different
+      <a href="network.html">network logging concept</a> and additionally
+      does <a href="notify.html">log event notification</a>.
     <p>
       <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
       has a built in
@@ -69,26 +71,27 @@
     to a <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
     process.
     <p>
-    <i>socklog</i> can be run as an
-    <a href="http://cr.yp.to/proto/ucspi.txt">ucspi</a> application to
-    listen to an unix domain stream socket and for centralized or more
-    flexible distributed logging.
+      <i>socklog</i> can be run as an
+      <a href="http://cr.yp.to/proto/ucspi.txt">ucspi</a> application to
+      listen to an unix domain stream socket and for centralized or more
+      flexible distributed logging (see
+      <a href="network.html">network logging</a>).
     <p>
-    If <i>socklog</i> listens to an udp socket, it prepends
-    <tt>ip:</tt> (<tt>a.b.c.d: </tt>) to each syslog message it receives,
-    where <tt>a.b.c.d</tt> is the ip address of the connecting system.
+      If <i>socklog</i> listens to an udp socket, it prepends
+      <tt>ip:</tt> (<tt>a.b.c.d: </tt>) to each syslog message it receives,
+      where <tt>a.b.c.d</tt> is the ip address of the connecting system.
     <p>
-    If the environment variables $UID and/or $GID are present,
-    <i>socklog</i> will drop permissions to those ids after creating
-    and binding to the socket (not in
-    <a href="http://cr.yp.to/proto/ucspi.txt">ucspi</a> mode).
+      If the environment variables $UID and/or $GID are present,
+      <i>socklog</i> will drop permissions to those ids after creating
+      and binding to the socket (not in
+      <a href="http://cr.yp.to/proto/ucspi.txt">ucspi</a> mode).
     <p>
-    <i>socklog</i>  converts syslog <tt>facility</tt> and <tt>priority</tt>
-    information to names (<tt>facility.priority</tt>) as found in
-    <tt>/usr/include/syslog.h</tt>
-    at compile time if present, you can use this for
-    <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s line
-    selecting by pattern.
+      <i>socklog</i>  converts syslog <tt>facility</tt> and <tt>priority</tt>
+      information to names (<tt>facility.priority</tt>) as found in
+      <tt>/usr/include/syslog.h</tt>
+      at compile time if present, you can use this for
+      <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s line
+      selecting by pattern.
     <hr>
     A proper <tt>run</tt> file for
     <a href="http://cr.yp.to/daemontools/supervise.html">supervise</a> is:
@@ -149,7 +152,9 @@
     See <a href="/~pape/socklog/">http://innominate.org/~pape/socklog/</a>
     for recent informations.
     <hr>
-    <address><a href="mailto:pape@innominate.com">G. Pape</a></address>
+    <address><a href="mailto:pape@innominate.com">
+	G. Pape &lt;pape@innominate.com&gt;
+      </a></address>
     <small>$Id$</small>
   </body>
 </html>

@@ -1,7 +1,7 @@
 .TH tryto 1
 .SH NAME
 tryto - tries to run a command limited by a timeout or number of tries,
-can be used to run multilog(8) processors.
+can be used to run as multilog(8) processor.
 .SH SYNOPSIS
 .B tryto
 [
@@ -26,7 +26,10 @@ consist of one or more arguments.
 .LP
 .B tryto
 runs and watches
-.IR prog .
+.IR prog ,
+feeding its standard input to
+.IR prog 's
+standard input.
 If
 .I prog
 exits with an error code other then 0,
@@ -56,6 +59,18 @@ seconds for
 to terminate, then sends a KILL signal if
 .I prog
 still is there, and exits as soon as possible.
+.LP
+The main purpose of
+.B tryto
+is to run as
+.BR multilog (8)
+processor (see below). Without the
+.B \-p
+option,
+.B tryto
+does just a subset of what
+.BR timelimit (8)
+from Peter Pentchev provides.
 .SH OPTIONS
 .TP
 .B \-v
@@ -115,7 +130,8 @@ will be saved in
 .BR multilog (8)'s
 .I state
 to be processed on the next run of
-.BR tryto .
+.B tryto 
+.BR \-p .
 .LP
 After starting
 .IR prog ,
@@ -136,11 +152,15 @@ to filedesriptor 5 and exits with 0.
 .SH EXIT CODES
 If
 .B tryto
+itself failes, it returns 111.
+.LP
+If
+.B tryto
 runs as a
 .BR multilog (8)
 processor,
 .B tryto
-always returns 0.
+returns 0 in all other cases.
 .LP
 If
 .I prog
@@ -162,14 +182,13 @@ failed by maximal number of
 returns the last exit code from
 .IR prog .
 .LP
-If
-.B tryto
-itself failes, it exists with 111.
 .SH SEE ALSO
 multilog(8),
 socklog(8),
-lseek(2)
-
+uncat(1),
+lseek(2),
+timelimit(8)
+.LP
 http://innominate.org/~pape/socklog/
 .SH AUTHOR
 G. Pape <pape@innominate.com>

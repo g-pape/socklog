@@ -1,0 +1,6 @@
+#!/bin/sh
+
+PORT=10116
+
+exec 2>&1
+exec envuidgid log tcpserver -vUHR -l0 0 "$PORT" socklog ucspi TCPREMOTEIP

@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+MAILTO=root
+PIPE=/var/log/socklog/.notify
+
+if [ ! -p "$PIPE" ]; then mknod "$PIPE" p; fi
+chmod 666 "$PIPE"
+
+exec < "$PIPE"
+exec setuidgid log uncat -vs49999 -t180 \
+  env QMAILUSER=log \
+  sh -c "( echo -e \"Subject: socklog-notify\nTo: <$MAILTO>\n\"; cat ) | \
+  datemail -F'socklog notify' $MAILTO"

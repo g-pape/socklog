@@ -27,14 +27,14 @@
 	<i>processor</i> feature.
       <li>
 	since this transmission cannot be made reliable, there is a tool
-	<a href="man/tryto.1.html">tryto</a> that limits the time to try this
+	<a href="tryto.1.html">tryto</a> that limits the time to try this
 	transmission. See below for examples.
       <li>
 	if the transmission of <tt>current</tt> fails, the log will be saved
 	local,
 	<a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>
 	remembers the failure in it's <tt>state</tt> and
-	<a href="man/tryto.1.html">tryto</a> includes the error messages into
+	<a href="tryto.1.html">tryto</a> includes the error messages into
 	the transmission on the next run, so the remote	machine gets the
 	information of log transmission failures.
     </ul>
@@ -85,10 +85,13 @@
     On each rotation of
     <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>'s
     <tt>current</tt>, the data will be transmitted to
-    <tt>$LOGSERVERIP:$PORT</tt> using <a href="man/tryto.1.html">tryto</a>
-    and <a href="http://cr.yp.to/ucspi-tcp/tcpclient.html">tcpclient</a>.
+    <tt>$LOGSERVERIP:$PORT</tt> using <a href="tryto.1.html">tryto</a>
+    and <a href="http://cr.yp.to/ucspi-tcp/tcpclient.html">tcpclient</a>,
+    failures will be noticed and notified on the next run.
     <hr>
-    <address><a href="mailto:pape@innominate.com">G. Pape</a></address>
+    <address><a href="mailto:pape@innominate.com">
+	G. Pape &lt;pape@innominate.com&gt;
+      </a></address>
     <small>$Id$</small
   </body>
 </html>
