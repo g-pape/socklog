@@ -2,14 +2,32 @@ Source: socklog
 Section: admin
 Priority: optional
 Maintainer: Gerrit Pape <pape@smarden.org>
-Standards-Version: 3.5.10
+Standards-Version: 3.6.0
 Build-Depends: debhelper (>> 3.0.0)
 
 Package: socklog
 Architecture: any
-Depends: runit (>> 0.10.0-0), adduser, ${shlibs:Depends}
-Recommends: ipsvd
+Depends: adduser, ${shlibs:Depends}
+Recommends: socklog-run, runit (>> 0.10.0-0), ipsvd
+Description: small and secure replacement for syslogd (binaries)
+ socklog cooperates with the runit package to create a small and secure
+ replacement for syslogd.  socklog supports system logging through Unix
+ domain sockets (/dev/log) and UDP sockets (0.0.0.0:514) with the help of
+ runit's runsvdir, runsv, and svlogd.  socklog provides a different
+ network logging concept, and also does log event notification.  svlogd
+ has built in log file rotation based on file size, so there is no need
+ for any cron jobs to rotate the logs.  socklog is small, secure, and
+ reliable.
+ .
+ See http://smarden.org/socklog/ for more information.
+ .
+ This package contains the socklog programs.
+
+Package: socklog-run
+Architecture: all
+Depends: socklog, runit (>> 0.10.0-0), ipsvd
 Provides: system-log-daemon, linux-kernel-log-daemon
+Conflicts: system-log-daemon, linux-kernel-log-daemon
 Description: small and secure replacement for syslogd
  socklog cooperates with the runit package to create a small and secure
  replacement for syslogd.  socklog supports system logging through Unix
@@ -21,3 +39,6 @@ Description: small and secure replacement for syslogd
  reliable.
  .
  See http://smarden.org/socklog/ for more information.
+ .
+ This package sets up the socklog-unix and socklog-klog services to
+ provide a system log service and kernel log service respectively.

@@ -1,13 +1,14 @@
 socklog for Debian
------------------
+------------------
 
-The binaries are installed in /usr/sbin and /usr/bin.  To enable the
-socklog service(s), make sure that runit's service supervision is enabled.
-If you want to configure network logging, make sure that the ipsvd package
-is installed.  Then refer to the documentation[0], this package already
-created the system user ``log'' for you.
+The binaries are installed in /usr/sbin and /usr/bin.  To have socklog
+provide the default system log service and kernel log service on your
+system, additionally install the socklog-run package.  As an alternative
+you can make sure that the runit package is installed, that runit's service
+supervision is enabled, and follow the documentation[0].  This package
+already created the system user ``log'' for you.
 
 [0] /usr/share/doc/socklog/doc/configuration.html
     http://smarden.org/socklog/configuration.html
 
- -- Gerrit Pape <pape@smarden.org>, Tue, 24 Jun 2003 11:35:22 +0200
+ -- Gerrit Pape <pape@smarden.org>, Mon, 08 Sep 2003 16:24:14 +0200

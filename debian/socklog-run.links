@@ -1,0 +1,13 @@
+/var/log/socklog /etc/socklog/unix/log/main
+/var/log/socklog-klog /etc/socklog/klog/log/main
+/var/log/socklog-inet /etc/socklog-inet/log/main
+/var/log/socklog-ucspi-tcp /etc/socklog/ucspi-tcp/log/main
+/var/run/socklog-unix /etc/socklog/unix/supervise
+/var/run/socklog-unix.log /etc/socklog/unix/log/supervise
+/var/run/socklog-inet /etc/socklog/inet/supervise
+/var/run/socklog-inet.log /etc/socklog/inet/log/supervise
+/var/run/socklog-klog /etc/socklog/klog/supervise
+/var/run/socklog-klog.log /etc/socklog/klog/log/supervise
+/var/run/socklog-notify /etc/socklog/notify/supervise
+/var/run/socklog-ucspi-tcp /etc/socklog/ucspi-tcp/supervise
+/var/run/socklog-ucspi-tcp.log /etc/socklog/ucspi-tcp/log/supervise

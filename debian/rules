@@ -12,8 +12,10 @@ configure-stamp:
 
 	touch configure-stamp
 
-build: configure-stamp build-stamp
-build-stamp:
+build: build-arch build-indep
+
+build-arch: build-arch-stamp
+build-arch-stamp: configure
 	dh_testdir
 
 	tar xzvpf socklog-1.2.0.tar.gz
@@ -22,11 +24,15 @@ build-stamp:
 	( \
 	set -e; \
 	cd admin/socklog-1.2.0/src; \
-	ln -s socklog-1.2.0 socklog; mv socklog ../..; \
+	rm -f socklog; ln -s socklog-1.2.0 socklog; mv socklog ../..; \
 	$(MAKE); \
 	)
 
 	touch build-stamp
+
+build-indep: build-indep-stamp
+build-indep-stamp: 
+	touch build-indep-stamp
 
 clean:
 	dh_testdir
@@ -36,11 +42,13 @@ clean:
 	rm -rf admin
 	dh_clean
 
-install: build
+install: install-arch install-indep
+
+install-arch: build-arch
 	dh_testdir
 	dh_testroot
-	dh_clean -k
-	dh_installdirs
+	dh_clean -a -k
+	dh_installdirs -a
 
 	for i in socklog socklog-conf; do \
 	  install -m0755 admin/socklog/src/$$i \
@@ -51,27 +59,56 @@ install: build
 	    $(CURDIR)/debian/socklog/usr/bin/; \
 	done
 
-binary-indep: build install
-
-binary-arch: build install
+install-indep: build-indep
 	dh_testdir
 	dh_testroot
-#	dh_installdebconf	
-	dh_installdocs
-#	dh_installexamples
-	dh_installman admin/socklog/man/*.[18]
-#	dh_undocumented
-	dh_installchangelogs 
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-#	dh_makeshlibs
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+	dh_clean -i -k
+	dh_installdirs -i
+
+	for i in unix klog inet ucspi-tcp; do \
+	  install -m0750 debian/etc/$$i/run \
+	    $(CURDIR)/debian/socklog-run/etc/socklog/$$i/run; \
+	  install -m0750 debian/etc/$$i/log/run \
+	    $(CURDIR)/debian/socklog-run/etc/socklog/$$i/log/run; \
+	done
+	install -m0750 debian/etc/notify/run \
+	  $(CURDIR)/debian/socklog-run/etc/socklog/notify/run
+
+binary-arch: build-arch install-arch
+	dh_testdir -a
+	dh_testroot -a
+#	dh_installdebconf -a	
+	dh_installdocs -a
+#	dh_installexamples -a
+	dh_installman -a admin/socklog/man/*.[18]
+#	dh_undocumented -a
+	dh_installchangelogs  -a
+	dh_link -a
+	dh_strip -a
+	dh_compress -a
+	dh_fixperms -a
+#	dh_makeshlibs -a
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+binary-indep: build-indep install-indep
+	dh_testdir -i
+	dh_testroot -i
+	dh_installdocs -i
+	dh_installexamples -i
+	dh_installchangelogs -i
+	dh_link -i
+	dh_strip -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+#	dh_shlibdeps -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+.PHONY: build clean binary-indep binary-arch binary install install-indep install-arch configure
