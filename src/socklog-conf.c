@@ -246,7 +246,7 @@ void conf_klog() {
   if (symlink(path, "klog/log/main") == -1)
     strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
   makechdir("klog/log/main/main");
-  mkfile("inet/log/main/main/config", "s999999\nn10");
+  mkfile("klog/log/main/main/config", "s999999\nn10");
 
   start("klog/run");
   outs("#!/bin/sh\n");
@@ -290,7 +290,7 @@ void conf_notify() {
   outs(user);
   outs(" uncat -s49999 -t180 \\\n");
   outs("  env QMAILUSER=log QMAILNAME='socklog notify' \\\n");
-  outs("    mailsubj socklog-notify $MAILTO\n\"\n");
+  outs("    mailsubj socklog-notify $MAILTO\n");
   finish();
   perm(0750);
 }
