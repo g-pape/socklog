@@ -1,14 +1,14 @@
 #!/bin/sh
 LOGDIR=/var/log/socklog
-exec setuidgid log multilog ${LOGDIR}/main \
-  -* +kern.* ${LOGDIR}/kern \
-  -* +user.* ${LOGDIR}/user \
-  -* +mail.* ${LOGDIR}/mail \
-  -* +daemon.* ${LOGDIR}/daemon \
-  -* +auth.* +authpriv.* ${LOGDIR}/auth \
-  -* +syslog.* ${LOGDIR}/syslog \
-  -* +news.* ${LOGDIR}/news \
-  -* +cron.* ${LOGDIR}/cron \
-  -* +ftp.* ${LOGDIR}/ftp \
-  -* +local*.* ${LOGDIR}/local \
-  -* +*.debug* ${LOGDIR}/debug
+exec setuidgid log multilog s4999999 n10 ${LOGDIR}/main \
+  s999999 n5 -* +kern.* ${LOGDIR}/kern \
+  s999999 n5 -* +user.* ${LOGDIR}/user \
+  s999999 n5 -* +mail.* ${LOGDIR}/mail \
+  s999999 n5 -* +daemon.* ${LOGDIR}/daemon \
+  s999999 n5 -* +auth.* +authpriv.* ${LOGDIR}/auth \
+  s999999 n5 -* +syslog.* ${LOGDIR}/syslog \
+  s999999 n5 -* +news.* ${LOGDIR}/news \
+  s999999 n5 -* +cron.* ${LOGDIR}/cron \
+  s999999 n5 -* +ftp.* ${LOGDIR}/ftp \
+  s999999 n5 -* +local*.* ${LOGDIR}/local \
+  s999999 n5 -* +*.debug* ${LOGDIR}/debug
