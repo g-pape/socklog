@@ -24,7 +24,7 @@ set -e
 
 case "$1" in
   configure)
-    ( cd /package/admin/socklog-0.10.1; package/upgrade )
+    ( cd /package/admin/socklog-1.0.0; package/upgrade )
     ;;
   abort-upgrade|abort-remove|abort-deconfigure)
     ;;

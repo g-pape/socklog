@@ -1,15 +1,7 @@
-/*
-  in /package/admin/daemontools/compile/ :
-  gcc -Wall -c tryto.c && gcc -o tryto tryto.o time.a unix.a byte.a
-*/
-
 #include <unistd.h>
 #include <signal.h>
 #include "strerr.h"
 #include "pathexec.h"
-/*
-#include "deepsleep.h"
-*/
 #include "iopause.h"
 #include "taia.h"
 #include "wait.h"
@@ -88,10 +80,6 @@ int main (int argc, const char * const *argv, const char * const *envp) {
   argv +=optind;
   if (!*argv) usage();
 
-  /*
-  if (verbose) strerr_warn2(progname, " starting.", 0);
-  */
-
   /* create selfpipe */
   if (pipe(selfpipe) == -1) {
     strerr_die2sys(111, FATAL, "unable to create selfpipe: ");
@@ -148,9 +136,6 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 	fd_move(2, 5);
 	close(4);
       }
-      /*
-      if (verbose) strerr_warn2(WARNING, "starting child.", 0);
-      */
       pathexec_run(*argv, argv, envp);
       strerr_die2sys(111, FATAL, "unable to start child: ");
     }
@@ -170,6 +155,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
     /* feed + watch child */
     for (;;) {
       int r;
+      int i;
       char *s;
 
       if (wait_nohang(&rc) == pid) break;
@@ -200,7 +186,11 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 	continue;
       }
       s =buffer_peek(&buffer_x);
-      write(cpipe[1], s, r);
+      i =write(cpipe[1], s, r);
+      if (i == -1) strerr_die2sys(111, FATAL, "unable to write to child: ");
+      if (i < r)
+	strerr_die2x(111, FATAL, "unable to write to child: partial write");
+
       buffer_seek(&buffer_x, r);
     }
     close(cpipe[1]);
@@ -253,7 +243,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 	break;
       }
       s =buffer_peek(buffer_0);
-      buffer_putsflush(buffer_1, s);
+      buffer_putflush(buffer_1, s, r);
       buffer_seek(buffer_0, r);
     }
   }
