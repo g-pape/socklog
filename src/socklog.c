@@ -16,6 +16,7 @@
 #include "prot.h"
 #include "sig.h"
 #include "open.h"
+#include "sgetopt.h"
 
 #define SYSLOG_NAMES
 #include <syslog.h>
@@ -34,9 +35,9 @@
 #define FATAL "socklog: fatal: "
 
 #ifdef SOLARIS
-#define USAGE " [unix|inet|ucspi|sun_stream] [args]"
+#define USAGE " [-rR] [unix|inet|ucspi|sun_stream] [args]"
 #else
-#define USAGE " [unix|inet|ucspi] [args]"
+#define USAGE " [-rR] [unix|inet|ucspi] [args]"
 #endif
 
 #define VERSION "$Id$"
@@ -58,6 +59,7 @@ int mode =MODE_UNIX;
 char line[LINEC];
 const char *address =NULL;
 char *uid, *gid;
+unsigned int lograw =0;
 
 int flag_exitasap = 0;
 void sig_term_catch(void) {
@@ -225,12 +227,26 @@ int read_socket (int s) {
     while (linec && (line[linec -1] == 0)) linec--;
     if (linec == 0) continue;
 
+    if (lograw) {
+      buffer_put(buffer_1, line, linec);
+      if (line[linec -1] != '\n') {
+	if (linec == LINEC) out("...", 0);
+	out("\n", 0);
+      }
+      if (lograw == 2) {
+	buffer_flush(buffer_1);
+	continue;
+      }
+    }
+
     if (mode == MODE_INET) remote_info(&saf);
     os =scan_syslog_names(line, linec, buffer_1);
 
     buffer_put(buffer_1, line +os, linec -os);
-    if (linec == LINEC) out("...", 0);
-    if (line[linec -1] != '\n') out("\n", 0);
+    if (line[linec -1] != '\n') {
+      if (linec == LINEC) out("...", 0);
+      out("\n", 0);
+    }
     buffer_flush(buffer_1);
   }
 }
@@ -382,9 +398,23 @@ static void read_stream_sun(int fd) {
 #endif
 
 int main(int argc, const char **argv, const char *const *envp) {
+  int opt;
   int s =0;
   
-  progname =*argv++;
+  progname =*argv;
+
+  while ((opt =getopt(argc, argv, "rRV")) != opteof) {
+    switch(opt) {
+    case 'r': lograw =1; break;
+    case 'R': lograw =2; break;
+    case 'V':
+      err(VERSION, 0, 0);
+      buffer_putsflush(buffer_2, "\n\n");
+    case '?': usage();
+    }
+  }
+  argv +=optind;
+
   if (*argv) {
     switch (**argv) {
     case 'u':
@@ -409,11 +439,6 @@ int main(int argc, const char **argv, const char *const *envp) {
       mode =MODE_SUN_STREAM;
       break;
 #endif
-    case '-':
-      if ((*argv)[1] && (*argv)[1] == 'V') {
-	err(VERSION, 0, 0);
-	buffer_putsflush(buffer_2, "\n\n");
-      }
     default:
       usage();
     }

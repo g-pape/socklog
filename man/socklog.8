@@ -4,20 +4,26 @@ socklog \- small and secure syslogd replacement for use with runit
 .SH SYNOPSIS
 .B socklog
 [
+.B \-rR
+] [
 unix
 ] [
 .I path
 ]
 .br
 .B socklog
-inet [
+[
+.B \-rR
+] inet [
 .I ip
 ] [
 .I port
 ]
 .br
 .B socklog
-ucspi [
+[
+.B \-rR
+] ucspi [
 .I args
 ]
 .SH DESCRIPTION
@@ -147,7 +153,17 @@ $\fIarg\fR:
 to each syslog message, if the environment variable
 .RI $ arg
 is present (maximum is 8).
-
+.SH OPTIONS
+.TP
+.B \-r
+raw.
+Write the raw syslog messages (no conversion of facility and priority),
+additionally to the usual log messages with syslog facility and priority
+converted to names, to the pipe.
+.TP
+.B \-R
+raw only.
+Same as \-r above, but write the raw syslog messages only.
 .SH SEE ALSO
 runsvdir(8),
 runsv(8),
