@@ -32,9 +32,15 @@
     to <tt>CFLAGS</tt> and <tt>-lsocket -lnsl -ldoor -lthread</tt> to
     <tt>LDFLAGS</tt>.
     <p>
-    compile the socklog program
+    compile and install the <i>socklog</i> program
     <pre>
   # package/install
+    </pre>
+    gzip the man page and copy it into a reasonable directory in your
+    <tt>$MANPATH</tt>, e.g.
+    <pre>
+  # mkdir -p /usr/local/man/man8/
+  # gzip doc/socklog.8 && cp -f doc/socklog.8.gz /usr/local/man/man8/ 
     </pre>
     refer to <a href="configuration.html">Configuration</a> for
     configuring and setting up <i>socklock</i> services.

@@ -40,6 +40,11 @@ EOT
 			--no-create-home log
 	fi
 	chown log.adm /var/log/socklog/* /var/log/socklog-remote/*
+	( \
+	cd /package/admin/socklog-0.3.0
+	package/upgrade
+	)
+
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
