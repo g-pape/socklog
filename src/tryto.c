@@ -258,12 +258,12 @@ int main (int argc, const char * const *argv, const char * const *envp) {
     }
   }
   if (timeout) {
-    if (processor) strerr_die1x(0, "child timed out, giving up.");
-    strerr_die1x(10, "child timed out, giving up.");
+    if (processor) strerr_die2x(0, FATAL, "child timed out, giving up.");
+    strerr_die2x(100, FATAL, "child timed out, giving up.");
   }
   if (try >= trymax) {
-    if (processor) strerr_die1x(0, "child crashed, giving up.");
-    strerr_die1x(rc >> 8, "child crashed, giving up.");
+    if (processor) strerr_die2x(0, FATAL, "child crashed, giving up.");
+    strerr_die2x(rc >> 8, FATAL, "child crashed, giving up.");
   }
   exit(0);
 }

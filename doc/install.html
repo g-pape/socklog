@@ -16,14 +16,14 @@ Check that you have the recent version of
 <a href="http://cr.yp.to/daemontools.html">daemontools</a> installed.
 <p>
 Download
-<a href="socklog-0.8.0.tar.gz">socklog-0.8.0.tar.gz</a> into
+<a href="socklog-0.8.1.tar.gz">socklog-0.8.1.tar.gz</a> into
 <tt>/package</tt> and unpack the archive
 <pre>
   # cd /package
-  # gunzip socklog-0.8.0.tar
-  # tar -xpf socklog-0.8.0.tar
-  # rm socklog-0.8.0.tar
-  # cd admin/socklog-0.8.0
+  # gunzip socklog-0.8.1.tar
+  # tar -xpf socklog-0.8.1.tar
+  # rm socklog-0.8.1.tar
+  # cd admin/socklog-0.8.1
 </pre>
 On solaris, edit the top of <tt>src/Makefile</tt>, add <tt>-DSOLARIS</tt>
 to <tt>CFLAGS</tt> and <tt>-lsocket -lnsl -ldoor -lthread</tt> to
@@ -40,7 +40,7 @@ hierarchy, do:
 </pre>
 To report success:
 <pre>
-  # mail pape-socklog-0.8.0@smarden.org < compile/sysdeps
+  # mail pape-socklog-0.8.1@smarden.org < compile/sysdeps
 </pre>
 Refer to <a href="configuration.html">Configuration</a> for
 configuring and setting up <i>socklog</i> services.

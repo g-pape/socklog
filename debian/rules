@@ -23,17 +23,17 @@ build-stamp:
 	#	$(MAKE)
 	#/usr/bin/docbook-to-man debian/socklog.sgml > socklog.1
 
-	tar xfzvp socklog-0.8.0.tar.gz
-	mkdir -p admin/socklog-0.8.0/compile
+	tar xfzvp socklog-0.8.1.tar.gz
+	mkdir -p admin/socklog-0.8.1/compile
 	tar xfzvp daemontools-pd-0.76.tar.gz \
-		-C admin/socklog-0.8.0/compile
-	ln -s daemontools-pd-0.76 admin/socklog-0.8.0/compile/support
+		-C admin/socklog-0.8.1/compile
+	ln -s daemontools-pd-0.76 admin/socklog-0.8.1/compile/support
 	( \
-	cd admin/socklog-0.8.0 ; \
+	cd admin/socklog-0.8.1 ; \
 	package/compile ; \
-	echo "/package/admin/socklog-0.8.0" > compile/home ; \
+	echo "/package/admin/socklog-0.8.1" > compile/home ; \
 	rm -f compile/src ; \
-	ln -s /package/admin/socklog-0.8.0/src compile/src ; \
+	ln -s /package/admin/socklog-0.8.1/src compile/src ; \
 	)
 	touch build-stamp
 
@@ -60,25 +60,25 @@ install: build
 
 	chmod 1755 debian/socklog/package
 	cp -a admin debian/socklog/package/
-	cp -a debian/socklog/package/admin/socklog-0.8.0/man .
-	rm -rf debian/socklog/package/admin/socklog-0.8.0/man
-	cp -a debian/socklog/package/admin/socklog-0.8.0/doc .
-	rm -rf debian/socklog/package/admin/socklog-0.8.0/doc
-	cp -a debian/socklog/package/admin/socklog-0.8.0/package .
+	cp -a debian/socklog/package/admin/socklog-0.8.1/man .
+	rm -rf debian/socklog/package/admin/socklog-0.8.1/man
+	cp -a debian/socklog/package/admin/socklog-0.8.1/doc .
+	rm -rf debian/socklog/package/admin/socklog-0.8.1/doc
+	cp -a debian/socklog/package/admin/socklog-0.8.1/package .
 
 	# cleanup
-	rm -rf debian/socklog/package/admin/socklog-0.8.0/compile
+	rm -rf debian/socklog/package/admin/socklog-0.8.1/compile
 
 	# create debian/links
 	rm -f debian/links
 	for i in \
-	 `cat debian/socklog/package/admin/socklog-0.8.0/package/commands` ; \
+	 `cat debian/socklog/package/admin/socklog-0.8.1/package/commands` ; \
 	do \
 	  echo "/package/admin/socklog/command/$$i /command/$$i" \
 		>> debian/links ; \
 	done
 	for i in \
-	 `cat debian/socklog/package/admin/socklog-0.8.0/package/commands` ; \
+	 `cat debian/socklog/package/admin/socklog-0.8.1/package/commands` ; \
 	do \
 	  echo "/command/$$i /usr/local/bin/$$i" \
 		>> debian/links ; \
