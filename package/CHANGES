@@ -3,6 +3,9 @@ Tue, 23 Mar 2004 18:16:17 +0000
   * doc/index.html, doc/install.html: minor.
   * socklog.c: fix sigterm handling in ucspi mode.
   * uncat.check: tweak timing in program test.
+  * Makefile: don't run target check by default.
+  * package/check: new; run checks on programs.
+  * package/install: run package/check.
 
 socklog 1.4.1
 Sat, 28 Feb 2004 17:47:13 +0000

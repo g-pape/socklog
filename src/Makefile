@@ -1,6 +1,6 @@
 IT=socklog-conf socklog tryto uncat
 
-default: sysdeps $(IT) check
+default: sysdeps $(IT)
 
 check: $(IT) check-socklog-unix check-socklog-inet
 	./check-local $(IT)
