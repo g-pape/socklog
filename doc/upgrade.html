@@ -9,7 +9,28 @@
 <hr>
 <h1>socklog - upgrading from previous versions</h1>
 <hr>
-<h2>0.4.0 or 0.4.1 to 0.5.1</h2>
+
+<h3>0.5.1 to 0.6.0</h3>
+The socklog-notify service run-script now redirects uncat's standard output
+to the notify pipe. This avoids wrong timeout handling seen in some special
+configurations. If you are currently running the socklog-notify service,
+change the line <b><tt>exec &gt; "$PIPE"</tt></b> to
+<b><tt>exec &lt;&gt; "$PIPE"</tt></b> in
+<tt>/service/socklog-notify/run</tt> and restart the service:
+<pre>
+  # svc -t /service/socklog-notify
+</pre>
+The socklog program now trims 0-characters. If you see 0-characters in your
+socklog log files (most probably caused by klogd on GNU/Linux), restart the
+corresponding socklog service, e.g.:
+<pre>
+  # svc -t /service/socklog-unix/
+</pre>
+The package/install-man script creates symbolic links for the man pages
+into the /usr/local/man/ hierarchy on installation. The uncat program
+has a new option -o.
+<hr>
+<h3>0.4.0 or 0.4.1 to 0.5.1</h3>
 The named pipe for log events notification has now more strict permissions
 for security reasons. It is recommended to upgrade this service if it is
 running by stopping it, removing /etc/socklog/notify and

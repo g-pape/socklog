@@ -227,7 +227,7 @@ void conf_notify() {
   outs("if [ ! -p \"$PIPE\" ]; then mkfifo -m0620 \"$PIPE\"; chown ");
   outs(user); outs(":"); outs(loguser);
   outs(" \"$PIPE\"; fi\n");
-  outs("exec < \"$PIPE\"\n");
+  outs("exec <> \"$PIPE\"\n");
   outs("exec setuidgid ");
   outs(user);
   outs(" uncat -s49999 -t180 \\\n");
@@ -236,7 +236,6 @@ void conf_notify() {
   finish();
   perm(0750);
 }
-
 
 int main(int argc, char **argv) {
   int mode =0;

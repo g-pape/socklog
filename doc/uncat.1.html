@@ -18,46 +18,47 @@ or number of bytes read to process it
 <B>uncat</B> continuously reads stdin and repeatedly
 processes the data either after <I>seconds</I> timeout or maximal number of bytes
 <I>size</I> read. To process the data, <B>uncat</B> starts <I>prog</I> and feeds the data into
-<I>prog</I>'s standard input. <P>
-<I>prog</I> consist of one or more arguments. <P>
-If <I>prog</I> exits
-non-zero, <B>uncat</B> prints an error message, discards the data and continues
-to read stdin. <P>
+<I>prog</I>'s standard input. <I>prog</I>'s standard output is redirected to standard error.
+<B>uncat</B> never writes to standard output. <P>
+<I>prog</I> consist of one or more arguments.
+<P>
+If <I>prog</I> exits non-zero, <B>uncat</B> prints an error message, discards the data
+and continues to read stdin. <P>
 Note that <B>uncat</B> is not crash proof. <P>
-<B>uncat</B> is used to run the
-<I>socklog-notify</I> service. 
+<B>uncat</B> is
+used to run the <I>socklog-notify</I> service. 
 <H2><A NAME="sect3">Options</A></H2>
 
 <DL>
 
 <DT><B>-v</B> </DT>
-<DD>verbose. Print verbose messages to stderr.
-</DD>
+<DD>verbose. Print verbose messages
+to stderr. </DD>
 
 <DT><B>-o</B> </DT>
-<DD>once. Exit on end of input. Normally <B>uncat</B> continues waiting for data on
-standard input, even on end of file. </DD>
+<DD>once. Exit on end of input. Normally <B>uncat</B> continues waiting
+for data on standard input, even on end of file. </DD>
 
 <DT><B>-t <I>seconds</B> </I></DT>
-<DD>timeout. Set the timeout to
-<I>seconds</I> seconds. Default is 300. </DD>
+<DD>timeout. Set the
+timeout to <I>seconds</I> seconds. Default is 300. </DD>
 
 <DT><B>-s <I>size</B> </I></DT>
-<DD>Set the maximal number of bytes to
-<I>size</I>. Default is 1024. </DD>
+<DD>Set the maximal number
+of bytes to <I>size</I>. Default is 1024. </DD>
 </DL>
 
 <H2><A NAME="sect4">Signals</A></H2>
-If <B>uncat</B> receives a TERM signal, it starts
-to process the data in memory and exits as soon as possible. <P>
-<B>uncat</B> also
-does this on end of input if the <B>-o</B> option was given. 
+If <B>uncat</B> receives a TERM signal,
+it starts to process the data in memory and exits as soon as possible. <P>
+<B>uncat</B>
+also does this on end of input if the <B>-o</B> option was given. 
 <H2><A NAME="sect5">Exit Codes</A></H2>
-<B>uncat</B> returns
-0 after receiving a TERM signal. <B>uncat</B> returns 111 on error. 
-<H2><A NAME="sect6">See Also</A></H2>
-<I>socklog(8)</I>,
-<I>socklog-conf(8)</I>, <I>supervise(8)</I>, <I>multilog(8)</I>, <I>tryto(1)</I> <P>
+<B>uncat</B>
+returns 0 after receiving a TERM signal. <B>uncat</B> returns 111 on error. 
+<H2><A NAME="sect6">See
+Also</A></H2>
+<I>socklog(8)</I>, <I>socklog-conf(8)</I>, <I>supervise(8)</I>, <I>multilog(8)</I>, <I>tryto(1)</I> <P>
 <I>http://smarden.org/socklog/</I>
 
 <H2><A NAME="sect7">Author</A></H2>

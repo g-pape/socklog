@@ -1,5 +1,12 @@
-socklog 0.5.5
-  * socklog.c, socklog-conf.c, uncat.c: cleanup, avoid compiler warnings
+socklog-0.6.0
+Sat, 12 Jan 2002 14:18:57 +0100
+  * uncat: redirect prog's stdout to stderr; never writes to stdout
+  * socklog-conf notify: redirects uncat's stdout to the pipe:
+    'exec <> $PIPE', fixes wrong timeout handling seen in some
+    configurations.
+  * new: package/install-man for installing manpage links
+  * doc: adapted
+  * socklog.c,socklog-conf.c,uncat.c: code cleanup
   * doc: install.html: typos
 
 socklog 0.5.4

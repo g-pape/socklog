@@ -15,20 +15,15 @@ Since version 0.3.0, <i>socklog</i> installs into
 Check that you have the recent version of
 <a href="http://cr.yp.to/daemontools.html">daemontools</a> installed.
 <p>
-Create a <tt>/package</tt> directory
-<pre>
-  # mkdir -p /package
-  # chmod 1775 /package
-  # cd /package
-</pre>
 Download
-<a href="socklog-0.5.4.tar.gz">socklog-0.5.4.tar.gz</a> into
+<a href="socklog-0.6.0.tar.gz">socklog-0.6.0.tar.gz</a> into
 <tt>/package</tt> and unpack the archive
 <pre>
-  # gunzip socklog-0.5.4.tar
-  # tar -xpf socklog-0.5.4.tar
-  # rm socklog-0.5.4.tar
-  # cd admin/socklog-0.5.4
+  # cd /package
+  # gunzip socklog-0.6.0.tar
+  # tar -xpf socklog-0.6.0.tar
+  # rm socklog-0.6.0.tar
+  # cd admin/socklog-0.6.0
 </pre>
 On solaris, edit the top of <tt>src/Makefile</tt>, add <tt>-DSOLARIS</tt>
 to <tt>CFLAGS</tt> and <tt>-lsocket -lnsl -ldoor -lthread</tt> to
@@ -38,15 +33,10 @@ Compile and install the <i>socklog</i> programs
 <pre>
   # package/install
 </pre>
-gzip the man pages and copy them into a reasonable directory in your
-<tt>$MANPATH</tt>, e.g.
+If you want to make the man pages available in the <tt>/usr/local/man/</tt>
+hierarchy, do:
 <pre>
-  # mkdir -p /usr/local/man/man8/
-  # gzip man/socklog.8 && cp -f man/socklog.8.gz /usr/local/man/man8/
-  # gzip man/socklog-conf.8 && cp -f man/socklog-conf.8.gz /usr/local/man/man8/
-  # mkdir -p /usr/local/man/man1/
-  # gzip man/tryto.1 && cp -f man/tryto.1.gz /usr/local/man/man1/ 
-  # gzip man/uncat.1 && cp -f man/uncat.1.gz /usr/local/man/man1/ 
+  # package/install-man
 </pre>
 Refer to <a href="configuration.html">Configuration</a> for
 configuring and setting up <i>socklog</i> services.

@@ -118,8 +118,9 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       }
       if (r == 0) {
 	if (verbose) strerr_warn2(WARNING, "end of input.", 0);
-	if (once) eof++;
-	break;
+	if (! once) continue;
+	eof++;
+  	break;
       }
       if (r >= sizemax) r =sizemax;
       if ((sa.len +r) > sizemax) {
@@ -150,7 +151,8 @@ int main (int argc, const char * const *argv, const char * const *envp) {
 
 	close(cpipe[1]);
 	fd_move(0, cpipe[0]);
-	
+	fd_copy(1, 2);
+
 	if (verbose) strerr_warn2(WARNING, "starting child.", 0);
 	pathexec_run(*argv, argv, envp);
 	strerr_die2sys(111, FATAL, "unable to start child: ");
