@@ -1,6 +1,5 @@
-  * man/socklog.8: typo.
-
 socklog 1.5.0
+Sat, 26 Jun 2004 11:28:33 +0000
   * socklog-check, man/socklog-check.8: new; check for the availability of
     a socklog service.
   * socklog-check.check, socklog-check.dist: new; program test.
