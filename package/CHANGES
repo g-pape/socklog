@@ -1,5 +1,6 @@
   * doc/readme.solaris.html: add -ldoor -lthread to src/conf-ld (thx Lars
     Kellogg-Stedman); update log/run script, mailing list address.
+  * man/socklog.8: remove double entries in SEE ALSO.
 
 socklog 2.0.1
 Thu, 10 Feb 2005 10:05:55 +0000
