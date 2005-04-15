@@ -1,3 +1,15 @@
+socklog (2.0.2-1) unstable; urgency=low
+
+  * new upstream point release.
+  * debian/control: remove version restriction from Depends: runit.
+  * debian/socklog-run.README.Debian, debian/socklog.README.Debian: minor
+    updates.
+  * debian/socklog-run.postinst, debian/socklog-run.postrm,
+    socklog-run.prerm, debian/socklog.postinst, debian/socklog.postrm:
+    more cleanup.
+
+ -- Gerrit Pape <pape@smarden.org>  Fri, 15 Apr 2005 09:56:53 +0000
+
 socklog (2.0.0-1) unstable; urgency=low
 
   * new upstream release.

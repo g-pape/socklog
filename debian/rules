@@ -20,9 +20,9 @@ build: deb-checkdir build-arch-stamp build-indep-stamp
 build-arch: deb-checkdir build-arch-stamp
 build-arch-stamp:
 	rm -rf admin
-	tar xzf socklog-2.0.0.tar.gz
+	tar xzf socklog-2.0.2.tar.gz
 	-gcc -v
-	rm -f admin/socklog && ln -s socklog-2.0.0 admin/socklog
+	rm -f admin/socklog && ln -s socklog-2.0.2 admin/socklog
 	echo '$(CC) $(CFLAGS)' >admin/socklog/src/conf-cc
 	echo '$(CC) $(LDFLAGS)' >admin/socklog/src/conf-ld
 	$(MAKE) -Cadmin/socklog/src

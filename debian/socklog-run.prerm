@@ -4,10 +4,8 @@ set -e
 test "$1" = 'remove' || test "$1" = 'deconfigure' || \
   test "$1" = 'failed-upgrade' || exit 0
 
-for i in unix klog inet notify ucspi-tcp; do
-  test -h /var/service/socklog-$i || continue
-  cd /var/service/socklog-$i && rm -f /var/service/socklog-$i && \
-    echo -n "socklog-$i: " && svwaitdown -vt14 .
-done
+svwaitdown -vt14 /var/service/socklog-unix /var/service/socklog-klog || :
 
-exit 0
+for i in unix klog inet notify ucspi-tcp; do
+  test ! -h /var/service/socklog-$i || rm -f /var/service/socklog-$i
+done

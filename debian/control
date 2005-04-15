@@ -8,7 +8,7 @@ Package: socklog
 Section: admin
 Architecture: any
 Depends: adduser, ${shlibs:Depends}
-Recommends: socklog-run, runit (>> 0.11.2-0), ipsvd
+Recommends: socklog-run, runit, ipsvd
 Description: system and kernel logging services (binaries)
  socklog cooperates with the runit package to create a small and secure
  replacement for syslogd.  socklog supports system logging through Unix
@@ -25,7 +25,7 @@ Description: system and kernel logging services (binaries)
 
 Package: socklog-run
 Architecture: all
-Depends: socklog, runit (>> 0.11.2-0), ipsvd
+Depends: socklog, runit, ipsvd
 Provides: system-log-daemon, linux-kernel-log-daemon
 Conflicts: system-log-daemon, linux-kernel-log-daemon
 Description: system and kernel logging services

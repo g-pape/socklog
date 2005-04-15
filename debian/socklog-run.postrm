@@ -5,9 +5,4 @@ test "$1" = 'purge' || exit 0
 
 for i in unix klog inet ucspi-tcp; do
   rm -rf /var/run/socklog-$i /var/run/socklog-$i.log
-  rmdir /etc/socklog/$i/log && rmdir /etc/socklog/$i || :
 done
-rmdir /etc/socklog/notify || :
-rmdir /etc/socklog || :
-
-exit 0
