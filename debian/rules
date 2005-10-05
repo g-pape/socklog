@@ -72,6 +72,8 @@ install-indep: deb-checkdir deb-checkuid build-indep-stamp
 	  install -m0755 debian/etc/$$i/log/run \
 	    '$(DIR)'-run/etc/socklog/$$i/log/run || exit 1; \
 	done
+	install -m0755 debian/etc/unix/check \
+	  '$(DIR)'-run/etc/socklog/unix/check
 	install -d -m0755 '$(DIR)'-run/etc/socklog/notify
 	install -m0755 debian/etc/notify/run \
 	  '$(DIR)'-run/etc/socklog/notify/run
@@ -107,6 +109,6 @@ binary-indep: deb-checkdir deb-checkuid install-indep socklog-run.deb
 binary: binary-indep binary-arch
 
 .PHONY: build binary-arch build-indep clean install install-arch \
-install-indep binary-arch binary-indep binary
+	  install-indep binary-arch binary-indep binary
 
 include debian/implicit

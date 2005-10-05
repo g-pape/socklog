@@ -1,7 +1,7 @@
 socklog for Debian
 ------------------
 
-The binaries are installed in /usr/sbin/ and /usr/bin/.  To have socklog
+The programs are installed in /usr/sbin/ and /usr/bin/.  To have socklog
 provide the default system log service and kernel log service on your
 system, additionally install the socklog-run package.  As an alternative
 you can make sure that the runit package is installed and service

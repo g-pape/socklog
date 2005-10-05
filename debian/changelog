@@ -1,3 +1,18 @@
+socklog (2.0.2-2) unstable; urgency=low
+
+  * debian/etc/unix/check: new; use the socklog-check program to check
+    for the availability of listener on /dev/log.
+  * debian/rules: install debian/etc/unix/check.
+  * debian/README.Debian.diet: wording.
+  * debian/control: slightly update descriptions; Depends: runit (>>
+    1.3.0-0); Standards-Version: 3.6.2.0.
+  * debian/socklog-run.conffiles: add /etc/socklog/unix/check.
+  * debian/socklog-run.prerm: use the sv program instead of svwaitdown
+    to take down services.
+  * debian/socklog.README.Debian: minor.
+
+ -- Gerrit Pape <pape@smarden.org>  Wed,  5 Oct 2005 08:02:36 +0000
+
 socklog (2.0.2-1) unstable; urgency=low
 
   * new upstream point release.
