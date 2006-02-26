@@ -1,6 +1,6 @@
 DESTDIR=
 
-PACKAGE=socklog-2.0.2
+PACKAGE=socklog-2.0.3
 DIRS=doc man package src
 MANPAGES=man/socklog.8 man/socklog-check.8 man/socklog-conf.8 man/tryto.1 \
 man/uncat.1
@@ -26,7 +26,7 @@ $(PACKAGE).tar.gz:
 	chmod +t TEMP/admin
 	find TEMP -exec touch {} \;
 	su -c 'chown -R root:root TEMP/admin && \
-	  ( cd TEMP ; tar cpfz ../$(PACKAGE).tar.gz admin --exclude CVS ) && \
+	  (cd TEMP ; tar cpfz ../$(PACKAGE).tar.gz --exclude CVS admin ) && \
 	  rm -rf TEMP'
 
 clean:

@@ -1,3 +1,14 @@
+socklog-2.0.3
+Sun, 26 Feb 2006 13:29:17 +0000
+  * doc/index.html: minor.
+  * socklog-check.c: change EDESTADDRREQ to ECONNREFUSED if defined and set
+    by connect().
+  * tryto: fix a race with child terminating immediatly (thx Alex Efros);
+    catch SIGCHLD while waiting ktimeout seconds before sending KILL.
+  * man/tryto.1: remove reference to timelimit(8) (thx Alex Efros).
+  * socklog.check, socklog.dist: don't check usage output with -V as it
+    differs on solaris (thx Asif Iqbal).
+
 socklog 2.0.2
 Sun, 10 Apr 2005 07:21:30 +0000
   * doc/readme.solaris.html: add -ldoor -lthread to src/conf-ld (thx Lars

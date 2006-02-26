@@ -1,8 +1,5 @@
 #!/bin/sh
 
-socklog -V
-echo $?
-
 socklog unix socklog.check.socket &
 pid=$!
 sleep 1

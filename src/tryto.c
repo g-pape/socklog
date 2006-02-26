@@ -104,6 +104,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
   taia_now(&now);
   taia_uint(&deadline, timeout);
   taia_add(&deadline, &now, &deadline);
+  timeout =0;
 
   for (;;) {
     int iopausefds;
@@ -163,15 +164,16 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       int i;
       char *s;
 
-      if (wait_nohang(&rc) == pid) break;
-      taia_now(&now);
-      if ((timeout =taia_less(&deadline, &now))) break;
-
       sig_unblock(sig_child);
       iopause(x, iopausefds, &deadline, &now);
       sig_block(sig_child);
       
       while (read(selfpipe[0], &ch, 1) == 1) {}
+
+      taia_now(&now);
+      if ((timeout =taia_less(&deadline, &now))) break;
+      if (wait_nohang(&rc) == pid) break;
+      rc =111;
 
       r = buffer_feed(&buffer_x);
       if (r < 0) {
@@ -201,6 +203,7 @@ int main (int argc, const char * const *argv, const char * const *envp) {
     close(cpipe[1]);
 
     if (timeout) {
+      if (wait_nohang(&rc) == pid) break;
       /* child not finished */
       strerr_warn4(WARNING,
 		   "child \"", *argv, "\" timed out. sending TERM...", 0);
@@ -210,20 +213,28 @@ int main (int argc, const char * const *argv, const char * const *envp) {
       taia_now(&now);
       taia_uint(&deadline, ktimeout);
       taia_add(&deadline, &now, &deadline);
+      ktimeout =0;
 
-      sig_unblock(sig_child);
-      iopause(x, 1, &deadline, &now);
-      sig_block(sig_child);
-      
-      while (read(selfpipe[0], &ch, 1) == 1) {}
+      for (;;) {
+        sig_unblock(sig_child);
+        iopause(x, 1, &deadline, &now);
+        sig_block(sig_child);
 
-      if (wait_nohang(&rc) == pid) {
-	strerr_warn2(WARNING, "child terminated.", 0);
-	break;
+        while (read(selfpipe[0], &ch, 1) == 1) {}
+
+        if (wait_nohang(&rc) == pid) {
+	  strerr_warn2(WARNING, "child terminated.", 0);
+	  break;
+        }
+        rc =111;
+        taia_now(&now);
+        if ((ktimeout =taia_less(&deadline, &now))) break;
       }
-      strerr_warn4(WARNING, "child \"", *argv,
-		   "\" not terminated. sending KILL...", 0);
-      kill(pgroup ? -pid : pid, SIGKILL);
+      if (ktimeout) {
+        strerr_warn4(WARNING, "child \"", *argv,
+                     "\" not terminated. sending KILL...", 0);
+        kill(pgroup ? -pid : pid, SIGKILL);
+      }
       break;
     }
     if (rc == 0) break;

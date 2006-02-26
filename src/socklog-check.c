@@ -48,6 +48,9 @@ int main(int argc, const char **argv) {
   strncpy(sa.sun_path, address, sizeof(sa.sun_path));
   if (connect(s, (struct sockaddr *)&sa, sizeof(sa)) == -1) {
     close(s);
+#ifdef EDESTADDRREQ
+    if (errno == EDESTADDRREQ) errno =error_connrefused;
+#endif
     strerr_die4sys(111, WARNING, "unable to connect socket: ", address, ": ");
   }
   close(s);

@@ -1,8 +1,3 @@
-$Id$
-
-usage: socklog [-rRU] [unix|inet|ucspi] [args]
-
-1
 listening on socklog.check.socket, starting.
 foo
 0
