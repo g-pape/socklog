@@ -1,5 +1,5 @@
 socklog 2.1.0
-
+Mon, 06 Mar 2006 12:59:33 +0000
   * socklog-conf, man/socklog-conf.8: create service directories
     /etc/sv/socklog-* instead of /etc/socklog/*; create ./check script
     for socklog-unix service.
