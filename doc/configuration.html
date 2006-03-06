@@ -63,7 +63,7 @@ ensure that it will not be restarted on runlevel change or system reboot.
 Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
 the new service:
 <pre>
-  # ln -s /etc/socklog/unix /var/service/socklog-unix
+  # ln -s /etc/sv/socklog-unix /var/service/
 </pre>
 Wait five seconds for the service to start and then check the log
 directories, e.g.:
@@ -103,7 +103,7 @@ that it will not be restarted on runlevel change or system reboot.
 Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
 the new service:
 <pre>
-  # ln -s /etc/socklog/inet /var/service/socklog-inet
+  # ln -s /etc/sv/socklog-inet /var/service/
 </pre>
 Wait five seconds for the service to start and then check the log
 directory:
@@ -143,7 +143,7 @@ ensure that it will not be restarted on runlevel change or system reboot.
 Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
 the new service:
 <pre>
-  # ln -s /etc/socklog/klog /var/service/socklog-klog
+  # ln -s /etc/sv/socklog-klog /var/service/
 </pre>
 Wait five seconds for the service to start and then check the log
 directory:
@@ -181,7 +181,7 @@ Then create the service directory and log directories by running the
 Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
 the new service:
 <pre>
-  # ln -s /etc/socklog/ucspi-tcp /var/service/socklog-ucspi-tcp
+  # ln -s /etc/sv/socklog-ucspi-tcp /var/service/
 </pre>
 Wait five seconds for the service to start and then check the log
 directory:
@@ -219,7 +219,7 @@ Create the service directory by running the
 Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
 the new service:
 <pre>
-  # ln -s /etc/socklog/notify /var/service/socklog-notify
+  # ln -s /etc/sv/socklog-notify /var/service/
 </pre>
 Wait five seconds for the service to start, you can test the service with:
 <pre>

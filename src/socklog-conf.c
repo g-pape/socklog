@@ -22,14 +22,14 @@
 #define _PATH_KLOG "/dev/klog"
 #endif
 
-#define USAGE1 " unix|inet|klog|ucspi acct logacct [/etc/socklog] [/logdir]"
-#define USAGE2 " notify acct grp [/etc/socklog] [pipe]"
+#define USAGE1 " unix|inet|klog|ucspi acct logacct [/etc/sv] [/logdir]"
+#define USAGE2 " notify acct grp [/etc/sv] [pipe]"
 
 #define VERSION "$Id$"
 #define WARNING "socklog-conf: warning: "
 #define FATAL "socklog-conf: fatal: "
 
-#define CONF_DIR "/etc/socklog"
+#define CONF_DIR "/etc/sv"
 #define LOG_DIR_UNIX "/var/log/socklog"
 #define LOG_DIR_INET "/var/log/socklog-inet"
 #define LOG_DIR_UCSPI_TCP "/var/log/socklog-ucspi-tcp"
@@ -113,40 +113,40 @@ void conf_unix() {
   scan_ulong(u.release+strlen(u.release)-1, &sunos_version);
 #endif
 #endif
-  makedir("unix");
+  makedir("socklog-unix");
   perm(0750);
-  makedir("unix/log");
+  makedir("socklog-unix/log");
   perm(0755);
 
   makechdir(path);
-  if (symlink(path, "unix/log/main") == -1)
+  if (symlink(path, "socklog-unix/log/main") == -1)
     strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
-  makechdir("unix/log/main/auth");
-  mkfile("unix/log/main/auth/config", "s999999\nn5\n-*\n+auth.*\n+authpriv.*");
-  makechdir("unix/log/main/cron");
-  mkfile("unix/log/main/cron/config", "s999999\nn5\n-*\n+cron.*");
-  makechdir("unix/log/main/daemon");
-  mkfile("unix/log/main/daemon/config", "s999999\nn5\n-*\n+daemon.*");
-  makechdir("unix/log/main/debug");
-  mkfile("unix/log/main/debug/config", "s999999\nn5\n-*\n+*.debug*");
-  makechdir("unix/log/main/ftp");
-  mkfile("unix/log/main/ftp/config", "s999999\nn5\n-*\n+ftp.*");
-  makechdir("unix/log/main/kern");
-  mkfile("unix/log/main/kern/config", "s999999\nn5\n-*\n+kern.*");
-  makechdir("unix/log/main/local");
-  mkfile("unix/log/main/local/config", "s999999\nn5\n-*\n+local.*");
-  makechdir("unix/log/main/mail");
-  mkfile("unix/log/main/mail/config", "s999999\nn5\n-*\n+mail.*");
-  makechdir("unix/log/main/main");
-  mkfile("unix/log/main/main/config", "s999999\nn10");
-  makechdir("unix/log/main/news");
-  mkfile("unix/log/main/news/config", "s999999\nn5\n-*\n+news.*");
-  makechdir("unix/log/main/syslog");
-  mkfile("unix/log/main/syslog/config", "s999999\nn5\n-*\n+syslog.*");
-  makechdir("unix/log/main/user");
-  mkfile("unix/log/main/user/config", "s999999\nn5\n-*\n+user.*");
+  makechdir("socklog-unix/log/main/auth");
+  mkfile("socklog-unix/log/main/auth/config", "s999999\nn5\n-*\n+auth.*\n+authpriv.*");
+  makechdir("socklog-unix/log/main/cron");
+  mkfile("socklog-unix/log/main/cron/config", "s999999\nn5\n-*\n+cron.*");
+  makechdir("socklog-unix/log/main/daemon");
+  mkfile("socklog-unix/log/main/daemon/config", "s999999\nn5\n-*\n+daemon.*");
+  makechdir("socklog-unix/log/main/debug");
+  mkfile("socklog-unix/log/main/debug/config", "s999999\nn5\n-*\n+*.debug*");
+  makechdir("socklog-unix/log/main/ftp");
+  mkfile("socklog-unix/log/main/ftp/config", "s999999\nn5\n-*\n+ftp.*");
+  makechdir("socklog-unix/log/main/kern");
+  mkfile("socklog-unix/log/main/kern/config", "s999999\nn5\n-*\n+kern.*");
+  makechdir("socklog-unix/log/main/local");
+  mkfile("socklog-unix/log/main/local/config", "s999999\nn5\n-*\n+local.*");
+  makechdir("socklog-unix/log/main/mail");
+  mkfile("socklog-unix/log/main/mail/config", "s999999\nn5\n-*\n+mail.*");
+  makechdir("socklog-unix/log/main/main");
+  mkfile("socklog-unix/log/main/main/config", "s999999\nn10");
+  makechdir("socklog-unix/log/main/news");
+  mkfile("socklog-unix/log/main/news/config", "s999999\nn5\n-*\n+news.*");
+  makechdir("socklog-unix/log/main/syslog");
+  mkfile("socklog-unix/log/main/syslog/config", "s999999\nn5\n-*\n+syslog.*");
+  makechdir("socklog-unix/log/main/user");
+  mkfile("socklog-unix/log/main/user/config", "s999999\nn5\n-*\n+user.*");
   
-  start("unix/run");
+  start("socklog-unix/run");
   outs("#!/bin/sh\n");
   outs("exec 2>&1\n");
 #ifndef SOLARIS
@@ -162,7 +162,14 @@ void conf_unix() {
   finish();
   perm(0750);
 
-  start("unix/log/run");
+  start("socklog-unix/check");
+  outs("#!/bin/sh\n");
+  outs("exec 2>/dev/null\n");
+  outs("exec socklog-check unix /dev/log\n");
+  finish();
+  perm(0755);
+		  
+  start("socklog-unix/log/run");
   outs("#!/bin/sh\n");
   outs("exec chpst -u");
   outs(loguser);
@@ -174,25 +181,25 @@ void conf_unix() {
 }
 
 void conf_inet() {
-  makedir("inet");
+  makedir("socklog-inet");
   perm(0750);
-  makedir("inet/log");
+  makedir("socklog-inet/log");
   perm(0755);
 
   makechdir(path);
-  if (symlink(path, "inet/log/main") == -1)
+  if (symlink(path, "socklog-inet/log/main") == -1)
     strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
-  makechdir("inet/log/main/main");
-  mkfile("inet/log/main/main/config", "s999999\nn10");
+  makechdir("socklog-inet/log/main/main");
+  mkfile("socklog-inet/log/main/main/config", "s999999\nn10");
 
-  start("inet/run");
+  start("socklog-inet/run");
   outs("#!/bin/sh\n");
   outs("exec 2>&1\n");
   outs("exec chpst -U"); outs(user); outs(" socklog inet 0 514\n");
   finish();
   perm(0750);
 
-  start("inet/log/run");
+  start("socklog-inet/log/run");
   outs("#!/bin/sh\n");
   outs("exec chpst -u");
   outs(loguser);
@@ -202,18 +209,18 @@ void conf_inet() {
 }
 
 void conf_ucspi_tcp() {
-  makedir("ucspi-tcp");
+  makedir("socklog-ucspi-tcp");
   perm(0750);
-  makedir("ucspi-tcp/log");
+  makedir("socklog-ucspi-tcp/log");
   perm(0755);
 
   makechdir(path);
-  if (symlink(path, "ucspi-tcp/log/main") == -1)
+  if (symlink(path, "socklog-ucspi-tcp/log/main") == -1)
     strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
-  makechdir("ucspi-tcp/log/main/main");
-  mkfile("ucspi-tcp/log/main/main/config", "s999999\nn10");
+  makechdir("socklog-ucspi-tcp/log/main/main");
+  mkfile("socklog-ucspi-tcp/log/main/main/config", "s999999\nn10");
 
-  start("ucspi-tcp/run");
+  start("socklog-ucspi-tcp/run");
   outs("#!/bin/sh\n");
   outs("PORT=10116\n");
   outs("exec 2>&1\n");
@@ -223,7 +230,7 @@ void conf_ucspi_tcp() {
   finish();
   perm(0750);
 
-  start("ucspi-tcp/log/run");
+  start("socklog-ucspi-tcp/log/run");
   outs("#!/bin/sh\n");
   outs("exec chpst -u");
   outs(loguser);
@@ -233,18 +240,18 @@ void conf_ucspi_tcp() {
 }
 
 void conf_klog() {
-  makedir("klog");
+  makedir("socklog-klog");
   perm(0750);
-  makedir("klog/log");
+  makedir("socklog-klog/log");
   perm(0755);
 
   makechdir(path);
-  if (symlink(path, "klog/log/main") == -1)
+  if (symlink(path, "socklog-klog/log/main") == -1)
     strerr_die4sys(111, FATAL, "unable to link ", path, ": ");
-  makechdir("klog/log/main/main");
-  mkfile("klog/log/main/main/config", "s999999\nn10");
+  makechdir("socklog-klog/log/main/main");
+  mkfile("socklog-klog/log/main/main/config", "s999999\nn10");
 
-  start("klog/run");
+  start("socklog-klog/run");
   outs("#!/bin/sh\n");
   outs("exec <"); outs(_PATH_KLOG); outs("\n");
   outs("exec 2>&1\n");
@@ -254,7 +261,7 @@ void conf_klog() {
   finish();
   perm(0750);
 
-  start("klog/log/run");
+  start("socklog-klog/log/run");
   outs("#!/bin/sh\n");
   outs("exec chpst -u");
   outs(loguser);
@@ -264,7 +271,7 @@ void conf_klog() {
 }
 
 void conf_notify() {
-  makedir("notify");
+  makedir("socklog-notify");
   perm(0755);
 
   umask(007);
@@ -274,7 +281,7 @@ void conf_notify() {
   if (chown(path, upw->pw_uid, gr->gr_gid) == -1)
     strerr_die4sys(111, FATAL, "unable to set owner of ", path, ": ");
 
-  start("notify/run");
+  start("socklog-notify/run");
   outs("#!/bin/sh -e\n");
   outs("MAILTO=root\n");
   outs("PIPE="); outs(path); outs("\n\n");

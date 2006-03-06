@@ -1,4 +1,15 @@
-socklog-2.0.3
+socklog 2.1.0
+
+  * socklog-conf, man/socklog-conf.8: create service directories
+    /etc/sv/socklog-* instead of /etc/socklog/*; create ./check script
+    for socklog-unix service.
+  * doc/configuration.html, doc/install.html, doc/network.html,
+    doc/notify.html: adapt to new path to service directories; utilize
+    runit's sv program instead of runsvctrl.
+  * man/socklog-check.8, man/socklog-conf.8, man/socklog.8, man/uncat.1:
+    see also sv(8).
+
+socklog 2.0.3
 Sun, 26 Feb 2006 13:29:17 +0000
   * doc/index.html: minor.
   * socklog-check.c: change EDESTADDRREQ to ECONNREFUSED if defined and set

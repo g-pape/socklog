@@ -88,9 +88,9 @@ socklog-unix/log/main/main/config
   n20
   !tryto -pv nc 10.0.0.16 10116
 </pre>
-and restart the service:
+and restart the log service:
 <pre>
-  # runsvctrl term /var/service/socklog-unix/log
+  # sv restart socklog-unix/log
 </pre>
 On each rotation of
 <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>'s
@@ -157,8 +157,8 @@ log messages through UDP:
 </pre>
 Restart the service, and tell the log service to reload its configuration:
 <pre>
-  # runsvctrl term /var/service/socklog-unix
-  # runsvctrl hup /var/service/socklog-unix/log
+  # sv restart socklog-unix
+  # sv hup socklog-unix/log
 </pre>
 Now each log message will be sent through UDP to <tt>10.0.0.16:514</tt>, and
 not written to the log directory.

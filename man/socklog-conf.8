@@ -14,7 +14,7 @@ notify
 .SH DESCRIPTION
 .B socklog-conf
 creates
-.I /etc/socklog
+.I /etc/sv
 if necessary and a subdirectory that runs the
 .BR unix ,
 .BR inet ,
@@ -43,7 +43,7 @@ with the 1st argument
 .IR unix ,
 .B socklog-conf
 creates the service directory
-.I /etc/socklog/unix
+.I /etc/sv/socklog-unix
 and the log directory
 .IR /var/log/socklog .
 .LP
@@ -68,7 +68,7 @@ You can run the service under
 .BR runsvdir (8)
 by creating a symbolic link in the service directory:
 .LP
-ln \-s /etc/socklog/unix /var/service/socklog-unix
+ln \-s /etc/sv/socklog-unix /var/service/
 .LP
 .SH INET SERVICE
 .B socklog-conf
@@ -82,7 +82,7 @@ with the 1st argument
 .IR inet ,
 .B socklog-conf
 creates the service directory
-.I /etc/socklog/inet
+.I /etc/sv/socklog-inet
 and the log directory
 .IR /var/log/socklog-inet .
 .LP
@@ -107,7 +107,7 @@ You can run the service under
 .BR runsvdir (8)
 by creating a symbolic link in the service directory:
 .LP
-ln \-s /etc/socklog/inet /var/service/socklog-inet
+ln \-s /etc/sv/socklog-inet /var/service/
 .LP
 .SH KLOG SERVICE
 .B socklog-conf
@@ -121,7 +121,7 @@ with the 1st argument
 .IR klog ,
 .B socklog-conf
 creates the service directory
-.I /etc/socklog/klog
+.I /etc/sv/socklog-klog
 and the log directory
 .IR /var/log/socklog-klog .
 .LP
@@ -133,7 +133,7 @@ to run under the uid and gid of
 and to read kernel messages from
 .I /proc/kmsg
 on Linux, or
-.I /dev/klog
+.I /dev/socklog-klog
 on BSD.
 .LP
 It also creates automatically rotated log directories in
@@ -149,7 +149,7 @@ You can run the service under
 .BR runsvdir (8)
 by creating a symbolic link in the service directory:
 .LP
-ln \-s /etc/socklog/klog /var/service/socklog-klog
+ln \-s /etc/sv/socklog-klog /var/service/
 .LP
 .SH UCSPI-TCP SERVICE
 .B socklog-conf
@@ -163,7 +163,7 @@ with the 1st argument
 .IR ucspi-tcp ,
 .B socklog-conf
 creates the service directory
-.I /etc/socklog/ucspi-tcp
+.I /etc/sv/socklog-ucspi-tcp
 and the log directory
 .IR /var/log/socklog-ucspi-tcp .
 .LP
@@ -190,7 +190,7 @@ You can run the service under
 .BR runsvdir (8)
 by creating a symbolic link in the service directory:
 .LP
-ln \-s /etc/socklog/ucspi-tcp /var/service/socklog-ucspi-tcp
+ln \-s /etc/sv/socklog-ucspi-tcp /var/service/
 .LP
 .SH NOTIFY SERVICE
 .B socklog-conf
@@ -204,7 +204,7 @@ with the 1st argument
 .IR notify ,
 .B socklog-conf
 creates the service directory
-.IR /etc/socklog/notify .
+.IR /etc/sv/socklog-notify .
 .LP
 .B socklog-conf
 arranges for
@@ -226,7 +226,7 @@ You can run the service under
 .BR runsvdir (8)
 by creating a symbolic link in the service directory:
 .LP
-ln \-s /etc/socklog/notify /var/service/socklog-notify
+ln \-s /etc/sv/socklog-notify /var/service/
 .LP
 .SH SEE ALSO
 socklog(8),
@@ -236,6 +236,7 @@ tryto(1),
 uncat(1),
 socklog-check(8),
 tcpsvd(8),
+sv(8),
 runsv(8),
 runsvdir(8)
 .LP

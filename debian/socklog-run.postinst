@@ -21,5 +21,26 @@ done
 # enable system- and kernel-log-service
 for i in unix klog; do
   test -e /var/service/socklog-$i || \
-    ln -s /etc/socklog/$i /var/service/socklog-$i || exit 1
+    ln -s /etc/sv/socklog-$i /var/service/ || exit 1
+done
+
+dpkg --compare-versions "$2" lt '2.1.0-0' || exit 0
+
+mv_conffile() {
+  test -e "$1" || return 0
+  echo "Preserving user changes to $2..."
+  mv -f "$2" "$2".dpkg-new
+  mv -f "$1" "$2"
+}
+
+for i in unix/log/run unix/check unix/run klog/log/run klog/run \
+ inet/log/run inet/run ucspi-tcp/log/run ucspi-tcp/run notify/run; do
+  mv_conffile /etc/socklog/$i /etc/sv/socklog-$i
+done
+
+for i in unix klog inet ucspi-tcp notify; do
+  test -h /var/service/socklog-$i || continue
+  test "`readlink /var/service/socklog-$i`" = "/etc/socklog/$i" || continue
+  rm -f /var/service/socklog-$i &&
+    ln -s /etc/sv/socklog-$i /var/service/ || exit 1
 done

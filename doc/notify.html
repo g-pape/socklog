@@ -62,7 +62,7 @@ priority <i>alert</i>, add a corresponding <tt>e</tt> instruction to the
 </pre>
 Then tell the log service to re-read the <tt>config</tt> files:
 <pre>
-  # runsvctrl hup /var/service/socklog-unix/log
+  # sv hup socklog-unix/log
 </pre>
 <hr>
 <h2>how to configure the notification</h2>
@@ -71,7 +71,7 @@ address containing the log events, but the behavior is configurable, so
 you can change it to use instant or short messaging service for example.
 <p>
 To configure the kind of notification, edit
-<tt>/etc/socklog/notify/run</tt> and change the <tt>prog</tt> argument
+<tt>/etc/sv/socklog-notify/run</tt> and change the <tt>prog</tt> argument
 of <a href="uncat.1.html">uncat</a> to your needs. This example
 uses <i>sms_client</i> to notify:
 <pre>
@@ -84,7 +84,7 @@ uses <i>sms_client</i> to notify:
 </pre>
 Then restart the service:
 <pre>
-  # runsvctrl term /var/service/socklog-notify
+  # sv restart socklog-notify
 </pre>
 <p>
 Another example using <i>wall</i>:
@@ -104,7 +104,7 @@ For each of these services, edit the corresponding <tt>log/run</tt> script
 to remove the <tt>exec 2&gt;/var/log/socklog/.notify</tt> line and the
 configured log event(s) and restart its log service:
 <pre>
-  # runsvctrl term /var/service/&lt;service&gt;/log
+  # sv restart &lt;service&gt;/log
 </pre>
 Now it is safe to stop the <i>socklog-notify</i> service.
 <hr>

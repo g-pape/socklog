@@ -9,6 +9,26 @@
 <hr>
 <h1>socklog - upgrading from previous versions</h1>
 <hr>
+<h3>2.0.x to 2.1.0</h3>
+For new installations, the <a href="socklog-conf.8.html">socklog-conf</a>
+program now creates the socklog service directories in <tt>/etc/sv/</tt>
+and names them <tt>socklog-unix</tt>, <tt>socklog-klog</tt>, ...;
+you don't necessarily need to adapt existing installations.
+<p>
+Additionally <a href="socklog-conf.8.html">socklog-conf</a> now by default
+creates a <tt>./check</tt> script in the <tt>socklog-unix</tt> service
+directory, which is utilized by <i>runit</i>'s
+<a href="http://smarden.org/runit/sv.8.html">sv</a> program when starting
+or checking the service.
+To update existing installations, you can create the script manually:
+<pre>
+ # cd /var/service/socklog-unix
+ # cat &gt;check &lt;&lt;EOT
+ #!/bin/sh
+ exec socklog-check unix /dev/log
+ EOT
+ # chmod 755 check
+</pre>
 <h3>1.5.0 to 2.0.x</h3>
 The <a href="tryto.1.html">tryto</a> program supports a new option -P to run
 the program given at the command line in a new session, and signal the
