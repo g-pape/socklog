@@ -1,8 +1,15 @@
 socklog (2.1.0-1) unstable; urgency=low
 
   * new upstream version.
+  * debian/rules: put service directories into /etc/sv/, name them
+    ./socklog-*/; rename /var/run/socklog* to /var/run/sv.socklog*.
+  * debian/socklog-run.conffiles: adapt.
+  * debian/socklog-run.preinst, debian/socklog-run.postinst: move
+    conffiles, preserve user changes.
+  * debian/socklog-run.preinst: new; check old conffiles for user
+    changes.
 
- -- Gerrit Pape <pape@smarden.org>  Mon,  6 Mar 2006 13:01:05 +0000
+ -- Gerrit Pape <pape@smarden.org>  Sat, 18 Mar 2006 08:31:57 +0000
 
 socklog (2.0.2-2) unstable; urgency=low
 
