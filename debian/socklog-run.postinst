@@ -20,7 +20,7 @@ done
 
 # enable system- and kernel-log-service
 for i in unix klog; do
-  test -e /var/service/socklog-$i || \
+  test -e /var/service/socklog-$i || rm -f /var/service/socklog-$i && \
     ln -s /etc/sv/socklog-$i /var/service/ || exit 1
 done
 
