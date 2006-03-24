@@ -1,3 +1,10 @@
+socklog (2.1.0-3) unstable; urgency=low
+
+  * debian/socklog-run.postinst: really deal properly with dangling
+    symlinks in /var/service/ (closes: #358133).
+
+ -- Gerrit Pape <pape@smarden.org>  Fri, 24 Mar 2006 11:25:54 +0000
+
 socklog (2.1.0-2) unstable; urgency=low
 
   * debian/socklog-run.postinst: properly deal with dangling socklog
