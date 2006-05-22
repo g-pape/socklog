@@ -1,3 +1,10 @@
+socklog (2.1.0-4) unstable; urgency=low
+
+  * debian/control: socklog-run: Recommends: ipsvd, instead of Depends:
+    as it's only necessary for optional tcp/ssl network logging.
+
+ -- Gerrit Pape <pape@smarden.org>  Mon, 22 May 2006 08:24:26 +0000
+
 socklog (2.1.0-3) unstable; urgency=low
 
   * debian/socklog-run.postinst: really deal properly with dangling

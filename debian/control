@@ -25,7 +25,8 @@ Description: system and kernel logging services (programs)
 
 Package: socklog-run
 Architecture: all
-Depends: socklog, runit (>> 1.3.0-0), ipsvd
+Depends: socklog, runit (>> 1.3.0-0)
+Recommends: ipsvd
 Provides: system-log-daemon, linux-kernel-log-daemon
 Conflicts: system-log-daemon, linux-kernel-log-daemon
 Description: system and kernel logging services
