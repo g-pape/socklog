@@ -1,11 +1,11 @@
 socklog-run for Debian
 ----------------------
 
-This package sets up the socklog-unix and socklog-klog service to provide
-a system log service and a kernel log service respectively.
+This package sets up the socklog-unix and socklog-klog service to provide a
+system log service and a kernel log service respectively.
 
-The socklog service directories are located in /etc/socklog/.  This also
-includes service directories for the not automatically enabled socklog-inet,
+The socklog service directories are located in /etc/sv/.  This also includes
+service directories for the not automatically enabled socklog-inet,
 socklog-notify, and socklog-ucspi-tcp services.
 
 The socklog-run package provides the virtual packages ``system-log-daemon''
