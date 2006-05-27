@@ -2,7 +2,7 @@ Source: socklog
 Section: admin
 Priority: optional
 Maintainer: Gerrit Pape <pape@smarden.org>
-Standards-Version: 3.6.2.0
+Standards-Version: 3.7.2.0
 
 Package: socklog
 Section: admin
