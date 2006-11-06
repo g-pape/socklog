@@ -16,7 +16,7 @@ for i in klog inet ucspi-tcp; do
   if ! test -d /var/log/socklog-$i; then
     socklog-conf $i nobody log "$TEMP" && \
     chown -R log:adm /var/log/socklog-$i && \
-    chmod 2750 /var/log/socklog-$i || exit 1
+    chmod 2750 /var/log/socklog-$i /var/log/socklog-$i/* || exit 1
   fi
 done
 
