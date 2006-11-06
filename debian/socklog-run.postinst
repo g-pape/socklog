@@ -9,12 +9,14 @@ trap '! test -e "$TEMP" || rm -rf "$TEMP"' EXIT
 
 if ! test -d /var/log/socklog; then
   socklog-conf unix nobody log "$TEMP" && \
-  chown -R log:adm /var/log/socklog || exit 1
+  chown -R log:adm /var/log/socklog && \
+  chmod 2750 /var/log/socklog || exit 1
 fi
 for i in klog inet ucspi-tcp; do
   if ! test -d /var/log/socklog-$i; then
     socklog-conf $i nobody log "$TEMP" && \
-    chown -R log:adm /var/log/socklog-$i || exit 1
+    chown -R log:adm /var/log/socklog-$i && \
+    chmod 2750 /var/log/socklog-$i || exit 1
   fi
 done
 

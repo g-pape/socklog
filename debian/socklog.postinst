@@ -4,4 +4,4 @@ set -e
 test "$1" = 'configure' || exit 0
 
 getent passwd log >/dev/null || \
-  adduser --system --home /var/log/socklog --no-create-home --ingroup adm log
+  adduser --system --home /nonexistent --no-create-home log

@@ -1,3 +1,13 @@
+socklog (2.1.0-5) unstable; urgency=low
+
+  * debian/socklog.postinst: don't make the log service system user
+    log member of group adm, but nogroup; log's home directory is
+    /nonexistent (closes: #396687).
+  * debian/socklog-run.postinst: make log directories mode 2750, owner
+    log:adm.
+
+ -- Gerrit Pape <pape@smarden.org>  Mon,  6 Nov 2006 20:27:25 +0000
+
 socklog (2.1.0-4) unstable; urgency=low
 
   * debian/control: socklog-run: no longer Depends: ipsvd, as package
