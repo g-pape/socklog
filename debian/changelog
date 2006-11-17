@@ -1,3 +1,10 @@
+socklog (2.1.0-6) unstable; urgency=medium
+
+  * debian/socklog.postrm: check for deluser being available, if not,
+    print warning and don't remove system user (closes: #398539).
+
+ -- Gerrit Pape <pape@smarden.org>  Fri, 17 Nov 2006 20:09:56 +0000
+
 socklog (2.1.0-5) unstable; urgency=low
 
   * debian/socklog.postinst: don't make the log service system user
