@@ -2,8 +2,9 @@ socklog (2.1.0-7) unstable; urgency=low
 
   * debian/diff/tryto-n.diff: new; don't report failure if the final try
     of prog succeeds (thx Andras Korn, closes: #401547).
+  * debian/rules: apply tryto-n.diff.
 
- -- Gerrit Pape <pape@smarden.org>  Sat,  9 Dec 2006 10:29:07 +0000
+ -- Gerrit Pape <pape@smarden.org>  Sat,  9 Dec 2006 10:34:40 +0000
 
 socklog (2.1.0-6) unstable; urgency=medium
 

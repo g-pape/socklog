@@ -21,6 +21,7 @@ build-arch: deb-checkdir build-arch-stamp
 build-arch-stamp:
 	rm -rf admin
 	tar xzf socklog-2.1.0.tar.gz
+	patch -p0 <debian/diff/tryto-n.diff
 	-gcc -v
 	rm -f admin/socklog && ln -s socklog-2.1.0 admin/socklog
 	echo '$(CC) $(CFLAGS)' >admin/socklog/src/conf-cc
