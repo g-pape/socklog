@@ -3,6 +3,10 @@ set -e
 
 test "$1" = 'purge' || exit 0
 
-for i in unix klog inet ucspi-tcp; do
-  rm -rf /var/run/socklog-$i /var/run/socklog-$i.log
+sv force-stop /etc/sv/socklog-unix /etc/sv/socklog-klog \
+  /etc/sv/socklog-inet /etc/sv/socklog-ucspi-tcp \
+  /etc/sv/socklog-notify 2>/dev/null || :
+for i in unix klog inet ucspi-tcp notify; do
+  rm -rf /etc/sv/socklog-$i/supervise /etc/sv/socklog-$i/log/supervise
+  rm -rf /var/run/sv.socklog-$i /var/run/sv.socklog-$i.log
 done
