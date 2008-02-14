@@ -19,8 +19,9 @@ socklog (2.1.0-8) unstable; urgency=low
   * debian/control: Standards-Version: 3.7.3.0.
   * debian/control: package socklog-run: Depends: runit (>= 1.8.0-2) (1st
     version that provides the update-service program).
+  * debian/socklog.README.Debian: typo.
 
- -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 01:56:49 +0000
+ -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 01:58:07 +0000
 
 socklog (2.1.0-7) unstable; urgency=low
 

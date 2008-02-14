@@ -8,7 +8,7 @@ you can make sure that the runit package is installed and service
 supervision is enabled, and follow the documentation[0].  This package
 already created the system user ``log'' for you.
 
-[0] /usr/share/doc/socklog/doc/configuration.html
+[0] /usr/share/doc/socklog/configuration.html
     http://smarden.org/socklog/configuration.html
 
  -- Gerrit Pape <pape@smarden.org>, Mon, 08 Sep 2003 16:24:14 +0200
