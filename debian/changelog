@@ -5,8 +5,14 @@ socklog (2.1.0-8) unstable; urgency=low
   * debian/rules: target build: apply socklog-conf-update-service.diff.
   * debian/etc/klog/run: cut: fields and positions are numbered from 1,
     not 0.
+  * debian/socklog-run.postinst, debian/socklog-run.prerm: use runit's
+    update-service program to add/remove services from system-wide service
+    supervision, instead of dealing with symlinks in /var/service/ directly.
+  * debian/socklog-run.postinst: remove socklog-unix, socklog-klog services
+    on upgrade from <= 2.1.0-7, re-add afterwards through update-service,
+    and restore ./supervise/ symlinks for other enabled socklog services.
 
- -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 00:25:31 +0000
+ -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 01:17:31 +0000
 
 socklog (2.1.0-7) unstable; urgency=low
 

@@ -4,8 +4,6 @@ set -e
 test "$1" = 'remove' || test "$1" = 'deconfigure' || \
   test "$1" = 'failed-upgrade' || exit 0
 
-sv -w14 force-stop socklog-unix socklog-klog || :
-
-for i in unix klog inet notify ucspi-tcp; do
-  test ! -h /var/service/socklog-$i || rm -f /var/service/socklog-$i
+for i in unix klog inet ucspi-tcp notify; do
+  update-service --remove /etc/sv/socklog-$i 2>/dev/null || :
 done
