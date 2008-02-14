@@ -17,8 +17,10 @@ socklog (2.1.0-8) unstable; urgency=low
     socklog services; remove ./supervise/ subdirectories (or symlinks) in
     service directories.
   * debian/control: Standards-Version: 3.7.3.0.
+  * debian/control: package socklog-run: Depends: runit (>= 1.8.0-2) (1st
+    version that provides the update-service program).
 
- -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 01:34:34 +0000
+ -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 01:56:49 +0000
 
 socklog (2.1.0-7) unstable; urgency=low
 
