@@ -8,11 +8,13 @@ socklog (2.1.0-8) unstable; urgency=low
   * debian/socklog-run.postinst, debian/socklog-run.prerm: use runit's
     update-service program to add/remove services from system-wide service
     supervision, instead of dealing with symlinks in /var/service/ directly.
+  * debian/rules: no longer include dangling links for ./supervise/
+    subdirectories, update-service now takes care of this.
   * debian/socklog-run.postinst: remove socklog-unix, socklog-klog services
     on upgrade from <= 2.1.0-7, re-add afterwards through update-service,
     and restore ./supervise/ symlinks for other enabled socklog services.
 
- -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 01:17:31 +0000
+ -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 01:20:40 +0000
 
 socklog (2.1.0-7) unstable; urgency=low
 

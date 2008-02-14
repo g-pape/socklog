@@ -79,15 +79,6 @@ install-indep: deb-checkdir deb-checkuid build-indep-stamp
 	install -d -m0755 '$(DIR)'-run/etc/sv/socklog-notify
 	install -m0755 debian/etc/notify/run \
 	  '$(DIR)'-run/etc/sv/socklog-notify/run
-	# links
-	for i in unix klog inet ucspi-tcp; do \
-	  ln -s /var/run/sv.socklog-$$i \
-	    '$(DIR)'-run/etc/sv/socklog-$$i/supervise && \
-	  ln -s /var/run/sv.socklog-$$i.log \
-	    '$(DIR)'-run/etc/sv/socklog-$$i/log/supervise || exit 1; \
-	done
-	ln -s /var/run/sv.socklog-notify \
-	  '$(DIR)'-run/etc/sv/socklog-notify/supervise
 	for i in klog inet ucspi-tcp; do \
 	  ln -s /var/log/socklog-$$i '$(DIR)'-run/etc/sv/socklog-$$i/log/main \
 	    || exit 1; \
