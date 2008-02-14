@@ -16,8 +16,9 @@ socklog (2.1.0-8) unstable; urgency=low
   * debian/socklog-run.postrm: purge: adapt paths in /var/run/; force-stop
     socklog services; remove ./supervise/ subdirectories (or symlinks) in
     service directories.
+  * debian/control: Standards-Version: 3.7.3.0.
 
- -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 01:21:35 +0000
+ -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 01:34:34 +0000
 
 socklog (2.1.0-7) unstable; urgency=low
 
