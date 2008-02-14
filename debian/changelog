@@ -1,3 +1,11 @@
+socklog (2.1.0-8) unstable; urgency=low
+
+  * debian/diff/socklog-conf-update-service.diff: new; refer to
+    update-service(8) instead of symlinks in /var/service/.
+  * debian/rules: target build: apply socklog-conf-update-service.diff.
+
+ -- Gerrit Pape <pape@smarden.org>  Thu, 14 Feb 2008 00:14:59 +0000
+
 socklog (2.1.0-7) unstable; urgency=low
 
   * debian/diff/tryto-n.diff: new; don't report failure if the final try
