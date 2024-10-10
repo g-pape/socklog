@@ -73,7 +73,7 @@ void start(const char *s) {
   fn = s;
   fd = open_trunc(fn);
   if (fd == -1) fail();
-  buffer_init(&b, write, fd, buf, sizeof buf);
+  buffer_init(&b, buffer_unixwrite, fd, buf, sizeof buf);
 }
 
 void outs(const char *s) {

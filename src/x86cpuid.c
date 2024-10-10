@@ -1,5 +1,7 @@
 /* Public domain. */
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <signal.h>
 
 void nope()
@@ -17,10 +19,10 @@ int main()
 
   signal(SIGILL,nope);
 
-  x[0] = 0;
-  x[1] = 0;
-  x[2] = 0;
-  x[3] = 0;
+  x[0] = y[0] = 0;
+  x[1] = y[1] = 0;
+  x[2] = y[2] = 0;
+  x[3] = y[3] = 0;
 
   asm volatile(".byte 15;.byte 162" : "=a"(x[0]),"=b"(x[1]),"=c"(x[3]),"=d"(x[2]) : "0"(0) );
   if (!x[0]) return 0;
@@ -34,7 +36,7 @@ int main()
       putchar(c);
     }
 
-  printf("-%08x-%08x\n",y[0],y[3]);
+  printf("-%08lx-%08lx\n",y[0],y[3]);
 
   return 0;
 }

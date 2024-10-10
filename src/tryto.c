@@ -36,7 +36,7 @@ void usage () {
   strerr_die4x(1, "usage: ", progname, USAGE, "\n");
 }
 
-int main (int argc, const char * const *argv, const char * const *envp) {
+int main (int argc, char * const *argv, char * const *envp) {
   int opt;
   struct taia now, deadline;
   iopause_fd x[2];

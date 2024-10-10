@@ -16,7 +16,7 @@ const char *optarg = 0;
 int optproblem = 0;
 int optdone = SUBGETOPTDONE;
 
-int sgopt(int argc,const char *const *argv,const char *opts)
+int sgopt(int argc,char *const *argv,const char *opts)
 {
   int c;
   const char *s;
@@ -54,7 +54,7 @@ int sgopt(int argc,const char *const *argv,const char *opts)
             optproblem = c;
             return '?';
           }
-	  ++optind;
+          ++optind;
         }
       }
       return c;

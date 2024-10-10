@@ -4,7 +4,7 @@
 #include <sys/file.h>
 #include <fcntl.h>
 
-main()
+int main()
 {
   flock(0,LOCK_EX | LOCK_UN | LOCK_NB);
 }

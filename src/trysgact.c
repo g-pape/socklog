@@ -2,7 +2,7 @@
 
 #include <signal.h>
 
-main()
+int main()
 {
   struct sigaction sa;
   sa.sa_handler = 0;

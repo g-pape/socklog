@@ -23,7 +23,7 @@ struct sockaddr_un sa;
 const char *address ="/dev/log";
 unsigned int verbose =0;
 
-int main(int argc, const char **argv) {
+int main(int argc, char **argv) {
   int opt;
 
   progname =*argv;

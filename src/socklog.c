@@ -261,7 +261,7 @@ int read_socket (int s) {
   return(0);
 }
 
-int read_ucspi (int fd, const char **vars) {
+int read_ucspi (int fd, char **vars) {
   char *envs[9];
   int flageol =1;
   int i;
@@ -408,7 +408,7 @@ static void read_stream_sun(int fd) {
 
 #endif
 
-int main(int argc, const char **argv, const char *const *envp) {
+int main(int argc, char **argv) {
   int opt;
   int s =0;
   

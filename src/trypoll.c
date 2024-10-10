@@ -1,5 +1,6 @@
 /* Public domain. */
 
+#include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
 #include <poll.h>

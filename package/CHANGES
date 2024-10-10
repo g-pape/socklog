@@ -1,3 +1,9 @@
+  * pathexec.h, pathexec_env.c, pathexec_run.c, seek_set.c, sgetopt.c,
+    sgetopt.h, socklog-check.c, socklog-conf.c, socklog.c, subgetopt.c,
+    subgetopt.h, trycpp.c, tryflock.c, trypoll.c, trysgact.c, trysgprm.c,
+    tryto.c, tryulong64.c, trywaitp.c, uncat.c, x86cpuid.c: incorporate
+    lib changes from runit-2.2.0 and adapt socklog programs to properly
+    build with modern toolchains (thx Gentoo, Debian, Void Linux).
   * prot.c, prot.h, chkshsgr.c, tryshsgr.c, hasshsgr.h?, warn-shsgr:
     remove; obsolete.
   * Makefile, TARGETS: no longer check for "shortsetgroups" (thx Leah
