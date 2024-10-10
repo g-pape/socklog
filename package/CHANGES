@@ -1,3 +1,4 @@
+  * doc/install.html: add link to sha256sum.asc.
   * doc/install.html: change mail address.
   * doc/index.html: remove reference to socklog 2.0.x.
   * doc/*.html: remove <small>$Id$</small>.
