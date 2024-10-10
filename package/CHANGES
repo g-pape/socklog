@@ -1,3 +1,4 @@
+  * doc/*.html: remove <small>$Id$</small>.
   * debian/: remove; obsolete.
   * pathexec.h, pathexec_env.c, pathexec_run.c, seek_set.c, sgetopt.c,
     sgetopt.h, socklog-check.c, socklog-conf.c, socklog.c, subgetopt.c,
