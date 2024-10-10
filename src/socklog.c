@@ -7,13 +7,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include <grp.h>
 #include "byte.h"
 #include "buffer.h"
 #include "error.h"
 #include "strerr.h"
 #include "scan.h"
 #include "env.h"
-#include "prot.h"
 #include "sig.h"
 #include "open.h"
 #include "sgetopt.h"
@@ -89,15 +89,15 @@ void setuidgid() {
 
     scan_ulong(gid, &g);
     err("gid=", gid, ", ");
-    if (prot_gid(g) == -1)
-      strerr_die2sys(111, FATAL, "unable to setgid: ");
+    if (setgroups(1,(gid_t *)&g) == -1)
+      strerr_die2sys(111, FATAL, "unable to setgroups: ");
   }
   if ((uid = env_get("UID")) != NULL) {
     unsigned long u;
 
     scan_ulong(uid, &u);
     err("uid=", uid, ", ");
-    if (prot_uid(u) == -1)
+    if (setuid(u) == -1)
       strerr_die2sys(111, FATAL, "unable to setuid: ");
   }
 }

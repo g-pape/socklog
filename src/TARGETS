@@ -32,8 +32,6 @@ byte_cr.o
 byte_diff.o
 byte_rchr.o
 byte_zero.o
-chkshsgr
-chkshsgr.o
 choose
 coe.o
 compile
@@ -51,7 +49,6 @@ hasflock.h
 hasmkffo.h
 hassgact.h
 hassgprm.h
-hasshsgr.h
 haswaitp.h
 iopause.h
 iopause.o
