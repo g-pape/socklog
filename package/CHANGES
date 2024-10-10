@@ -1,3 +1,4 @@
+  * doc/index.html: remove reference to socklog 2.0.x.
   * doc/*.html: remove <small>$Id$</small>.
   * debian/: remove; obsolete.
   * pathexec.h, pathexec_env.c, pathexec_run.c, seek_set.c, sgetopt.c,
