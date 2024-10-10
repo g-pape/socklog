@@ -1,8 +1,0 @@
-#!/bin/sh
-set -e
-
-test "$1" = 'purge' || exit 0
-
-getent passwd log >/dev/null || exit 0
-! deluser --version >/dev/null 2>&1 || exec deluser log
-echo 'deluser program not available, not removing system user "log".' >&2

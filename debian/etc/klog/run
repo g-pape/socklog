@@ -1,6 +1,0 @@
-#!/bin/sh
-USER=nobody
-exec </proc/kmsg
-exec 2>&1
-test "`uname -r |cut -c1-4`" != '2.6.' || USER=root
-exec chpst -u"$USER" socklog ucspi
