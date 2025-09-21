@@ -237,7 +237,7 @@ int main (int argc, char * const *argv, char * const *envp) {
       }
       break;
     }
-    if (rc == 0) break;
+    if (rc == 0) _exit(0);
     if (verbose) strerr_warn2(WARNING, "child crashed.", 0);
     if (lseek(0, 0, SEEK_SET) != 0)
 	if (verbose) strerr_warn2(WARNING,
@@ -246,7 +246,7 @@ int main (int argc, char * const *argv, char * const *envp) {
     sleep(1);
   }
 
-  if (processor && (rc != 0)) {
+  if (processor) {
     for (;;) {
       int r;
       char *s;
