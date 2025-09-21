@@ -1,3 +1,5 @@
+  * tryto.c: don't report failure if the final try of prog succeeds (thx
+    Andras Korn).
   * doc/index.html: remove reference to mailing list misc@list.smarden.org.
   * doc/index.html: add reference to repository on github.com.
 
