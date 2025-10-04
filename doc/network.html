@@ -4,7 +4,7 @@
 <title>socklog - network logging</title>
 </head>
 <body>
-<a href="http://smarden.org/pape/">G. Pape</a><br>
+<a href="https://smarden.org/pape/">G. Pape</a><br>
 <a href="index.html">socklog</a><br>
 <hr>
 <h1>socklog - network logging</h1>
@@ -20,12 +20,12 @@ decision, what to do in such cases.
 <ul>
   <li>
   logging is still done locally through
-  <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>.
+  <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>.
   <li>
   the log is transmitted through a network connection (if possible)
-  when <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+  when <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
   decides that <tt>current</tt> is big enough, using
-  <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>'s
+  <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s
   <i>processor</i> feature.
   <li>
   since this transmission cannot be made reliable, there is a tool
@@ -34,7 +34,7 @@ decision, what to do in such cases.
   <li>
   if the transmission of <tt>current</tt> fails, the log will be saved
   locally,
-  <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+  <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
   remembers the failure in its <tt>state</tt> and
   <a href="tryto.1.html">tryto</a> includes the error messages into
   the transmission on the next run, so the remote machine gets the
@@ -93,7 +93,7 @@ and restart the log service:
   # sv restart socklog-unix/log
 </pre>
 On each rotation of
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>'s
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s
 <tt>current</tt>, the data will be transmitted to
 <tt>10.0.0.16:10116</tt> using <a href="tryto.1.html">tryto</a>
 and <i>netcat</i>, failures will be noticed and notified on the next run.
@@ -146,7 +146,7 @@ socklog-unix/run:
   exec chpst -Unobody socklog -R unix /dev/log
 </pre>
 Then change the configuration of <i>socklog</i>'s main log directory to tell
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> to transmit
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> to transmit
 log messages through UDP:
 <p>
 /var/log/socklog/main/config:
@@ -162,7 +162,7 @@ Restart the service, and tell the log service to reload its configuration:
 </pre>
 Now each log message will be sent through UDP to <tt>10.0.0.16:514</tt>, and
 not written to the log directory.
-If <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> has trouble
+If <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> has trouble
 transmitting data through UDP, and is able to detect an error, it logs an
 error message followed by the log message to the log directory.
 <p>
@@ -170,7 +170,7 @@ Of course you can configure <i>socklog</i> to log through UDP while keeping
 local logging enabled, and also select log messages to be transmitted through
 UDP by pattern.
 See the documentation of
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> for details.
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> for details.
 <hr>
 <address><a href="mailto:pape@smarden.org">
 Gerrit Pape &lt;pape@smarden.org&gt;

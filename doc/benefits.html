@@ -4,7 +4,7 @@
 <title>socklog - benefits</title>
 </head>
 <body>
-<a href="http://smarden.org/pape/">G. Pape</a><br>
+<a href="https://smarden.org/pape/">G. Pape</a><br>
 <a href="index.html">socklog</a>
 <hr>
 <h1>socklog - benefits</h1>
@@ -16,20 +16,20 @@
 <a href="#smallcode">Small code size</a>
 <hr>
 Most of the benefits described here are actually benefits of
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> and
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> and
 <a href="http://cr.yp.to/daemontools/multilog.html">multilog</a>.
 But since <i>socklog</i> uses
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 as its back-end, the benefits apply
 to <i>syslogging</i> with <i>socklog</i>.
 <hr>
 <h2><a name="logrotation">Log file rotation based on file size</a></h2>
 <p>
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 supports automatically rotated logs, there is no need for any other
 tool running from cron or similar to rotate the logs.
 <p>
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 keeps a specified number of log files with a maximum file size, so it is
 possible to calculate a log file partition properly.
 <p>
@@ -51,7 +51,7 @@ with these log <tt>config</tt> files
   +*.debug*
 </pre>
 causes
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 to hold maximal 10 log files, each of maximal size
 4999999 bytes in <tt>/var/log/socklog/main/</tt>, and maximal 5 log files,
 each of maximal size 999999 bytes in <tt>/var/log/socklog/debug/</tt>.
@@ -67,18 +67,18 @@ You can lose old log entries from this service, but will ever have the
 recent ones.
 <p>
 Please note that above numbers could change if you use 
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 with a <i>processor</i>.
 <hr>
 <h2><a name="selecting">Selecting and de-selecting log entries</a></h2>
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 supports selecting and de-selecting log lines based on pattern matching.
 <p>
 This is much more flexible than the usual <i>syslogd</i> support for
 selecting log entries by <tt>facility</tt> and <tt>priority</tt>.
 Of course, selecting entries by <tt>facility</tt> or <tt>priority</tt> is
 still possible with <i>socklog</i> and
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>,
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>,
 just like the default <i>socklog-unix</i> configuration shows.
 <p>
 This line selection feature is also used for <i>socklog</i>'s instant
@@ -97,12 +97,12 @@ side.
 Logs are transmitted through network using a TCP connection in the default
 configuration, log transmission failures are handled.
 The modular design of
-<a href="http://smarden.org/runit/">runit</a> and
+<a href="https://smarden.org/runit/">runit</a> and
 <i>socklog</i> makes it possible to insert encryption, authentication,
 compression, and more, easily.
 <hr>
 <h2><a name="sortable">Sortable logs</a></h2>
-If <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a> is
+If <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> is
 told to prepend log lines with time-stamps, the resulting logs are sortable.
 So it is possible to merge different logs and sort them chronologically
 without special effort.

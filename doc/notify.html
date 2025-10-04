@@ -4,7 +4,7 @@
 <title>socklog - log events notification</title>
 </head>
 <body>
-<a href="http://smarden.org/pape/">G. Pape</a><br>
+<a href="https://smarden.org/pape/">G. Pape</a><br>
 <a href="index.html">socklog</a><br>
 <hr>
 <h1>socklog - log events notification</h1>
@@ -26,7 +26,7 @@ Read <a href="#disable">disable notifications</a> before stopping the
 <hr>
 <h2>how to configure log events</h2>
 Choose a log controlled by
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 to be watched for log events, say <tt>/var/log/socklog/main/</tt>.
 <p>
 Make sure the account running this log service is member of the
@@ -34,7 +34,7 @@ Make sure the account running this log service is member of the
 that the <i>socklog-notify</i> service is running.
 <p>
 Redirect the standard error output of
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 to the named pipe <i>socklog-notify</i> is reading from.
 To do so, insert <tt>exec 2&gt; /var/log/socklog/.notify</tt> as second
 line into <tt>/var/service/socklog-unix/log/run</tt>:
@@ -45,13 +45,13 @@ line into <tt>/var/service/socklog-unix/log/run</tt>:
     main/main main/auth main/cron main/daemon main/debug main/ftp \
     main/kern main/local main/mail main/news main/syslog main/user
 </pre>
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>'s
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s
 error messages are always log events.
 <p>
 To configure additional log events in
 <tt>/var/log/socklog/main/</tt>, use the <tt>e</tt> instruction in the
 <tt>config</tt> file of this log, see the
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd man page</a>.
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd man page</a>.
 For example, if you want to be notified about all log messages of the
 priority <i>alert</i>, add a corresponding <tt>e</tt> instruction to the
 <tt>config</tt> file <tt>/var/log/socklog/main/config</tt> like this:

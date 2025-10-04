@@ -1,3 +1,4 @@
+  * doc/*, man/*, package/README: switch all smarden.org http links to https.
   * tryto.c: don't report failure if the final try of prog succeeds (thx
     Andras Korn).
   * doc/index.html: remove reference to mailing list misc@list.smarden.org.

@@ -4,7 +4,7 @@
 <title>socklog - configuration</title>
 </head>
 <body>
-<a href="http://smarden.org/pape/">G. Pape</a><br>
+<a href="https://smarden.org/pape/">G. Pape</a><br>
 <a href="index.html">socklog</a><br>
 <hr>
 <h1>socklog - configuration</h1>
@@ -60,7 +60,7 @@ If you are replacing another service providing system logging through the
 socket <tt>/dev/log</tt>, such as <i>syslogd</i>, stop this service now and
 ensure that it will not be restarted on runlevel change or system reboot.
 <p>
-Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
+Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
 the new service:
 <pre>
   # ln -s /etc/sv/socklog-unix /var/service/
@@ -100,7 +100,7 @@ If you are replacing another service providing system logging through the
 syslog UDP port 514, such as <i>syslogd</i>, stop this service now and ensure
 that it will not be restarted on runlevel change or system reboot.
 <p>
-Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
+Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
 the new service:
 <pre>
   # ln -s /etc/sv/socklog-inet /var/service/
@@ -140,7 +140,7 @@ If you are replacing another service providing kernel logging, such as
 <i>klogd</i> on Linux or <i>syslogd</i> on BSD, stop this service now and
 ensure that it will not be restarted on runlevel change or system reboot.
 <p>
-Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
+Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
 the new service:
 <pre>
   # ln -s /etc/sv/socklog-klog /var/service/
@@ -171,14 +171,14 @@ to make two decisions:
   programs run under this account. If this account does not exist, create
   it now.
 </ul>
-Make sure that you have the <a href="http://smarden.org/ipsvd/">ipsvd</a>
+Make sure that you have the <a href="https://smarden.org/ipsvd/">ipsvd</a>
 package installed.
 Then create the service directory and log directories by running the
 <a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
 <pre>
   # socklog-conf ucspi-tcp nobody log
 </pre>
-Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
+Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
 the new service:
 <pre>
   # ln -s /etc/sv/socklog-ucspi-tcp /var/service/
@@ -216,7 +216,7 @@ Create the service directory by running the
 <pre>
   # socklog-conf notify log adm
 </pre>
-Tell <a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
+Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
 the new service:
 <pre>
   # ln -s /etc/sv/socklog-notify /var/service/

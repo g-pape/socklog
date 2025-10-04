@@ -4,7 +4,7 @@
 <title>socklog - system and kernel logging services</title>
 </head>
 <body>
-<a href="http://smarden.org/pape/">G. Pape</a>
+<a href="https://smarden.org/pape/">G. Pape</a>
 <hr>
 <h1>socklog - system and kernel logging services</h1>
 <hr>
@@ -25,7 +25,7 @@
 <a href="uncat.1.html">The <tt>uncat</tt> program</a>
 <hr>
 <i>socklog</i>, in cooperation with the
-<a href="http://smarden.org/runit/">runit</a> package, is a small and
+<a href="https://smarden.org/runit/">runit</a> package, is a small and
 secure replacement for syslogd.
 There are three main features syslogd provides:
 <ul>
@@ -43,15 +43,15 @@ There are three main features syslogd provides:
 </ul>
 <p>
 <i>socklog</i> provides these features with the help of
-<a href="http://smarden.org/runit/">runit</a>'s
-<a href="http://smarden.org/runit/runsvdir.8.html">runsvdir</a>,
-<a href="http://smarden.org/runit/runsv.8.html">runsv</a>,
-and <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>,
+<a href="https://smarden.org/runit/">runit</a>'s
+<a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>,
+<a href="https://smarden.org/runit/runsv.8.html">runsv</a>,
+and <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>,
 provides a different
 <a href="network.html">network logging concept</a>, and additionally
 does <a href="notify.html">log event notification</a>.
 <p>
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 has a built in
 <a href="benefits.html#logrotation">log file rotation based on file size</a>,
 so there is no need for any cron jobs or similar to rotate the logs.
@@ -68,14 +68,14 @@ Contribute to <i>socklog</i> through
 <hr>
 <p>
 <i>socklog</i> is run under
-<a href="http://smarden.org/runit/">runit</a>'s
-<a href="http://smarden.org/runit/runsv.8.html">runsv</a>,
+<a href="https://smarden.org/runit/">runit</a>'s
+<a href="https://smarden.org/runit/runsv.8.html">runsv</a>,
 writing syslog messages it receives from an unix domain
 socket <tt>path</tt> (&quot;<tt>/dev/log</tt>&quot;) or an inet udp socket
 <tt>ip:port</tt> (&quot;<tt>0.0.0.0:514</tt>&quot;) through a pipe
 provided by
-<a href="http://smarden.org/runit/runsv.8.html">runsv</a>
-to a <a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>
+<a href="https://smarden.org/runit/runsv.8.html">runsv</a>
+to a <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 process.
 <p>
 <i>socklog</i> can be run as an
@@ -97,11 +97,11 @@ to the socket (not in
 information to names (&quot;<tt>facility.priority</tt>&quot;) as found in
 <tt>/usr/include/syslog.h</tt>
 at compile time if present, you can use this for
-<a href="http://smarden.org/runit/svlogd.8.html">svlogd</a>'s line
+<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s line
 selecting by pattern.
 <hr>
 A proper <tt>run</tt> file for
-<a href="http://smarden.org/runit/runsv.8.html">runsv</a> is:
+<a href="https://smarden.org/runit/runsv.8.html">runsv</a> is:
 <pre>
   #!/bin/sh
   exec 2&gt;&amp;1
@@ -109,7 +109,7 @@ A proper <tt>run</tt> file for
 </pre>
 <p>
 A proper <tt>log/run</tt> file for
-<a href="http://smarden.org/runit/runsv.8.html">runsv</a> is:
+<a href="https://smarden.org/runit/runsv.8.html">runsv</a> is:
 <pre>
   #!/bin/sh
   exec chpst -ulog svlogd -t main/*
@@ -119,7 +119,7 @@ See <a href="install.html">INSTALL</a> on how to install <i>socklog</i>
 and <a href="configuration.html">Configuration</a> for setting up
 <i>socklog</i> services.
 <hr>
-See <a href="http://smarden.org/socklog/">http://smarden.org/socklog/</a>
+See <a href="https://smarden.org/socklog/">https://smarden.org/socklog/</a>
 for recent informations.
 <hr>
 <address><a href="mailto:pape@smarden.org">
