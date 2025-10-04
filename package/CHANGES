@@ -1,3 +1,4 @@
+  * package/README: update copyright notice.
   * doc/configuration.html: replace links to daemontools faq with runit faq.
   * doc/*: switch all cr.yp.to http links to https.
   * doc/*, man/*, package/README: switch all smarden.org http links to https.
