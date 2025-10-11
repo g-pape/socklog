@@ -1,3 +1,10 @@
+  * alloc.h, buffer.c, buffer.h, buffer_get.c, buffer_put.c, buffer_write.c,
+    byte.h, check-socklog-unix.c, pathexec_env.c, select.h1, select.h2,
+    sig.c, sig.h, sig_catch.c, socklog-check.c, socklog-check.dist,
+    socklog.c, tryto.c, tryto.dist, uncat.c, uncat.dist, wait.h: fix build
+    with gcc15: in C23 f() means f(void), consequently signal handler
+    functions now are f(int), alloc_free() and byte_zero() parameters need
+    casts, buffer_unixwrite() removes "const" from parameter.
   * package/README: update copyright notice.
   * doc/configuration.html: replace links to daemontools faq with runit faq.
   * doc/*: switch all cr.yp.to http links to https.
