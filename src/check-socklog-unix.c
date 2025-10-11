@@ -14,7 +14,7 @@ struct sockaddr_un sa;
 int main() {
   s =socket(AF_UNIX, SOCK_DGRAM, 0);
   if (s == -1) strerr_die1sys(111, "fatal: unable to create socket: ");
-  byte_zero(&sa, sizeof(sa));
+  byte_zero((char *)&sa, sizeof(sa));
   sa.sun_family =AF_UNIX;
   strcpy(sa.sun_path, "socklog.check.socket");
   if (connect(s, (struct sockaddr *) &sa, sizeof(sa)) == -1)

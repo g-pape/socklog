@@ -1,7 +1,7 @@
 usage: uncat [-vo] [-t timeout] [-s size] prog
 
 1
-$Id: b7787391481949f7223e326decd0a46e4fd444e4 $
+$Id: 42845bab9fe12a6fd768b9931a18c382c4a2e83b $
 
 usage: uncat [-vo] [-t timeout] [-s size] prog
 

@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
   }
   if ((s =socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
     strerr_die4sys(111, FATAL, "unable to create socket: ", address, ": ");
-  byte_zero(&sa, sizeof(sa));
+  byte_zero((char *)&sa, sizeof(sa));
   sa.sun_family =AF_UNIX;
   strncpy(sa.sun_path, address, sizeof(sa.sun_path));
   if (connect(s, (struct sockaddr *)&sa, sizeof(sa)) == -1) {

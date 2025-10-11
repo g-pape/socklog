@@ -64,7 +64,7 @@ unsigned int lograw =0;
 unsigned int noumask =0;
 
 int flag_exitasap = 0;
-void sig_term_catch(void) {
+void sig_term_catch(int) {
   flag_exitasap = 1;
 }
 
@@ -166,7 +166,7 @@ int socket_unix (const char* f) {
   
   if ((s =socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
     strerr_die2sys(111, FATAL, "socket(): ");
-  byte_zero(&sa, sizeof(sa));
+  byte_zero((char *)&sa, sizeof(sa));
   sa.sun_family =AF_UNIX;
   strncpy(sa.sun_path, f, sizeof(sa.sun_path));
   unlink(f);
@@ -183,7 +183,7 @@ int socket_inet (const char* ip, const char* port) {
   unsigned long p;
   struct sockaddr_in sa;
   
-  byte_zero(&sa, sizeof(sa));
+  byte_zero((char *)&sa, sizeof(sa));
   if (ip[0] == '0') {
     sa.sin_addr.s_addr =INADDR_ANY;
   } else {

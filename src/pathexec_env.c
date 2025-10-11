@@ -65,5 +65,5 @@ void pathexec(char *const *argv)
   e[elen] = 0;
 
   pathexec_run(*argv,argv,e);
-  alloc_free(e);
+  alloc_free((char *)e);
 }
