@@ -24,7 +24,7 @@
 const char *progname;
 int exitasap =0;
 
-void exit_asap(int) {
+void exit_asap(int unused) {
   exitasap =1;
 }
 

@@ -27,7 +27,7 @@ const char *progname;
 int selfpipe[2];
 int try =0;
 
-void sig_child_handler(int) {
+void sig_child_handler(int unused) {
   try++;
   write(selfpipe[1], "", 1);
 }

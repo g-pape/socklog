@@ -1,3 +1,5 @@
+  * socklog.c, tryto.c, uncat.c: use parameter name "unused" in sighandler
+    functions.
   * hasflock.h1: add #include <unistd.h>.
   * alloc.h, buffer.c, buffer.h, buffer_get.c, buffer_put.c, buffer_write.c,
     byte.h, check-socklog-unix.c, pathexec_env.c, select.h1, select.h2,

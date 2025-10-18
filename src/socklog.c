@@ -64,7 +64,7 @@ unsigned int lograw =0;
 unsigned int noumask =0;
 
 int flag_exitasap = 0;
-void sig_term_catch(int) {
+void sig_term_catch(int unused) {
   flag_exitasap = 1;
 }
 
