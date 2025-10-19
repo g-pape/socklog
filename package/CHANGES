@@ -1,3 +1,4 @@
+  * doc/*.html: !DOCTYPE.
   * socklog.c, tryto.c, uncat.c: use parameter name "unused" in sighandler
     functions.
   * hasflock.h1: add #include <unistd.h>.
