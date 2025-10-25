@@ -3,9 +3,9 @@
 #ifndef ERROR_H
 #define ERROR_H
 
-/* 20030126: include <errno.h> -upcoming glibc changes */
+/* 20030124: include <errno.h> -upcoming glibc changes */
 #include <errno.h>
-  
+ 
 /* extern int errno; */
 
 extern int error_intr;

@@ -1,3 +1,7 @@
+  * alloc.c, alloc_re.c, buffer_0.c, byte_chr.c, byte_copy.c, byte_cr.c,
+    byte_diff.c, byte_rchr.c, byte_zero.c, error.h, select.h2, wait.h,
+    wait_nohang.c, wait_pid.c: sync daemontools library fork with runit
+    source.
   * doc/*.html: !DOCTYPE.
   * socklog.c, tryto.c, uncat.c: use parameter name "unused" in sighandler
     functions.
