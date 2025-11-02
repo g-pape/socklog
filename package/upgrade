@@ -7,9 +7,9 @@ test -d src || sh -cx '! : Wrong working directory.'
 here=`env - PATH=$PATH pwd`
 parent=`dirname $here`
 
-echo 'Creating symlink socklog -> socklog-2.1.1...'
+echo 'Creating symlink socklog -> socklog-2.1.2...'
 rm -f socklog
-ln -s socklog-2.1.1 socklog
+ln -s socklog-2.1.2 socklog
 mv -f socklog ..
 
 echo 'Making command links in /command...'
