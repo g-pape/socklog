@@ -3,7 +3,7 @@
 socklog \- small and secure syslogd replacement for use with runit
 .SH SYNOPSIS
 .B socklog
-[\-rRU]
+[\-rRTU]
 [unix]
 .RI [ path\fR]
 .br
@@ -155,6 +155,11 @@ priority converted to names.
 .B \-R
 raw only.
 Same as \-r above, but write the raw syslog messages only.
+.TP
+.B \-T
+Drop the timestamp (in classic RFC3164 format, "Mmm dd hh:mm:ss")
+in front of the log message;
+helpful if you add your own timestamps later.
 .TP
 .B \-U
 respect umask.

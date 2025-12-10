@@ -36,9 +36,9 @@
 #define FATAL "socklog: fatal: "
 
 #ifdef SOLARIS
-#define USAGE " [-rRU] [unix|inet|ucspi|sun_stream] [args]"
+#define USAGE " [-rRTU] [unix|inet|ucspi|sun_stream] [args]"
 #else
-#define USAGE " [-rRU] [unix|inet|ucspi] [args]"
+#define USAGE " [-rRTU] [unix|inet|ucspi] [args]"
 #endif
 
 #define VERSION "$Id$"
@@ -62,6 +62,7 @@ const char *address =NULL;
 char *uid, *gid;
 unsigned int lograw =0;
 unsigned int noumask =0;
+unsigned int skiptime =0;
 
 int flag_exitasap = 0;
 void sig_term_catch(int unused) {
@@ -151,6 +152,22 @@ int scan_syslog_names (char *l, int lc, buffer *buf) {
   }
   if (!ok || !fpr) return(0);
   return(print_syslog_names(fpr, buf) ? ++i : 0);
+}
+
+int skip_timestamp (char *l, int lc) {
+  return (lc >= 16 && l[3] == ' ' && l[6] == ' ' &&
+    l[9] == ':' && l[12] == ':' && l[15] == ' ' &&
+    (l[4] == ' ' || (l[4] >= '0' && l[4] <= '9')) &&
+    l[5] >= '0' && l[5] <= '9' &&
+    l[7] >= '0' && l[7] <= '9' &&
+    l[8] >= '0' && l[8] <= '9' &&
+    l[10] >= '0' && l[10] <= '9' &&
+    l[11] >= '0' && l[11] <= '9' &&
+    l[13] >= '0' && l[13] <= '9' &&
+    l[14] >= '0' && l[14] <= '9' &&
+    l[0] >= 'A' && l[0] <= 'Z' &&
+    l[1] >= 'a' && l[1] <= 'z' &&
+    l[2] >= 'a' && l[2] <= 'z') ? 16 : 0;
 }
 
 void remote_info (struct sockaddr_in *sa) {
@@ -250,6 +267,7 @@ int read_socket (int s) {
 
     if (mode == MODE_INET) remote_info(&saf);
     os =scan_syslog_names(line, linec, buffer_1);
+    if (skiptime) os +=skip_timestamp(line +os, linec -os);
 
     buffer_put(buffer_1, line +os, linec -os);
     if (line[linec -1] != '\n') {
@@ -294,6 +312,7 @@ int read_ucspi (int fd, char **vars) {
 	}
 	/* could fail on eg <13\0>user.notice: ... */
 	l += scan_syslog_names(l, line -l +linec, buffer_2);
+	if (skiptime) l += skip_timestamp(l, line -l +linec);
 	p =l;
 	flageol =0;
       }
@@ -414,10 +433,11 @@ int main(int argc, char **argv) {
   
   progname =*argv;
 
-  while ((opt =getopt(argc, argv, "rRUV")) != opteof) {
+  while ((opt =getopt(argc, argv, "rRTUV")) != opteof) {
     switch(opt) {
     case 'r': lograw =1; break;
     case 'R': lograw =2; break;
+    case 'T': skiptime =1; break;
     case 'U': noumask =1; break;
     case 'V':
       err(VERSION, 0, 0);
