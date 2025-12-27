@@ -1,3 +1,4 @@
+  * socklog.c: fix compilation warning -Wpointer-sign.
   * socklog.c, man/socklog.8: add -T to drop timestamps from syslog messages
     (github/leahneukirchen).
   * buffer_put.c, byte.h, byte_chr.c, byte_copy.c, byte_cr.c, byte_diff.c,

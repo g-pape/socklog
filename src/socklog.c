@@ -237,7 +237,7 @@ int read_socket (int s) {
 
   for(;;) {
     struct sockaddr_in saf;
-    int dummy =sizeof saf;
+    unsigned int dummy =sizeof saf;
     int linec;
     int os;
     
