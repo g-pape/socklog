@@ -5,12 +5,12 @@
 #include <sys/stat.h>
 #include <sys/un.h>
 #include <unistd.h>
-#include <string.h>
 #include <errno.h>
 #include <grp.h>
 #include "byte.h"
 #include "buffer.h"
 #include "error.h"
+#include "str.h"
 #include "strerr.h"
 #include "scan.h"
 #include "env.h"
@@ -180,12 +180,14 @@ void remote_info (struct sockaddr_in *sa) {
 int socket_unix (const char* f) {
   int s;
   struct sockaddr_un sa;
-  
-  if ((s =socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
-    strerr_die2sys(111, FATAL, "socket(): ");
+
+  if ((s =str_len(f)) >= sizeof(sa.sun_path))
+    strerr_die3x(111, FATAL, f, ": name too long");
   byte_zero((char *)&sa, sizeof(sa));
   sa.sun_family =AF_UNIX;
-  strncpy(sa.sun_path, f, sizeof(sa.sun_path));
+  byte_copy(sa.sun_path, s, f);
+  if ((s =socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
+    strerr_die2sys(111, FATAL, "socket(): ");
   unlink(f);
   if (! noumask) umask(0);
   if (bind(s, (struct sockaddr*) &sa, sizeof sa) == -1)

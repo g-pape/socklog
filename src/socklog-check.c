@@ -2,8 +2,8 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
-#include <string.h>
 #include "strerr.h"
+#include "str.h"
 #include "byte.h"
 #include "sgetopt.h"
 
@@ -41,11 +41,14 @@ int main(int argc, char **argv) {
     if (**argv != 'u') usage();
     if (++argv && *argv) address =*argv;
   }
-  if ((s =socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
-    strerr_die4sys(111, FATAL, "unable to create socket: ", address, ": ");
+  if ((s =str_len(address)) >= sizeof(sa.sun_path))
+    strerr_die4x(111, FATAL, "unable to create socket: ", address,
+                 ": name too long");
   byte_zero((char *)&sa, sizeof(sa));
   sa.sun_family =AF_UNIX;
-  strncpy(sa.sun_path, address, sizeof(sa.sun_path));
+  byte_copy(sa.sun_path, s, address);
+  if ((s =socket(AF_UNIX, SOCK_DGRAM, 0)) == -1)
+    strerr_die4sys(111, FATAL, "unable to create socket: ", address, ": ");
   if (connect(s, (struct sockaddr *)&sa, sizeof(sa)) == -1) {
     close(s);
 #ifdef EDESTADDRREQ

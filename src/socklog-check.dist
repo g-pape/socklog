@@ -1,4 +1,4 @@
-$Id: 1846f398826fdcf04b22c5f175298d41f0f679b1 $
+$Id: 24b56d983c0527e1d7b3da9360b21ad1d6f06244 $
 usage: socklog-check [-v] [unix [address]]
 
 1
