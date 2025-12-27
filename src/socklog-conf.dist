@@ -2,7 +2,7 @@ usage: socklog-conf unix|inet|klog|ucspi acct logacct [/etc/sv] [/logdir]
 usage: socklog-conf notify acct grp [/etc/sv] [pipe]
 
 1
-$Id: fcce5763474a7e285e1ea9606467950828a888e2 $
+$Id: a3bb6095611c862dd72551714fda7f2b7787d9ad $
 
 usage: socklog-conf unix|inet|klog|ucspi acct logacct [/etc/sv] [/logdir]
 usage: socklog-conf notify acct grp [/etc/sv] [pipe]

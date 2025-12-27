@@ -244,9 +244,9 @@ int read_socket (int s) {
     linec =recvfrom(s, line, LINEC, 0, (struct sockaddr *) &saf, &dummy);
     if (linec == -1) {
       if (errno != error_intr)
-	strerr_die2sys(111, FATAL, "recvfrom(): ");
+        strerr_die2sys(111, FATAL, "recvfrom(): ");
       else
-	linec =0;
+        linec =0;
     }
     if (flag_exitasap) break;
 
@@ -256,12 +256,12 @@ int read_socket (int s) {
     if (lograw) {
       buffer_put(buffer_1, line, linec);
       if (line[linec -1] != '\n') {
-	if (linec == LINEC) out("...", 0);
-	out("\n", 0);
+        if (linec == LINEC) out("...", 0);
+        out("\n", 0);
       }
       if (lograw == 2) {
-	buffer_flush(buffer_1);
-	continue;
+        buffer_flush(buffer_1);
+        continue;
       }
     }
 
@@ -306,20 +306,20 @@ int read_ucspi (int fd, char **vars) {
     
     for (l =p =line; l -line < linec; l++) {
       if (flageol) {
-	if (! *l || (*l == '\n')) continue;
-	for (i =0; envs[i]; i++) {
-	  err(envs[i], ": ", 0);
-	}
-	/* could fail on eg <13\0>user.notice: ... */
-	l += scan_syslog_names(l, line -l +linec, buffer_2);
-	if (skiptime) l += skip_timestamp(l, line -l +linec);
-	p =l;
-	flageol =0;
+        if (! *l || (*l == '\n')) continue;
+        for (i =0; envs[i]; i++) {
+          err(envs[i], ": ", 0);
+        }
+        /* could fail on eg <13\0>user.notice: ... */
+        l += scan_syslog_names(l, line -l +linec, buffer_2);
+        if (skiptime) l += skip_timestamp(l, line -l +linec);
+        p =l;
+        flageol =0;
       }
       if (! *l || (*l == '\n')) {
-	buffer_put(buffer_2, p, l -p);
-	buffer_putsflush(buffer_2, "\n");
-	flageol =1;
+        buffer_put(buffer_2, p, l -p);
+        buffer_putsflush(buffer_2, "\n");
+        flageol =1;
       }
     }
     if (!flageol) buffer_putflush(buffer_2, p, l -p);
@@ -329,7 +329,7 @@ int read_ucspi (int fd, char **vars) {
 #ifdef SOLARIS
 #if WANT_SUN_DOOR
 static void door_proc(void *cookie, char *argp, size_t arg_size,
-		      door_desc_t *dp, uint_t ndesc) {
+                      door_desc_t *dp, uint_t ndesc) {
   door_return(NULL, 0, NULL, 0);
   return;
 }
@@ -453,14 +453,14 @@ int main(int argc, char **argv) {
       if (! *(++*argv)) usage();
       switch (**argv) {
       case 'n':
-	mode =MODE_UNIX;
-	break;
+        mode =MODE_UNIX;
+        break;
       case 'c':
-	mode =MODE_UCSPI;
-	argv--;
-	break;
+        mode =MODE_UCSPI;
+        argv--;
+        break;
       default:
-	usage();
+        usage();
       }
       break;
     case 'i':

@@ -168,7 +168,7 @@ void conf_unix() {
   outs("exec socklog-check unix /dev/log\n");
   finish();
   perm(0755);
-		  
+
   start("socklog-unix/log/run");
   outs("#!/bin/sh\n");
   outs("exec chpst -u");

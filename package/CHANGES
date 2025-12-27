@@ -1,3 +1,4 @@
+  * pathexec_env.c, socklog-conf.c, socklog.c, tryto.c, uncat.c: whitespace.
   * socklog.c: fix compilation warning -Wpointer-sign.
   * socklog.c, man/socklog.8: add -T to drop timestamps from syslog messages
     (github/leahneukirchen).

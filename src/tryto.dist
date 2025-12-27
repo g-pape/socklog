@@ -1,7 +1,7 @@
 usage: tryto [-vp] [-t seconds] [-k kseconds] [-n tries] prog
 
 1
-$Id: 45d3311a8f957c1174d9edbbb13fd4c068a760a8 $
+$Id: d033f8606bf3ba06635f68add070a54c7f60fa6f $
 
 usage: tryto [-vp] [-t seconds] [-k kseconds] [-n tries] prog
 

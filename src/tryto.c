@@ -113,10 +113,10 @@ int main (int argc, char * const *argv, char * const *envp) {
 
     if (processor) {
       buffer_init(&buffer_x, buffer_unixread, 4, buffer_x_space,
-		  sizeof buffer_x_space);
+                  sizeof buffer_x_space);
     } else {
       buffer_init(&buffer_x, buffer_unixread, 0, buffer_x_space,
-		  sizeof buffer_x_space);
+                  sizeof buffer_x_space);
     }
 
     /* start real processor */
@@ -125,7 +125,7 @@ int main (int argc, char * const *argv, char * const *envp) {
     }
     while ((pid =fork()) == -1) {
       strerr_warn4(WARNING, "unable to fork for \"", *argv, "\" pausing: ",
-		   &strerr_sys);
+                   &strerr_sys);
       sleep(5);
     }
     if (!pid) {
@@ -138,8 +138,8 @@ int main (int argc, char * const *argv, char * const *envp) {
       close(cpipe[1]);
       fd_move(0, cpipe[0]);
       if (processor) {
-	fd_move(2, 5);
-	close(4);
+        fd_move(2, 5);
+        close(4);
       }
       if (pgroup) setsid();
       pathexec_run(*argv, argv, envp);
@@ -177,26 +177,26 @@ int main (int argc, char * const *argv, char * const *envp) {
 
       r = buffer_feed(&buffer_x);
       if (r < 0) {
-	if ((errno == error_intr) || (errno == error_again)) continue;
+        if ((errno == error_intr) || (errno == error_again)) continue;
       }
       if (r == 0) {
-	if (processor && (buffer_x.fd == 4)) {
-	  x[1].fd =0;
-	  buffer_init(&buffer_x, buffer_unixread, 0, buffer_x_space,
-		  sizeof buffer_x_space);
-	  continue;
-	}
-	if (iopausefds == 2) {
-	  close(cpipe[1]);
-	  iopausefds =1;
-	}
-	continue;
+        if (processor && (buffer_x.fd == 4)) {
+          x[1].fd =0;
+          buffer_init(&buffer_x, buffer_unixread, 0, buffer_x_space,
+                      sizeof buffer_x_space);
+          continue;
+        }
+        if (iopausefds == 2) {
+          close(cpipe[1]);
+          iopausefds =1;
+        }
+        continue;
       }
       s =buffer_peek(&buffer_x);
       i =write(cpipe[1], s, r);
       if (i == -1) strerr_die2sys(111, FATAL, "unable to write to child: ");
       if (i < r)
-	strerr_die2x(111, FATAL, "unable to write to child: partial write");
+        strerr_die2x(111, FATAL, "unable to write to child: partial write");
 
       buffer_seek(&buffer_x, r);
     }
@@ -206,7 +206,7 @@ int main (int argc, char * const *argv, char * const *envp) {
       if (wait_nohang(&rc) == pid) break;
       /* child not finished */
       strerr_warn4(WARNING,
-		   "child \"", *argv, "\" timed out. sending TERM...", 0);
+                   "child \"", *argv, "\" timed out. sending TERM...", 0);
       kill(pgroup ? -pid : pid, SIGTERM);
 
       /* ktimeout sec timeout */
@@ -223,8 +223,8 @@ int main (int argc, char * const *argv, char * const *envp) {
         while (read(selfpipe[0], &ch, 1) == 1) {}
 
         if (wait_nohang(&rc) == pid) {
-	  strerr_warn2(WARNING, "child terminated.", 0);
-	  break;
+          strerr_warn2(WARNING, "child terminated.", 0);
+          break;
         }
         rc =111;
         taia_now(&now);
@@ -240,8 +240,8 @@ int main (int argc, char * const *argv, char * const *envp) {
     if (rc == 0) _exit(0);
     if (verbose) strerr_warn2(WARNING, "child crashed.", 0);
     if (lseek(0, 0, SEEK_SET) != 0)
-	if (verbose) strerr_warn2(WARNING,
-				  "unable to lseek fd 0: ", &strerr_sys);
+      if (verbose) strerr_warn2(WARNING,
+                                "unable to lseek fd 0: ", &strerr_sys);
     if (try >= trymax) break;
     sleep(1);
   }
@@ -253,10 +253,10 @@ int main (int argc, char * const *argv, char * const *envp) {
 
       r = buffer_feed(buffer_0);
       if (r < 0) {
-	if ((errno == error_intr) || (errno == error_again)) continue;
+        if ((errno == error_intr) || (errno == error_again)) continue;
       }
       if (r == 0) {
-	break;
+        break;
       }
       s =buffer_peek(buffer_0);
       buffer_putflush(buffer_1, s, r);

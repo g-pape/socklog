@@ -96,8 +96,8 @@ int main (int argc, char * const *argv, char * const *envp) {
 
       taia_now(&now);
       if (taia_less(&deadline, &now)) {
-      	if (verbose && sa.len) strerr_warn2(WARNING, "timeout reached.", 0);
-      	break;
+        if (verbose && sa.len) strerr_warn2(WARNING, "timeout reached.", 0);
+        break;
       }
       iofd.fd =0;
       iofd.events =IOPAUSE_READ;
@@ -107,70 +107,70 @@ int main (int argc, char * const *argv, char * const *envp) {
       sig_block(sig_term);
       
       if (exitasap) {
-      	if (verbose) strerr_warn2(WARNING, "got sigterm.", 0);
-      	break;
+        if (verbose) strerr_warn2(WARNING, "got sigterm.", 0);
+        break;
       }
       
       r =buffer_feed(buffer_0);
       if (r < 0) {
-	if (errno == error_again) continue;
-	strerr_die2sys(111, FATAL, "unable to read fd 0: ");
+        if (errno == error_again) continue;
+        strerr_die2sys(111, FATAL, "unable to read fd 0: ");
       }
       if (r == 0) {
-	if (verbose) strerr_warn2(WARNING, "end of input.", 0);
-	if (! once) continue;
-	eof++;
-  	break;
+        if (verbose) strerr_warn2(WARNING, "end of input.", 0);
+        if (! once) continue;
+        eof++;
+        break;
       }
       if (r >= sizemax) r =sizemax;
       if ((sa.len +r) > sizemax) {
-      	if (verbose) strerr_warn2(WARNING, "max size reached.", 0);
-      	break;
+        if (verbose) strerr_warn2(WARNING, "max size reached.", 0);
+        break;
       }
       s =buffer_peek(buffer_0);
       if (! stralloc_catb(&sa, s, r)) {
-	strerr_die2sys(111, FATAL, "out of memory: ");
+        strerr_die2sys(111, FATAL, "out of memory: ");
       }
       buffer_seek(buffer_0, r);
     }
     if (sa.len) {
       /* run prog to process sa.s */
       if (pipe(cpipe) == -1) {
-	strerr_die2sys(111, FATAL, "unable to create pipe for child: ");
+        strerr_die2sys(111, FATAL, "unable to create pipe for child: ");
       }
       while ((pid =fork()) == -1) {
-	strerr_warn4(WARNING, "unable to fork for \"", *argv, "\" pausing: ",
-		     &strerr_sys);
-	sleep(5);
+        strerr_warn4(WARNING, "unable to fork for \"", *argv, "\" pausing: ",
+                     &strerr_sys);
+        sleep(5);
       }
       if (!pid) {
-	/* child */
-	
-	sig_uncatch(sig_term);
-	sig_unblock(sig_term);
+        /* child */
 
-	close(cpipe[1]);
-	fd_move(0, cpipe[0]);
-	fd_copy(1, 2);
+        sig_uncatch(sig_term);
+        sig_unblock(sig_term);
 
-	if (verbose) strerr_warn2(WARNING, "starting child.", 0);
-	pathexec_run(*argv, argv, envp);
-	strerr_die2sys(111, FATAL, "unable to start child: ");
+        close(cpipe[1]);
+        fd_move(0, cpipe[0]);
+        fd_copy(1, 2);
+
+        if (verbose) strerr_warn2(WARNING, "starting child.", 0);
+        pathexec_run(*argv, argv, envp);
+        strerr_die2sys(111, FATAL, "unable to start child: ");
       }
       
       close(cpipe[0]);
       if (write(cpipe[1], sa.s, sa.len) < sa.len) {
-	strerr_warn2(WARNING, "unable to write to child: ", &strerr_sys);
+        strerr_warn2(WARNING, "unable to write to child: ", &strerr_sys);
       }
       close(cpipe[1]);
       
       if (wait_pid(&wstat, pid) != pid) {
-	strerr_die2sys(111, FATAL, "wait_pid: ");
+        strerr_die2sys(111, FATAL, "wait_pid: ");
       }
       if (wait_crashed(wstat)) {
-	strerr_warn2(WARNING, "child crashed.", 0);
+        strerr_warn2(WARNING, "child crashed.", 0);
       } else {
-	if (verbose) strerr_warn2(WARNING, "child exited.", 0);
+        if (verbose) strerr_warn2(WARNING, "child exited.", 0);
       }
     }
 
