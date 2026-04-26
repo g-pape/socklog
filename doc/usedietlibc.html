@@ -18,13 +18,13 @@ href="http://www.fefe.de/dietlibc/">diet libc</a>, check that you have
 the recent version of <a
 href="http://www.fefe.de/dietlibc/">dietlibc</a> installed.</p>
 <p>Change to the package directory of <em>socklog</em>:</p>
-<pre><code>  # cd /package/admin/socklog/</code></pre>
+<pre><code>  cd /package/admin/socklog/</code></pre>
 <p>Change the <code>conf-cc</code> and <code>conf-ld</code> to use
 <code>diet</code>:</p>
-<pre><code>  # echo &#39;diet -Os gcc -O2 -Wall&#39; &gt;src/conf-cc
-  # echo &#39;diet -Os gcc -s -Os -pipe&#39; &gt;src/conf-ld</code></pre>
+<pre><code>  echo &#39;diet -Os gcc -O2 -Wall&#39; &gt;src/conf-cc
+  echo &#39;diet -Os gcc -s -Os -pipe&#39; &gt;src/conf-ld</code></pre>
 <p>Rebuild and install the <em>socklog</em> programs:</p>
-<pre><code>  # package/install</code></pre>
+<pre><code>  package/install</code></pre>
 <hr />
 <p><a href="mailto:pape@smarden.org">Gerrit Pape
 &lt;pape@smarden.org&gt;</a></p>

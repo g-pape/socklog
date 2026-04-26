@@ -138,8 +138,8 @@ log messages through UDP:</p>
   U10.0.0.16:514</code></pre>
 <p>Restart the service, and tell the log service to reload its
 configuration:</p>
-<pre><code>  # sv restart socklog-unix
-  # sv hup socklog-unix/log</code></pre>
+<pre><code>  sv restart socklog-unix
+  sv hup socklog-unix/log</code></pre>
 <p>Now each log message will be sent through UDP to
 <code>10.0.0.16:514</code>, and not written to the log directory. If <a
 href="https://smarden.org/runit/svlogd.8.html">svlogd</a> has trouble

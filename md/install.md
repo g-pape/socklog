@@ -19,27 +19,27 @@ Download [socklog-2.1.2.tar.gz](socklog-2.1.2.tar.gz) into `/package`
 ([sha256sum](https://smarden.org/socklog/sha256sum.asc)) and unpack the
 archive
 
-     # cd /package
-     # gunzip socklog-2.1.2.tar
-     # tar -xpf socklog-2.1.2.tar
-     # rm socklog-2.1.2.tar
-     # cd admin/socklog-2.1.2
+     cd /package
+     gunzip socklog-2.1.2.tar
+     tar -xpf socklog-2.1.2.tar
+     rm socklog-2.1.2.tar
+     cd admin/socklog-2.1.2
 
 On solaris read [using socklog on solaris](readme.solaris.html) before
 proceeding.
 
 Compile and install the *socklog* programs
 
-     # package/install
+     package/install
 
 If you want to make the man pages available in the `/usr/local/man/`
 hierarchy, do:
 
-     # package/install-man
+     package/install-man
 
 To report success:
 
-     # mail pape-socklog-2.1.2@xxiv.smarden.org <compile/sysdeps
+     mail pape-socklog-2.1.2@xxiv.smarden.org <compile/sysdeps
 
 If you use *socklog* regularly, please
 [contribute](https://smarden.org/pape/#contribution) to the project.

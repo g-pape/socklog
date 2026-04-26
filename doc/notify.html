@@ -58,7 +58,7 @@ to the <code>config</code> file
   e*.alert: *</code></pre>
 <p>Then tell the log service to re-read the <code>config</code>
 files:</p>
-<pre><code>  # sv hup socklog-unix/log</code></pre>
+<pre><code>  sv hup socklog-unix/log</code></pre>
 <hr />
 <h2 id="how-to-configure-the-notification">How to configure the
 notification</h2>
@@ -77,7 +77,7 @@ uses <em>sms_client</em> to notify:</p>
   exec setuidgid log uncat -s49999 -t90 \
     sh -c &#39;head -c140 | sms_client pager&#39;</code></pre>
 <p>Then restart the service:</p>
-<pre><code>  # sv restart socklog-notify</code></pre>
+<pre><code>  sv restart socklog-notify</code></pre>
 <p>Another example using <em>wall</em>:</p>
 <pre><code>  exec setuidgid log uncat -vs49999 -t180 sh -c &#39;head | wall&#39;</code></pre>
 <hr />
@@ -87,12 +87,12 @@ notifications</h2>
 <p>You need to disable all log event notifications before stopping the
 <em>socklog-notify</em> service. To check which services are configured
 for sending log events, run:</p>
-<pre><code>  # grep -F /var/log/socklog/.notify /var/service/*/log/run</code></pre>
+<pre><code>  grep -F /var/log/socklog/.notify /var/service/*/log/run</code></pre>
 <p>For each of these services, edit the corresponding
 <code>log/run</code> script to remove the
 <code>exec 2&gt;/var/log/socklog/.notify</code> line and the configured
 log event(s) and restart its log service:</p>
-<pre><code>  # sv restart &lt;service&gt;/log</code></pre>
+<pre><code>  sv restart &lt;service&gt;/log</code></pre>
 <p>Now it is safe to stop the <em>socklog-notify</em> service.</p>
 <hr />
 <p><a href="mailto:pape@smarden.org">Gerrit Pape

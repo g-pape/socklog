@@ -63,7 +63,7 @@ corresponding `e` instruction to the `config` file
 
 Then tell the log service to re-read the `config` files:
 
-      # sv hup socklog-unix/log
+      sv hup socklog-unix/log
 
 ---
 
@@ -86,7 +86,7 @@ This example uses *sms_client* to notify:
 
 Then restart the service:
 
-      # sv restart socklog-notify
+      sv restart socklog-notify
 
 Another example using *wall*:
 
@@ -102,13 +102,13 @@ You need to disable all log event notifications before stopping the
 *socklog-notify* service. To check which services are configured for
 sending log events, run:
 
-      # grep -F /var/log/socklog/.notify /var/service/*/log/run
+      grep -F /var/log/socklog/.notify /var/service/*/log/run
 
 For each of these services, edit the corresponding `log/run` script to
 remove the `exec 2>/var/log/socklog/.notify` line and the configured log
 event(s) and restart its log service:
 
-      # sv restart <service>/log
+      sv restart <service>/log
 
 Now it is safe to stop the *socklog-notify* service.
 

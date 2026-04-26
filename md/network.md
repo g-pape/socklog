@@ -162,8 +162,8 @@ messages through UDP:
 Restart the service, and tell the log service to reload its
 configuration:
 
-      # sv restart socklog-unix
-      # sv hup socklog-unix/log
+      sv restart socklog-unix
+      sv hup socklog-unix/log
 
 Now each log message will be sent through UDP to `10.0.0.16:514`, and
 not written to the log directory. If
