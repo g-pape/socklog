@@ -25,7 +25,7 @@ Read [disable notifications](#disable) before stopping the
 
 ---
 
-## how to configure log events
+## How to configure log events
 
 Choose a log controlled by
 [svlogd](https://smarden.org/runit/svlogd.8.html) to be watched for log
@@ -67,7 +67,7 @@ Then tell the log service to re-read the `config` files:
 
 ---
 
-## how to configure the notification
+## How to configure the notification
 
 Per default, *socklog-notify* injects a mail to a specified address
 containing the log events, but the behavior is configurable, so you can

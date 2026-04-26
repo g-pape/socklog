@@ -1,3 +1,4 @@
+  * doc/examples.html, doc/notify.html: upper and lower case, format.
   * doc/*.html, man/*.?: replace; converted from markdown source.
   * socklog-check.c, socklog.c: check length of unix socket to match struct
     sockaddr.

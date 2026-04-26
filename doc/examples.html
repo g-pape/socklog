@@ -13,19 +13,18 @@
 <hr />
 <h1 id="socklog---examples">socklog - examples</h1>
 <hr />
-<h2 id="listening-on-unix-domain-dgram-socket-devlog">listening on unix
+<h2 id="listening-on-unix-domain-dgram-socket-devlog">Listening on unix
 domain dgram socket <code>/dev/log</code>:</h2>
-<ul>
-<li><p>a sample <code>socklog-unix/run</code> script:</p>
+<p>A sample <code>socklog-unix/run</code> script:</p>
 <pre><code>  #!/bin/sh
   exec 2&gt;&amp;1
-  exec chpst -Unobody socklog unix /dev/log</code></pre></li>
-<li><p>a sample <code>socklog-unix/log/run</code> script:</p>
+  exec chpst -Unobody socklog unix /dev/log</code></pre>
+<p>A sample <code>socklog-unix/log/run</code> script:</p>
 <pre><code>  #!/bin/sh
   exec chpst -ulog svlogd \
     main/main main/auth main/cron main/daemon main/debug main/ftp \
-    main/kern main/local main/mail main/news main/syslog main/user</code></pre></li>
-<li><p>sample log <code>config</code> files:</p>
+    main/kern main/local main/mail main/news main/syslog main/user</code></pre>
+<p>Sample log <code>config</code> files:</p>
 <pre><code>  # cat main/config
   s999999
   n10
@@ -41,46 +40,40 @@ domain dgram socket <code>/dev/log</code>:</h2>
   s999999
   n5
   -*
-  +*.debug*</code></pre></li>
-<li><p>if you want additional <a
+  +*.debug*</code></pre>
+<p>If you want additional <a
 href="https://cr.yp.to/daemontools/tai64n.html">tai64n</a> time-stamps
 prepended to each message, use this <code>socklog-unix/log/run</code>
 script as example:</p>
 <pre><code>  #!/bin/sh
   exec chpst -ulog svlogd -t \
     main/main main/auth main/cron main/daemon main/debug main/ftp \
-    main/kern main/local main/mail main/news main/syslog main/user</code></pre></li>
-</ul>
+    main/kern main/local main/mail main/news main/syslog main/user</code></pre>
 <hr />
-<h2 id="listening-on-udp-network-socket-0.0.0.0514">listening on udp
+<h2 id="listening-on-udp-network-socket-0.0.0.0514">Listening on udp
 network socket <code>0.0.0.0</code>:<code>514</code>:</h2>
-<ul>
-<li><p>a sample <code>socklog-inet/run</code> script is:</p>
+<p>A sample <code>socklog-inet/run</code> script is:</p>
 <pre><code>  #!/bin/sh
   exec 2&gt;&amp;1
-  exec chpst -Unobody socklog inet 0 514</code></pre></li>
-<li><p>a sample <code>socklog-inet/log/run</code> script is:</p>
+  exec chpst -Unobody socklog inet 0 514</code></pre>
+<p>A sample <code>socklog-inet/log/run</code> script is:</p>
 <pre><code>  #!/bin/sh
-  exec chpst -ulog svlogd -t main/main</code></pre></li>
-</ul>
+  exec chpst -ulog svlogd -t main/main</code></pre>
 <hr />
-<h2 id="reading-kernel-messages-from-devklog-on-bsd">reading kernel
+<h2 id="reading-kernel-messages-from-devklog-on-bsd">Reading kernel
 messages from <code>/dev/klog</code> on BSD:</h2>
-<ul>
-<li><p>a sample <code>socklog-klog/run</code> script on BSD:</p>
+<p>A sample <code>socklog-klog/run</code> script on BSD:</p>
 <pre><code>  #!/bin/sh
   exec &lt;/dev/klog
   exec 2&gt;&amp;1
-  exec chpst -unobody socklog ucspi</code></pre></li>
-<li><p>a sample <code>socklog-klog/log/run</code>:</p>
+  exec chpst -unobody socklog ucspi</code></pre>
+<p>A sample <code>socklog-klog/log/run</code>:</p>
 <pre><code>  #!/bin/sh
-  exec chpst -ulog svlogd -t main/main</code></pre></li>
-</ul>
+  exec chpst -ulog svlogd -t main/main</code></pre>
 <hr />
 <h2 id="a-client-for-socklog-network-logging">A client for <a
 href="network.html">socklog network logging</a>:</h2>
-<ul>
-<li><p>a sample <code>socklog-unix/log/run</code> script and log
+<p>A sample <code>socklog-unix/log/run</code> script and log
 <code>config</code> file that transmits the logs to a network logging
 server running the <em>socklog-ucspi-tcp</em> service on
 <code>10.0.0.16:10116</code> is (you need to have the <em>netcat</em>
@@ -91,20 +84,17 @@ package installed):</p>
   # cat main/config
   s4096
   n20
-  !tryto -pv nc -q0 10.0.0.16 10116</code></pre></li>
-</ul>
+  !tryto -pv nc -q0 10.0.0.16 10116</code></pre>
 <hr />
-<h2 id="log-events-notification-with-wall"><a href="notify.html">log
+<h2 id="log-events-notification-with-wall"><a href="notify.html">Log
 events notification</a> with <em>wall</em>:</h2>
-<ul>
-<li><p>a sample <code>socklog-notify/run</code> script that uses
+<p>A sample <code>socklog-notify/run</code> script that uses
 <em>wall</em> for notification is:</p>
 <pre><code>  #!/bin/sh -e
   PIPE=/var/log/socklog/.notify
   if [ ! -p &quot;$PIPE&quot; ]; then mkfifo -m0620 &quot;$PIPE&quot;; chown log:adm &quot;$PIPE&quot;; fi
   exec &lt;&gt; &quot;$PIPE&quot;
-  exec chpst -ulog uncat -s49999 -t180 sh -c &#39;head | wall&#39;</code></pre></li>
-</ul>
+  exec chpst -ulog uncat -s49999 -t180 sh -c &#39;head | wall&#39;</code></pre>
 <hr />
 <p><a href="mailto:pape@smarden.org">Gerrit Pape
 &lt;pape@smarden.org&gt;</a></p>
