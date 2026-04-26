@@ -1,35 +1,32 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 <title>socklog - use dietlibc</title>
+<style type="text/css">pre { padding: 0em 1em; overflow: auto; }</style>
 </head>
 <body>
-<a href="https://smarden.org/pape/">G. Pape</a><br>
-<a href="index.html">socklog</a><br>
-<hr>
-<h1>socklog - use dietlibc</h1>
-<hr>
-To recompile the <i>socklog</i> programs with the
-<a href="http://www.fefe.de/dietlibc/">diet libc</a>, check that you have
-the recent version of
-<a href="http://www.fefe.de/dietlibc/">dietlibc</a> installed.
-<p>
-Change to the package directory of <i>socklog</i>:
-<pre>
-  # cd /package/admin/socklog/
-</pre>
-Change the <tt>conf-cc</tt> and <tt>conf-ld</tt> to use <tt>diet</tt>:
-<pre>
-  # echo 'diet -Os gcc -O2 -Wall' &gt;src/conf-cc
-  # echo 'diet -Os gcc -s -Os -pipe' &gt;src/conf-ld
-</pre>
-Rebuild and install the <i>socklog</i> programs:
-<pre>
-  # package/install
-</pre>
-<hr>
-<address><a href="mailto:pape@smarden.org">
-Gerrit Pape &lt;pape@smarden.org&gt;
-</a></address>
+<p><a href="https://smarden.org/pape/">G. Pape</a><br />
+<a href="index.html">socklog</a></p>
+<hr />
+<h1 id="socklog---use-dietlibc">socklog - use dietlibc</h1>
+<hr />
+<p>To recompile the <em>socklog</em> programs with the <a
+href="http://www.fefe.de/dietlibc/">diet libc</a>, check that you have
+the recent version of <a
+href="http://www.fefe.de/dietlibc/">dietlibc</a> installed.</p>
+<p>Change to the package directory of <em>socklog</em>:</p>
+<pre><code>  # cd /package/admin/socklog/</code></pre>
+<p>Change the <code>conf-cc</code> and <code>conf-ld</code> to use
+<code>diet</code>:</p>
+<pre><code>  # echo &#39;diet -Os gcc -O2 -Wall&#39; &gt;src/conf-cc
+  # echo &#39;diet -Os gcc -s -Os -pipe&#39; &gt;src/conf-ld</code></pre>
+<p>Rebuild and install the <em>socklog</em> programs:</p>
+<pre><code>  # package/install</code></pre>
+<hr />
+<p><a href="mailto:pape@smarden.org">Gerrit Pape
+&lt;pape@smarden.org&gt;</a></p>
 </body>
 </html>

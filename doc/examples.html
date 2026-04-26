@@ -1,34 +1,32 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 <title>socklog - examples</title>
+<style type="text/css">pre { padding: 0em 1em; overflow: auto; }</style>
 </head>
 <body>
-<a href="https://smarden.org/pape/">G. Pape</a><br>
-<a href="index.html">socklog</a><br>
-<hr>
-<h1>socklog - examples</h1>
-<hr>
-<h2>
-listening on unix domain dgram socket <tt>/dev/log</tt>:
-</h2>
+<p><a href="https://smarden.org/pape/">G. Pape</a><br />
+<a href="index.html">socklog</a></p>
+<hr />
+<h1 id="socklog---examples">socklog - examples</h1>
+<hr />
+<h2 id="listening-on-unix-domain-dgram-socket-devlog">listening on unix
+domain dgram socket <code>/dev/log</code>:</h2>
 <ul>
-  <li>a sample <tt>socklog-unix/run</tt> script:
-  <pre>
-  #!/bin/sh
+<li><p>a sample <code>socklog-unix/run</code> script:</p>
+<pre><code>  #!/bin/sh
   exec 2&gt;&amp;1
-  exec chpst -Unobody socklog unix /dev/log
-  </pre>
-  <li>a sample <tt>socklog-unix/log/run</tt> script:
-  <pre>
-  #!/bin/sh
+  exec chpst -Unobody socklog unix /dev/log</code></pre></li>
+<li><p>a sample <code>socklog-unix/log/run</code> script:</p>
+<pre><code>  #!/bin/sh
   exec chpst -ulog svlogd \
     main/main main/auth main/cron main/daemon main/debug main/ftp \
-    main/kern main/local main/mail main/news main/syslog main/user
-  </pre>
-  <li>sample log <tt>config</tt> files:
-  <pre>
-  # cat main/config
+    main/kern main/local main/mail main/news main/syslog main/user</code></pre></li>
+<li><p>sample log <code>config</code> files:</p>
+<pre><code>  # cat main/config
   s999999
   n10
 
@@ -43,91 +41,72 @@ listening on unix domain dgram socket <tt>/dev/log</tt>:
   s999999
   n5
   -*
-  +*.debug*
-  </pre>
-  <li>if you want additional
-  <a href="https://cr.yp.to/daemontools/tai64n.html">tai64n</a> time-stamps
-  prepended to each message, use this <tt>socklog-unix/log/run</tt> script
-  as example:
-  <pre>
-  #!/bin/sh
+  +*.debug*</code></pre></li>
+<li><p>if you want additional <a
+href="https://cr.yp.to/daemontools/tai64n.html">tai64n</a> time-stamps
+prepended to each message, use this <code>socklog-unix/log/run</code>
+script as example:</p>
+<pre><code>  #!/bin/sh
   exec chpst -ulog svlogd -t \
     main/main main/auth main/cron main/daemon main/debug main/ftp \
-    main/kern main/local main/mail main/news main/syslog main/user
-  </pre>
+    main/kern main/local main/mail main/news main/syslog main/user</code></pre></li>
 </ul>
-<hr>
-<h2>
-listening on udp network socket <tt>0.0.0.0</tt>:<tt>514</tt>:
-</h2>
+<hr />
+<h2 id="listening-on-udp-network-socket-0.0.0.0514">listening on udp
+network socket <code>0.0.0.0</code>:<code>514</code>:</h2>
 <ul>
-  <li>a sample <tt>socklog-inet/run</tt> script is:
-  <pre>
-  #!/bin/sh
+<li><p>a sample <code>socklog-inet/run</code> script is:</p>
+<pre><code>  #!/bin/sh
   exec 2&gt;&amp;1
-  exec chpst -Unobody socklog inet 0 514
-  </pre>
-  <li>a sample <tt>socklog-inet/log/run</tt> script is:
-  <pre>
-  #!/bin/sh
-  exec chpst -ulog svlogd -t main/main
-  </pre>
+  exec chpst -Unobody socklog inet 0 514</code></pre></li>
+<li><p>a sample <code>socklog-inet/log/run</code> script is:</p>
+<pre><code>  #!/bin/sh
+  exec chpst -ulog svlogd -t main/main</code></pre></li>
 </ul>
-<hr>
-<h2>
-reading kernel messages from <tt>/dev/klog</tt> on BSD:
-</h2>
+<hr />
+<h2 id="reading-kernel-messages-from-devklog-on-bsd">reading kernel
+messages from <code>/dev/klog</code> on BSD:</h2>
 <ul>
-  <li>a sample <tt>socklog-klog/run</tt> script on BSD:
-  <pre>
-  #!/bin/sh
+<li><p>a sample <code>socklog-klog/run</code> script on BSD:</p>
+<pre><code>  #!/bin/sh
   exec &lt;/dev/klog
   exec 2&gt;&amp;1
-  exec chpst -unobody socklog ucspi
-  </pre>
-  <li>a sample <tt>socklog-klog/log/run</tt>:
-  <pre>
-  #!/bin/sh
-  exec chpst -ulog svlogd -t main/main
-  </pre>
+  exec chpst -unobody socklog ucspi</code></pre></li>
+<li><p>a sample <code>socklog-klog/log/run</code>:</p>
+<pre><code>  #!/bin/sh
+  exec chpst -ulog svlogd -t main/main</code></pre></li>
 </ul>
-<hr>
-<h2>
-A client for <a href="network.html">socklog network logging</a>:
-</h2>
+<hr />
+<h2 id="a-client-for-socklog-network-logging">A client for <a
+href="network.html">socklog network logging</a>:</h2>
 <ul>
-  <li>a sample <tt>socklog-unix/log/run</tt> script and log <tt>config</tt>
-  file that transmits the logs to a network logging server running the
-  <i>socklog-ucspi-tcp</i> service on <tt>10.0.0.16:10116</tt> is (you
-  need to have the <i>netcat</i> package installed):
-  <pre>
-  #!/bin/sh
+<li><p>a sample <code>socklog-unix/log/run</code> script and log
+<code>config</code> file that transmits the logs to a network logging
+server running the <em>socklog-ucspi-tcp</em> service on
+<code>10.0.0.16:10116</code> is (you need to have the <em>netcat</em>
+package installed):</p>
+<pre><code>  #!/bin/sh
   exec chpst -ulog svlogd ./main/main
 
   # cat main/config
   s4096
   n20
-  !tryto -pv nc -q0 10.0.0.16 10116
-  </pre>
+  !tryto -pv nc -q0 10.0.0.16 10116</code></pre></li>
 </ul>
-<hr>
-<h2>
-<a href="notify.html">log events notification</a> with <i>wall</i>:
-</h2>
+<hr />
+<h2 id="log-events-notification-with-wall"><a href="notify.html">log
+events notification</a> with <em>wall</em>:</h2>
 <ul>
-  <li>a sample <tt>socklog-notify/run</tt> script that uses
-  <i>wall</i> for notification is:
-  <pre>
-  #!/bin/sh -e
+<li><p>a sample <code>socklog-notify/run</code> script that uses
+<em>wall</em> for notification is:</p>
+<pre><code>  #!/bin/sh -e
   PIPE=/var/log/socklog/.notify
-  if [ ! -p "$PIPE" ]; then mkfifo -m0620 "$PIPE"; chown log:adm "$PIPE"; fi
-  exec &lt;&gt; "$PIPE"
-  exec chpst -ulog uncat -s49999 -t180 sh -c 'head | wall'
-  </pre>
+  if [ ! -p &quot;$PIPE&quot; ]; then mkfifo -m0620 &quot;$PIPE&quot;; chown log:adm &quot;$PIPE&quot;; fi
+  exec &lt;&gt; &quot;$PIPE&quot;
+  exec chpst -ulog uncat -s49999 -t180 sh -c &#39;head | wall&#39;</code></pre></li>
 </ul>
-<hr>
-<address><a href="mailto:pape@smarden.org">
-Gerrit Pape &lt;pape@smarden.org&gt;
-</a></address>
+<hr />
+<p><a href="mailto:pape@smarden.org">Gerrit Pape
+&lt;pape@smarden.org&gt;</a></p>
 </body>
 </html>

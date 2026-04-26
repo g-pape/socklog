@@ -1,66 +1,53 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
-
+<!DOCTYPE html>
 <html>
 <head>
-<title>socklog-check(8) manual page</title>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<title>socklog-check(8)</title>
 </head>
-<body bgcolor='white'>
-<a href='https://smarden.org/pape/'>G. Pape</a><br><a href='index.html'>socklog</A><hr><p>
-
-<h2><a name='sect0'>Name</a></h2>
-socklog-check - checks for the availability of a <i>socklog(8)</i> service. 
-<h2><a name='sect1'>Synopsis</a></h2>
-<b>socklog-check</b>
-[-v] [unix [<i>address]]</i> 
-<h2><a name='sect2'>Description</a></h2>
-<b>socklog-check</b> attempts to connect to a <i><b>socklog</b>(8)</i>
-unix service and reports whether the connection attempt succeeded or not.
-<p>
-It connects to the datagram oriented unix domain socket <i>address</i>, and reports
-success through the return code. If <i>address</i> is not specified, <b>socklog-check</b>
-attempts to connect to <i>/dev/log</i>. <p>
-When running services that use the syslog
-facility under runit&rsquo;s service supervision, <b>socklog-check</b> should be added
-to the top of the service&rsquo;s run script to ensure that no syslog messages
-are generated until a syslog service is up and running to process the messages,
-e.g.: <p>
- #!/bin/sh<br>
-  socklog-check || exit 1<br>
-  exec service_using_syslog <br>
- 
-<h2><a name='sect3'>Options</a></h2>
-
+<body>
+<p><a href="https://smarden.org/pape/">G. Pape</a><br />
+<a href="index.html">socklog</a></p>
+<hr />
+<h3 id="name">NAME</h3>
+<p>socklog-check - checks for the availability of a socklog(8)
+service.</p>
+<h3 id="synopsis">SYNOPSIS</h3>
+<p><strong>socklog-check</strong> [-v] [unix [<em>address</em>]]</p>
+<h3 id="description">DESCRIPTION</h3>
+<p><strong>socklog-check</strong> attempts to connect to a
+<strong>socklog</strong>(8) unix service and reports whether the
+connection attempt succeeded or not.</p>
+<p>It connects to the datagram oriented unix domain socket
+<em>address</em>, and reports success through the return code. If
+<em>address</em> is not specified, <strong>socklog-check</strong>
+attempts to connect to <em>/dev/log</em>.</p>
+<p>When running services that use the syslog facility under runit's
+service supervision, <strong>socklog-check</strong> should be added to
+the top of the service's run script to ensure that no syslog messages
+are generated until a syslog service is up and running to process the
+messages, e.g.:</p>
+<pre><code>#!/bin/sh
+socklog-check || exit 1
+exec service_using_syslog</code></pre>
+<h3 id="options">OPTIONS</h3>
 <dl>
-
-<dt><b>-v</b> </dt>
-<dd>verbose. Print verbose message to standard error. </dd>
+<dt><strong>-v</strong></dt>
+<dd>
+verbose. Print verbose message to standard error.
+</dd>
 </dl>
-
-<h2><a name='sect4'>Exit Codes</a></h2>
-On
-success <b>socklog-check</b> returns 0. <p>
-On error, <b>socklog-check</b> prints a message
-to standard error and exits 111. 
-<h2><a name='sect5'>See Also</a></h2>
-<i>socklog(8)</i>, <i>socklog-conf(8)</i>, <i>svlogd(8)</i>,
-<i>tryto(1)</i>, <i>uncat(1)</i>, <i>sv(8)</i>, <i>runsv(8)</i>, <i>runsvdir(8)</i> <p>
- <i>https://smarden.org/socklog/</i><br>
-  <i>https://smarden.org/runit/</i><br>
- 
-<h2><a name='sect6'>Author</a></h2>
-Gerrit Pape &lt;pape@smarden.org&gt; <p>
-
-<hr><p>
-<a name='toc'><b>Table of Contents</b></a><p>
-<ul>
-<li><a name='toc0' href='#sect0'>Name</a></li>
-<li><a name='toc1' href='#sect1'>Synopsis</a></li>
-<li><a name='toc2' href='#sect2'>Description</a></li>
-<li><a name='toc3' href='#sect3'>Options</a></li>
-<li><a name='toc4' href='#sect4'>Exit Codes</a></li>
-<li><a name='toc5' href='#sect5'>See Also</a></li>
-<li><a name='toc6' href='#sect6'>Author</a></li>
-</ul>
+<h3 id="exit-codes">EXIT CODES</h3>
+<p>On success <strong>socklog-check</strong> returns 0.</p>
+<p>On error, <strong>socklog-check</strong> prints a message to standard
+error and exits 111.</p>
+<h3 id="see-also">SEE ALSO</h3>
+<p>socklog(8), socklog-conf(8), svlogd(8), tryto(1), uncat(1), sv(8),
+runsv(8), runsvdir(8)</p>
+<p>https://smarden.org/socklog/<br />
+https://smarden.org/runit/</p>
+<h3 id="author">AUTHOR</h3>
+<p>Gerrit Pape &lt;pape@smarden.org&gt;</p>
 </body>
 </html>

@@ -1,179 +1,157 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 <title>socklog - network logging</title>
+<style type="text/css">pre { padding: 0em 1em; overflow: auto; }</style>
 </head>
 <body>
-<a href="https://smarden.org/pape/">G. Pape</a><br>
-<a href="index.html">socklog</a><br>
-<hr>
-<h1>socklog - network logging</h1>
-<hr>
-<a href="#tcp">Logging through TCP</a><br>
-<a href="#udp">Logging through UDP</a>
-<hr>
-Logging via network connection cannot be made reliable. There is always
-a possibility for failures. The network connection itself may be down or
-the receiving machine has crashed for example. So there must be a
-decision, what to do in such cases.
-<h2><a name="tcp">The <i>socklog</i> network logging concept</a></h2>
+<p><a href="https://smarden.org/pape/">G. Pape</a><br />
+<a href="index.html">socklog</a></p>
+<hr />
+<h1 id="socklog---network-logging">socklog - network logging</h1>
+<hr />
+<p><a href="#tcp">Logging through TCP</a><br />
+<a href="#udp">Logging through UDP</a></p>
+<hr />
+<p>Logging via network connection cannot be made reliable. There is
+always a possibility for failures. The network connection itself may be
+down or the receiving machine has crashed for example. So there must be
+a decision, what to do in such cases.</p>
+<h2 id="the-socklog-network-logging-concept"><span id="tcp">The
+<em>socklog</em> network logging concept</span></h2>
 <ul>
-  <li>
-  logging is still done locally through
-  <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>.
-  <li>
-  the log is transmitted through a network connection (if possible)
-  when <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
-  decides that <tt>current</tt> is big enough, using
-  <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s
-  <i>processor</i> feature.
-  <li>
-  since this transmission cannot be made reliable, there is a tool
-  <a href="tryto.1.html">tryto</a> that limits the time to try this
-  transmission. See below for examples.
-  <li>
-  if the transmission of <tt>current</tt> fails, the log will be saved
-  locally,
-  <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
-  remembers the failure in its <tt>state</tt> and
-  <a href="tryto.1.html">tryto</a> includes the error messages into
-  the transmission on the next run, so the remote machine gets the
-  information of log transmission failures.
+<li>logging is still done locally through <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a>.</li>
+<li>the log is transmitted through a network connection (if possible)
+when <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
+decides that <code>current</code> is big enough, using <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s
+<em>processor</em> feature.</li>
+<li>since this transmission cannot be made reliable, there is a tool <a
+href="tryto.1.html">tryto</a> that limits the time to try this
+transmission. See below for examples.</li>
+<li>if the transmission of <code>current</code> fails, the log will be
+saved locally, <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a> remembers the
+failure in its <code>state</code> and <a href="tryto.1.html">tryto</a>
+includes the error messages into the transmission on the next run, so
+the remote machine gets the information of log transmission
+failures.</li>
 </ul>
-There are no restrictions on how to transmit the log data, a separate
-process of your choice will do the work, e.g. <i>netcat</i> or
-<a href="https://cr.yp.to/ucspi-tcp/tcpclient.html">tcpclient</a>.
-This modularity lets you easily insert authentication, compression,
-encryption and other things.
-<h2>Example setup</h2>
-<h3>Log Server (machine receiving log data)</h3>
-Setup a <i>socklog-ucspi-tcp</i> service as described in
-<a href="configuration.html#ucspi-tcp">Configuration</a> with the following
-<tt>socklog-ucspi-tcp/run</tt> and <tt>socklog-ucspi-tcp/log/run</tt>
-scripts:
-<p>
-socklog-ucspi-tcp/run:
-<pre>
-  #!/bin/sh
+<p>There are no restrictions on how to transmit the log data, a separate
+process of your choice will do the work, e.g. <em>netcat</em> or <a
+href="https://cr.yp.to/ucspi-tcp/tcpclient.html">tcpclient</a>. This
+modularity lets you easily insert authentication, compression,
+encryption and other things.</p>
+<h2 id="example-setup">Example setup</h2>
+<h3 id="log-server-machine-receiving-log-data">Log Server (machine
+receiving log data)</h3>
+<p>Setup a <em>socklog-ucspi-tcp</em> service as described in <a
+href="configuration.html#ucspi-tcp">Configuration</a> with the following
+<code>socklog-ucspi-tcp/run</code> and
+<code>socklog-ucspi-tcp/log/run</code> scripts:</p>
+<p>socklog-ucspi-tcp/run:</p>
+<pre><code>  #!/bin/sh
   PORT=10116
   exec 2&gt;&amp;1
-  exec tcpsvd -vl0 -unobody 0 "$PORT" socklog ucspi TCPREMOTEIP
-</pre>
-socklog-ucspi-tcp/log/run:
-<pre>
-  #!/bin/sh
-  exec chpst -ulog svlogd -t main/main main/10.0.0.236
-</pre>
-and socklog-ucspi-tcp/log/main/10.0.0.236/config
-<pre>
-  # cat 10.0.0.236/config
+  exec tcpsvd -vl0 -unobody 0 &quot;$PORT&quot; socklog ucspi TCPREMOTEIP</code></pre>
+<p>socklog-ucspi-tcp/log/run:</p>
+<pre><code>  #!/bin/sh
+  exec chpst -ulog svlogd -t main/main main/10.0.0.236</code></pre>
+<p>and socklog-ucspi-tcp/log/main/10.0.0.236/config</p>
+<pre><code>  # cat 10.0.0.236/config
   -*
-  +10.0.0.236:*
-</pre>
-You will then find all log data from remote hosts that was successfully
-transmitted in <tt>main/main/</tt>. Log data from <tt>10.0.0.236</tt>
-will additionally be saved in <tt>main/10.0.0.236/</tt>.
-<h3>Log client (machine sending log data)</h3>
-Change the <i>socklog</i> configuration to use a processor to transmit
-the log data:
-<p>
-socklog-unix/log/run:
-<pre>
-  #!/bin/sh
-  exec chpst -ulog svlogd ./main/main
-</pre>
-socklog-unix/log/main/main/config
-<pre>
-  s4096
+  +10.0.0.236:*</code></pre>
+<p>You will then find all log data from remote hosts that was
+successfully transmitted in <code>main/main/</code>. Log data from
+<code>10.0.0.236</code> will additionally be saved in
+<code>main/10.0.0.236/</code>.</p>
+<h3 id="log-client-machine-sending-log-data">Log client (machine sending
+log data)</h3>
+<p>Change the <em>socklog</em> configuration to use a processor to
+transmit the log data:</p>
+<p>socklog-unix/log/run:</p>
+<pre><code>  #!/bin/sh
+  exec chpst -ulog svlogd ./main/main</code></pre>
+<p>socklog-unix/log/main/main/config</p>
+<pre><code>  s4096
   n20
-  !tryto -pv nc 10.0.0.16 10116
-</pre>
-and restart the log service:
-<pre>
-  # sv restart socklog-unix/log
-</pre>
-On each rotation of
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s
-<tt>current</tt>, the data will be transmitted to
-<tt>10.0.0.16:10116</tt> using <a href="tryto.1.html">tryto</a>
-and <i>netcat</i>, failures will be noticed and notified on the next run.
-<hr>
-<h2><a name="udp">Logging through UDP</a></h2>
-Transmitting log messages through UDP should only be used within private
-networks.
-Logging through UDP doesn't ensure that the log messages actually reach the
-log server, and doesn't provide authentication and authorization.
-It's the old-style UNIX syslog remote logging, and supported by
-<i>socklog</i> for compatibility reasons.
-
-
-<h2>Example setup</h2>
-<h3>Log Server (machine receiving log data)</h3>
-Setup a <i>socklog-inet</i> service as described in
-<a href="configuration.html#inet">Configuration</a> with the following
-<tt>socklog-inet/run</tt> and <tt>socklog-inet/log/run</tt> scripts, and
-the following <tt>socklog-inet/log/main/config</tt> log configuration:
-<p>
-socklog-inet/run:
-<pre>
-  #!/bin/sh
+  !tryto -pv nc 10.0.0.16 10116</code></pre>
+<p>and restart the log service:</p>
+<pre><code>  # sv restart socklog-unix/log</code></pre>
+<p>On each rotation of <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s
+<code>current</code>, the data will be transmitted to
+<code>10.0.0.16:10116</code> using <a href="tryto.1.html">tryto</a> and
+<em>netcat</em>, failures will be noticed and notified on the next
+run.</p>
+<hr />
+<h2 id="logging-through-udp"><span id="udp">Logging through
+UDP</span></h2>
+<p>Transmitting log messages through UDP should only be used within
+private networks. Logging through UDP doesn't ensure that the log
+messages actually reach the log server, and doesn't provide
+authentication and authorization. It's the old-style UNIX syslog remote
+logging, and supported by <em>socklog</em> for compatibility
+reasons.</p>
+<h2 id="example-setup-1">Example setup</h2>
+<h3 id="log-server-machine-receiving-log-data-1">Log Server (machine
+receiving log data)</h3>
+<p>Setup a <em>socklog-inet</em> service as described in <a
+href="configuration.html#inet">Configuration</a> with the following
+<code>socklog-inet/run</code> and <code>socklog-inet/log/run</code>
+scripts, and the following <code>socklog-inet/log/main/config</code> log
+configuration:</p>
+<p>socklog-inet/run:</p>
+<pre><code>  #!/bin/sh
   exec 2&gt;&amp;1
-  exec chpst -Unobody socklog inet 0 514
-</pre>
-socklog-inet/log/run:
-<pre>
-  #!/bin/sh
-  exec chpst -ulog svlogd -t main/main main/10.0.0.236
-</pre>
-and socklog-inet/log/main/10.0.0.236/config:
-<pre>
-  # cat 10.0.0.236/config
+  exec chpst -Unobody socklog inet 0 514</code></pre>
+<p>socklog-inet/log/run:</p>
+<pre><code>  #!/bin/sh
+  exec chpst -ulog svlogd -t main/main main/10.0.0.236</code></pre>
+<p>and socklog-inet/log/main/10.0.0.236/config:</p>
+<pre><code>  # cat 10.0.0.236/config
   -*
-  +10.0.0.236:*
-</pre>
-You will then find all log messages from remote hosts that were successfully
-transmitted in <tt>main/main/</tt>.
-Log messages from <tt>10.0.0.236</tt> will additionally be saved in
-<tt>main/10.0.0.236/</tt>.
-<h3>Log client (machine sending log data)</h3>
-Tell socklog to write raw syslog messages without converting syslog
-priority and facility to names by adding the -R option:
-<p>
-socklog-unix/run:
-<pre>
-  #!/bin/sh
-  exec 2>&1
-  exec chpst -Unobody socklog -R unix /dev/log
-</pre>
-Then change the configuration of <i>socklog</i>'s main log directory to tell
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> to transmit
-log messages through UDP:
-<p>
-/var/log/socklog/main/config:
-<pre>
-  s9999
+  +10.0.0.236:*</code></pre>
+<p>You will then find all log messages from remote hosts that were
+successfully transmitted in <code>main/main/</code>. Log messages from
+<code>10.0.0.236</code> will additionally be saved in
+<code>main/10.0.0.236/</code>.</p>
+<h3 id="log-client-machine-sending-log-data-1">Log client (machine
+sending log data)</h3>
+<p>Tell socklog to write raw syslog messages without converting syslog
+priority and facility to names by adding the -R option:</p>
+<p>socklog-unix/run:</p>
+<pre><code>  #!/bin/sh
+  exec 2&gt;&amp;1
+  exec chpst -Unobody socklog -R unix /dev/log</code></pre>
+<p>Then change the configuration of <em>socklog</em>'s main log
+directory to tell <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a> to transmit
+log messages through UDP:</p>
+<p>/var/log/socklog/main/config:</p>
+<pre><code>  s9999
   n2
-  U10.0.0.16:514
-</pre>
-Restart the service, and tell the log service to reload its configuration:
-<pre>
-  # sv restart socklog-unix
-  # sv hup socklog-unix/log
-</pre>
-Now each log message will be sent through UDP to <tt>10.0.0.16:514</tt>, and
-not written to the log directory.
-If <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> has trouble
-transmitting data through UDP, and is able to detect an error, it logs an
-error message followed by the log message to the log directory.
-<p>
-Of course you can configure <i>socklog</i> to log through UDP while keeping
-local logging enabled, and also select log messages to be transmitted through
-UDP by pattern.
-See the documentation of
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> for details.
-<hr>
-<address><a href="mailto:pape@smarden.org">
-Gerrit Pape &lt;pape@smarden.org&gt;
-</a></address>
+  U10.0.0.16:514</code></pre>
+<p>Restart the service, and tell the log service to reload its
+configuration:</p>
+<pre><code>  # sv restart socklog-unix
+  # sv hup socklog-unix/log</code></pre>
+<p>Now each log message will be sent through UDP to
+<code>10.0.0.16:514</code>, and not written to the log directory. If <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a> has trouble
+transmitting data through UDP, and is able to detect an error, it logs
+an error message followed by the log message to the log directory.</p>
+<p>Of course you can configure <em>socklog</em> to log through UDP while
+keeping local logging enabled, and also select log messages to be
+transmitted through UDP by pattern. See the documentation of <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a> for
+details.</p>
+<hr />
+<p><a href="mailto:pape@smarden.org">Gerrit Pape
+&lt;pape@smarden.org&gt;</a></p>
 </body>
 </html>

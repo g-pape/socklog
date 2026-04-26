@@ -1,81 +1,68 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
-
+<!DOCTYPE html>
 <html>
 <head>
-<title>uncat(1) manual page</title>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<title>uncat(1)</title>
 </head>
-<body bgcolor='white'>
-<a href='https://smarden.org/pape/'>G. Pape</a><br><a href='index.html'>socklog</A><hr><p>
-
-<h2><a name='sect0'>Name</a></h2>
-uncat - continuously reads stdin, splits up the data either by timeout
-or number of bytes read to process it 
-<h2><a name='sect1'>Synopsis</a></h2>
-<b>uncat</b> [-vo] [-t <i>seconds</i>] [-s
-<i>size</i>] <i>prog</i> 
-<h2><a name='sect2'>Description</a></h2>
-<b>uncat</b> continuously reads stdin and repeatedly processes
-the data either after <i>seconds</i> timeout or maximal number of bytes <i>size</i> read.
-To process the data, <b>uncat</b> starts <i>prog</i> and feeds the data into <i>prog</i>&rsquo;s standard
-input. <i>prog</i>&rsquo;s standard output is redirected to standard error. <b>uncat</b> never
-writes to standard output. <p>
-<i>prog</i> consist of one or more arguments. <p>
-If <i>prog</i>
-exits non-zero, <b>uncat</b> prints an error message, discards the data and continues
-to read stdin. <p>
-Note that <b>uncat</b> is not crash proof. <p>
-<b>uncat</b> is used to run the
-<i>socklog-notify</i> service. 
-<h2><a name='sect3'>Options</a></h2>
-
+<body>
+<p><a href="https://smarden.org/pape/">G. Pape</a><br />
+<a href="index.html">socklog</a></p>
+<hr />
+<h3 id="name">NAME</h3>
+<p>uncat - continuously reads stdin, splits up the data either by
+timeout or number of bytes read to process it</p>
+<h3 id="synopsis">SYNOPSIS</h3>
+<p><strong>uncat</strong> [-vo] [-t <em>seconds</em>] [-s <em>size</em>]
+<em>prog</em></p>
+<h3 id="description">DESCRIPTION</h3>
+<p><strong>uncat</strong> continuously reads stdin and repeatedly
+processes the data either after <em>seconds</em> timeout or maximal
+number of bytes <em>size</em> read. To process the data,
+<strong>uncat</strong> starts <em>prog</em> and feeds the data into
+<em>prog</em>'s standard input. <em>prog</em>'s standard output is
+redirected to standard error. <strong>uncat</strong> never writes to
+standard output.</p>
+<p><em>prog</em> consist of one or more arguments.</p>
+<p>If <em>prog</em> exits non-zero, <strong>uncat</strong> prints an
+error message, discards the data and continues to read stdin.</p>
+<p>Note that <strong>uncat</strong> is not crash proof.</p>
+<p><strong>uncat</strong> is used to run the <em>socklog-notify</em>
+service.</p>
+<h3 id="options">OPTIONS</h3>
 <dl>
-
-<dt><b>-v</b> </dt>
-<dd>verbose. Print verbose messages to stderr.
+<dt><strong>-v</strong></dt>
+<dd>
+verbose. Print verbose messages to stderr.
 </dd>
-
-<dt><b>-o</b> </dt>
-<dd>once. Exit on end of input. Normally <b>uncat</b> continues waiting for data on
-standard input, even on end of file. </dd>
-
-<dt><b>-t <i>seconds</b> </i></dt>
-<dd>timeout. Set the timeout to
-<i>seconds</i> seconds. Default is 300. </dd>
-
-<dt><b>-s <i>size</b> </i></dt>
-<dd>Set the maximal number of bytes to
-<i>size</i>. Default is 1024. </dd>
+<dt><strong>-o</strong></dt>
+<dd>
+once. Exit on end of input. Normally <strong>uncat</strong> continues
+waiting for data on standard input, even on end of file.
+</dd>
+<dt><strong>-t</strong> <em>seconds</em></dt>
+<dd>
+timeout. Set the timeout to <em>seconds</em> seconds. Default is 300.
+</dd>
+<dt><strong>-s</strong> <em>size</em></dt>
+<dd>
+Set the maximal number of bytes to <em>size</em>. Default is 1024.
+</dd>
 </dl>
-
-<h2><a name='sect4'>Signals</a></h2>
-If <b>uncat</b> receives a TERM signal, it starts
-to process the data in memory and exits as soon as possible. <p>
-<b>uncat</b> also
-does this on end of input if the <b>-o</b> option was given. 
-<h2><a name='sect5'>Exit Codes</a></h2>
-<b>uncat</b> returns
-0 after receiving a TERM signal. <b>uncat</b> returns 111 on error. 
-<h2><a name='sect6'>See Also</a></h2>
-<i>socklog(8)</i>,
-<i>socklog-conf(8)</i>, <i>sv(8)</i>, <i>runsv(8)</i>, <i>svlogd(8)</i>, <i>tryto(1)</i> <p>
- <i>https://smarden.org/socklog/</i><br>
-  <i>https://smarden.org/runit/</i><br>
- 
-<h2><a name='sect7'>Author</a></h2>
-Gerrit Pape &lt;pape@smarden.org&gt; <p>
-
-<hr><p>
-<a name='toc'><b>Table of Contents</b></a><p>
-<ul>
-<li><a name='toc0' href='#sect0'>Name</a></li>
-<li><a name='toc1' href='#sect1'>Synopsis</a></li>
-<li><a name='toc2' href='#sect2'>Description</a></li>
-<li><a name='toc3' href='#sect3'>Options</a></li>
-<li><a name='toc4' href='#sect4'>Signals</a></li>
-<li><a name='toc5' href='#sect5'>Exit Codes</a></li>
-<li><a name='toc6' href='#sect6'>See Also</a></li>
-<li><a name='toc7' href='#sect7'>Author</a></li>
-</ul>
+<h3 id="signals">SIGNALS</h3>
+<p>If <strong>uncat</strong> receives a TERM signal, it starts to
+process the data in memory and exits as soon as possible.</p>
+<p><strong>uncat</strong> also does this on end of input if the
+<strong>-o</strong> option was given.</p>
+<h3 id="exit-codes">EXIT CODES</h3>
+<p><strong>uncat</strong> returns 0 after receiving a TERM signal.
+<strong>uncat</strong> returns 111 on error.</p>
+<h3 id="see-also">SEE ALSO</h3>
+<p>socklog(8), socklog-conf(8), sv(8), runsv(8), svlogd(8), tryto(1)</p>
+<p>https://smarden.org/socklog/<br />
+https://smarden.org/runit/</p>
+<h3 id="author">AUTHOR</h3>
+<p>Gerrit Pape &lt;pape@smarden.org&gt;</p>
 </body>
 </html>

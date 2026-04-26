@@ -1,247 +1,220 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 <title>socklog - configuration</title>
+<style type="text/css">pre { padding: 0em 1em; overflow: auto; }</style>
 </head>
 <body>
-<a href="https://smarden.org/pape/">G. Pape</a><br>
-<a href="index.html">socklog</a><br>
-<hr>
-<h1>socklog - configuration</h1>
-<hr>
-The <i>socklog-unix</i> service listens on the unix domain socket
-<tt>/dev/log</tt>. Usually this service replaces the <i>syslogd</i>
-system log daemon.
-<p>
-The <i>socklog-inet</i> service listens on the UDP port
-<tt>0.0.0.0:514</tt>. Usually this service replaces <i>syslogd</i>'s
-support for remote logging.
-<p>
-The <i>socklog-klog</i> service reads kernel messages from
-<tt>/proc/kmsg</tt> on Linux or <tt>/dev/klog</tt> on BSD. Usually this
-service replaces <i>klogd</i> on Linux or <i>syslogd</i> on BSD.
-<p>
-The <i>socklog-ucspi-tcp</i> service listens on the TCP port
-<tt>0.0.0.0:10116</tt>, this is a server for
-<a href="network.html">socklog network logging</a>, a different remote
-logging concept.
-<p>
-The <i>socklog-notify</i> handles
-<a href="notify.html">log event notification</a>, scheduled notification
-of specified log entries.
-<hr>
-<h2>How to configure the socklog services</h2>
-<a href="#unix">The socklog-unix service</a><br>
-<a href="#inet">The socklog-inet service</a><br>
-<a href="#klog">The socklog-klog service</a><br>
-<a href="#ucspi-tcp">The socklog-ucspi-tcp service</a><br>
-<a href="#notify">The socklog-notify service</a><br><br>
-<a href="https://smarden.org/runit/faq.html#remove">
-Removing socklog services</a>
-<hr>
-
-<h3><a name="unix">The socklog-unix service</a></h3>
-Before starting the <i>socklog-unix</i> service, you will have to make two
-decisions:
+<p><a href="https://smarden.org/pape/">G. Pape</a><br />
+<a href="index.html">socklog</a></p>
+<hr />
+<h1 id="socklog---configuration">socklog - configuration</h1>
+<hr />
+<p>The <em>socklog-unix</em> service listens on the unix domain socket
+<code>/dev/log</code>. Usually this service replaces the
+<em>syslogd</em> system log daemon.</p>
+<p>The <em>socklog-inet</em> service listens on the UDP port
+<code>0.0.0.0:514</code>. Usually this service replaces
+<em>syslogd</em>'s support for remote logging.</p>
+<p>The <em>socklog-klog</em> service reads kernel messages from
+<code>/proc/kmsg</code> on Linux or <code>/dev/klog</code> on BSD.
+Usually this service replaces <em>klogd</em> on Linux or
+<em>syslogd</em> on BSD.</p>
+<p>The <em>socklog-ucspi-tcp</em> service listens on the TCP port
+<code>0.0.0.0:10116</code>, this is a server for <a
+href="network.html">socklog network logging</a>, a different remote
+logging concept.</p>
+<p>The <em>socklog-notify</em> handles <a href="notify.html">log event
+notification</a>, scheduled notification of specified log entries.</p>
+<hr />
+<h2 id="how-to-configure-the-socklog-services">How to configure the
+socklog services</h2>
+<p><a href="#unix">The socklog-unix service</a><br />
+<a href="#inet">The socklog-inet service</a><br />
+<a href="#klog">The socklog-klog service</a><br />
+<a href="#ucspi-tcp">The socklog-ucspi-tcp service</a><br />
+<a href="#notify">The socklog-notify service</a></p>
+<p><a href="https://smarden.org/runit/faq.html#remove">Removing socklog
+services</a></p>
+<hr />
+<h3 id="the-socklog-unix-service"><span id="unix">The socklog-unix
+service</span></h3>
+<p>Before starting the <em>socklog-unix</em> service, you will have to
+make two decisions:</p>
 <ul>
-  <li>The <i>socklog-unix</i> account name, normally <tt>nobody</tt>. The
-  <tt>socklog</tt> program runs under this account. If this account does not
-  exist, create it now.
-  <li>The <i>socklog</i> account name, normally <tt>log</tt>. Logging
-  programs run under this account. If this account does not exist, create
-  it now.
+<li>The <em>socklog-unix</em> account name, normally
+<code>nobody</code>. The <code>socklog</code> program runs under this
+account. If this account does not exist, create it now.</li>
+<li>The <em>socklog</em> account name, normally <code>log</code>.
+Logging programs run under this account. If this account does not exist,
+create it now.</li>
 </ul>
-Create the service directory and log directories by running the
-<a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
-<pre>
-  # socklog-conf unix nobody log
-</pre>
-If you are replacing another service providing system logging through the
-socket <tt>/dev/log</tt>, such as <i>syslogd</i>, stop this service now and
-ensure that it will not be restarted on runlevel change or system reboot.
-<p>
-Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
-the new service:
-<pre>
-  # ln -s /etc/sv/socklog-unix /var/service/
-</pre>
-Wait five seconds for the service to start and then check the log
-directories, e.g.:
-<pre>
-  # less /var/log/socklog/main/current
-</pre>
-Optionally configure the <i>socklog-unix</i> service by editing
-the corresponding <tt>run</tt> scripts and <tt>config</tt> files and
+<p>Create the service directory and log directories by running the <a
+href="socklog-conf.8.html"><code>socklog-conf</code></a> program:</p>
+<pre><code>  # socklog-conf unix nobody log</code></pre>
+<p>If you are replacing another service providing system logging through
+the socket <code>/dev/log</code>, such as <em>syslogd</em>, stop this
+service now and ensure that it will not be restarted on runlevel change
+or system reboot.</p>
+<p>Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>
+about the new service:</p>
+<pre><code>  # ln -s /etc/sv/socklog-unix /var/service/</code></pre>
+<p>Wait five seconds for the service to start and then check the log
+directories, e.g.:</p>
+<pre><code>  # less /var/log/socklog/main/current</code></pre>
+<p>Optionally configure the <em>socklog-unix</em> service by editing the
+corresponding <code>run</code> scripts and <code>config</code> files and
 <a href="https://smarden.org/runit/faq.html#control">restarting</a> the
-service:
+service:</p>
 <ul>
-  <li>/var/service/socklog-unix/run
-  <li>/var/service/socklog-unix/log/run
-  <li>/var/log/socklog/*/config
+<li>/var/service/socklog-unix/run</li>
+<li>/var/service/socklog-unix/log/run</li>
+<li>/var/log/socklog/*/config</li>
 </ul>
-<hr>
-
-<h3><a name="inet">The socklog-inet service</a></h3>
-Before starting the <i>socklog-inet</i> service, you will have to make two
-decisions:
+<hr />
+<h3 id="the-socklog-inet-service"><span id="inet">The socklog-inet
+service</span></h3>
+<p>Before starting the <em>socklog-inet</em> service, you will have to
+make two decisions:</p>
 <ul>
-  <li>The <i>socklog-inet</i> account name, normally <tt>nobody</tt>. The
-  <tt>socklog</tt> program runs under this account. If this account does not
-  exist, create it now.
-  <li>The <i>socklog</i> account name, normally <tt>log</tt>. Logging
-  programs run under this account. If this account does not exist, create
-  it now.
+<li>The <em>socklog-inet</em> account name, normally
+<code>nobody</code>. The <code>socklog</code> program runs under this
+account. If this account does not exist, create it now.</li>
+<li>The <em>socklog</em> account name, normally <code>log</code>.
+Logging programs run under this account. If this account does not exist,
+create it now.</li>
 </ul>
-Create the service directory and log directories by running the
-<a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
-<pre>
-  # socklog-conf inet nobody log
-</pre>
-If you are replacing another service providing system logging through the
-syslog UDP port 514, such as <i>syslogd</i>, stop this service now and ensure
-that it will not be restarted on runlevel change or system reboot.
-<p>
-Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
-the new service:
-<pre>
-  # ln -s /etc/sv/socklog-inet /var/service/
-</pre>
-Wait five seconds for the service to start and then check the log
-directory:
-<pre>
-  # less /var/log/socklog-inet/main/current
-</pre>
-Optionally configure the <i>socklog-inet</i> service by editing
-the corresponding <tt>run</tt> scripts and <tt>config</tt> file and
+<p>Create the service directory and log directories by running the <a
+href="socklog-conf.8.html"><code>socklog-conf</code></a> program:</p>
+<pre><code>  # socklog-conf inet nobody log</code></pre>
+<p>If you are replacing another service providing system logging through
+the syslog UDP port 514, such as <em>syslogd</em>, stop this service now
+and ensure that it will not be restarted on runlevel change or system
+reboot.</p>
+<p>Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>
+about the new service:</p>
+<pre><code>  # ln -s /etc/sv/socklog-inet /var/service/</code></pre>
+<p>Wait five seconds for the service to start and then check the log
+directory:</p>
+<pre><code>  # less /var/log/socklog-inet/main/current</code></pre>
+<p>Optionally configure the <em>socklog-inet</em> service by editing the
+corresponding <code>run</code> scripts and <code>config</code> file and
 <a href="https://smarden.org/runit/faq.html#control">restarting</a> the
-service:
+service:</p>
 <ul>
-  <li>/var/service/socklog-inet/run
-  <li>/var/service/socklog-inet/log/run
-  <li>/var/log/socklog-inet/main/config
+<li>/var/service/socklog-inet/run</li>
+<li>/var/service/socklog-inet/log/run</li>
+<li>/var/log/socklog-inet/main/config</li>
 </ul>
-<hr>
-
-<h3><a name="klog">The socklog-klog service</a></h3>
-Before starting the <i>socklog-klog</i> service, you will have to make two
-decisions:
+<hr />
+<h3 id="the-socklog-klog-service"><span id="klog">The socklog-klog
+service</span></h3>
+<p>Before starting the <em>socklog-klog</em> service, you will have to
+make two decisions:</p>
 <ul>
-  <li>The <i>socklog-klog</i> account name, normally <tt>nobody</tt>. The
-  <tt>socklog</tt> program runs under this account. If this account does not
-  exist, create it now.
-  <li>The <i>socklog</i> account name, normally <tt>log</tt>. Logging
-  programs run under this account. If this account does not exist, create
-  it now.
+<li>The <em>socklog-klog</em> account name, normally
+<code>nobody</code>. The <code>socklog</code> program runs under this
+account. If this account does not exist, create it now.</li>
+<li>The <em>socklog</em> account name, normally <code>log</code>.
+Logging programs run under this account. If this account does not exist,
+create it now.</li>
 </ul>
-Create the service directory and log directories by running the
-<a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
-<pre>
-  # socklog-conf klog nobody log
-</pre>
-If you are replacing another service providing kernel logging, such as
-<i>klogd</i> on Linux or <i>syslogd</i> on BSD, stop this service now and
-ensure that it will not be restarted on runlevel change or system reboot.
-<p>
-Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
-the new service:
-<pre>
-  # ln -s /etc/sv/socklog-klog /var/service/
-</pre>
-Wait five seconds for the service to start and then check the log
-directory:
-<pre>
-  # less /var/log/socklog-klog/main/current
-</pre>
-Optionally configure the <i>socklog-klog</i> service by editing
-the corresponding <tt>run</tt> scripts and <tt>config</tt> file and
+<p>Create the service directory and log directories by running the <a
+href="socklog-conf.8.html"><code>socklog-conf</code></a> program:</p>
+<pre><code>  # socklog-conf klog nobody log</code></pre>
+<p>If you are replacing another service providing kernel logging, such
+as <em>klogd</em> on Linux or <em>syslogd</em> on BSD, stop this service
+now and ensure that it will not be restarted on runlevel change or
+system reboot.</p>
+<p>Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>
+about the new service:</p>
+<pre><code>  # ln -s /etc/sv/socklog-klog /var/service/</code></pre>
+<p>Wait five seconds for the service to start and then check the log
+directory:</p>
+<pre><code>  # less /var/log/socklog-klog/main/current</code></pre>
+<p>Optionally configure the <em>socklog-klog</em> service by editing the
+corresponding <code>run</code> scripts and <code>config</code> file and
 <a href="https://smarden.org/runit/faq.html#control">restarting</a> the
-service:
+service:</p>
 <ul>
-  <li>/var/service/socklog-klog/run
-  <li>/var/service/socklog-klog/log/run
-  <li>/var/log/socklog-klog/config
+<li>/var/service/socklog-klog/run</li>
+<li>/var/service/socklog-klog/log/run</li>
+<li>/var/log/socklog-klog/config</li>
 </ul>
-<hr>
-
-<h3><a name="ucspi-tcp">The socklog-ucspi-tcp service</a></h3>
-Before starting the <i>socklog-ucspi-tcp</i> service</a>, you will have
-to make two decisions:
+<hr />
+<h3 id="the-socklog-ucspi-tcp-service"><span id="ucspi-tcp">The
+socklog-ucspi-tcp service</span></h3>
+<p>Before starting the <em>socklog-ucspi-tcp</em> service, you will have
+to make two decisions:</p>
 <ul>
-  <li>The <i>socklog-ucspi-tcp</i> account name, normally <tt>nobody</tt>.
-  The <tt>socklog</tt> program runs under this account. If this account
-  does not exist, create it now.
-  <li>The <i>socklog</i> account name, normally <tt>log</tt>. Logging
-  programs run under this account. If this account does not exist, create
-  it now.
+<li>The <em>socklog-ucspi-tcp</em> account name, normally
+<code>nobody</code>. The <code>socklog</code> program runs under this
+account. If this account does not exist, create it now.</li>
+<li>The <em>socklog</em> account name, normally <code>log</code>.
+Logging programs run under this account. If this account does not exist,
+create it now.</li>
 </ul>
-Make sure that you have the <a href="https://smarden.org/ipsvd/">ipsvd</a>
-package installed.
-Then create the service directory and log directories by running the
-<a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
-<pre>
-  # socklog-conf ucspi-tcp nobody log
-</pre>
-Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
-the new service:
-<pre>
-  # ln -s /etc/sv/socklog-ucspi-tcp /var/service/
-</pre>
-Wait five seconds for the service to start and then check the log
-directory:
-<pre>
-  # less /var/log/socklog-ucspi-tcp/main/current
-</pre>
-Optionally configure the <i>socklog-ucspi-tcp</i> service by editing
-the corresponding <tt>run</tt> scripts and <tt>config</tt> file and
-<a href="https://smarden.org/runit/faq.html#control">restarting</a> the
-service:
+<p>Make sure that you have the <a
+href="https://smarden.org/ipsvd/">ipsvd</a> package installed. Then
+create the service directory and log directories by running the <a
+href="socklog-conf.8.html"><code>socklog-conf</code></a> program:</p>
+<pre><code>  # socklog-conf ucspi-tcp nobody log</code></pre>
+<p>Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>
+about the new service:</p>
+<pre><code>  # ln -s /etc/sv/socklog-ucspi-tcp /var/service/</code></pre>
+<p>Wait five seconds for the service to start and then check the log
+directory:</p>
+<pre><code>  # less /var/log/socklog-ucspi-tcp/main/current</code></pre>
+<p>Optionally configure the <em>socklog-ucspi-tcp</em> service by
+editing the corresponding <code>run</code> scripts and
+<code>config</code> file and <a
+href="https://smarden.org/runit/faq.html#control">restarting</a> the
+service:</p>
 <ul>
-  <li>/var/service/socklog-ucspi-tcp/run
-  <li>/var/service/socklog-ucspi-tcp/log/run
-  <li>/var/log/socklog-ucspi-tcp/main/config
+<li>/var/service/socklog-ucspi-tcp/run</li>
+<li>/var/service/socklog-ucspi-tcp/log/run</li>
+<li>/var/log/socklog-ucspi-tcp/main/config</li>
 </ul>
-Refer to <a href="network.html">Network logging</a> for setting up clients.
-<hr>
-
-<h3><a name="notify">The socklog-notify service</a></h3>
-Before starting the <i>socklog-notify</i> service</a>, you will have to
-make two decisions:
+<p>Refer to <a href="network.html">Network logging</a> for setting up
+clients.</p>
+<hr />
+<h3 id="the-socklog-notify-service"><span id="notify">The socklog-notify
+service</span></h3>
+<p>Before starting the <em>socklog-notify</em> service, you will have to
+make two decisions:</p>
 <ul>
-  <li>The <i>socklog</i> account name, normally <tt>log</tt>. The
-  <tt>uncat</tt> program runs under this account. If this account does not
-  exist, create it now.
-  <li>The <i>socklog</i> group name, normally <tt>adm</tt>. Logging
-  programs that report <a href="notify.html">log events</a> to the
-  <i>socklog-notify</i> service must run under an account that is member
-  of this group. If this group does not exist, create it now.
+<li>The <em>socklog</em> account name, normally <code>log</code>. The
+<code>uncat</code> program runs under this account. If this account does
+not exist, create it now.</li>
+<li>The <em>socklog</em> group name, normally <code>adm</code>. Logging
+programs that report <a href="notify.html">log events</a> to the
+<em>socklog-notify</em> service must run under an account that is member
+of this group. If this group does not exist, create it now.</li>
 </ul>
-Create the service directory by running the
-<a href="socklog-conf.8.html"><tt>socklog-conf</tt></a> program:
-<pre>
-  # socklog-conf notify log adm
-</pre>
-Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a> about
-the new service:
-<pre>
-  # ln -s /etc/sv/socklog-notify /var/service/
-</pre>
-Wait five seconds for the service to start, you can test the service with:
-<pre>
-  # echo test | tai64n > /var/log/socklog/.notify
-</pre>
-Optionally configure the <i>socklog-notify</i> service by editing
-the corresponding <tt>run</tt> script and
-<a href="https://smarden.org/runit/faq.html#control">restarting</a> the
-service:
+<p>Create the service directory by running the <a
+href="socklog-conf.8.html"><code>socklog-conf</code></a> program:</p>
+<pre><code>  # socklog-conf notify log adm</code></pre>
+<p>Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>
+about the new service:</p>
+<pre><code>  # ln -s /etc/sv/socklog-notify /var/service/</code></pre>
+<p>Wait five seconds for the service to start, you can test the service
+with:</p>
+<pre><code>  # echo test | tai64n &gt; /var/log/socklog/.notify</code></pre>
+<p>Optionally configure the <em>socklog-notify</em> service by editing
+the corresponding <code>run</code> script and <a
+href="https://smarden.org/runit/faq.html#control">restarting</a> the
+service:</p>
 <ul>
-  <li>/var/service/socklog-notify/run
+<li>/var/service/socklog-notify/run</li>
 </ul>
-Read <a href="notify.html">Log events notification</a> before disabling this
-service and for configuring arbitrary log services to notify events.
-<hr>
-
-<address><a href="mailto:pape@smarden.org">
-Gerrit Pape &lt;pape@smarden.org&gt;
-</a></address>
+<p>Read <a href="notify.html">Log events notification</a> before
+disabling this service and for configuring arbitrary log services to
+notify events.</p>
+<hr />
+<p><a href="mailto:pape@smarden.org">Gerrit Pape
+&lt;pape@smarden.org&gt;</a></p>
 </body>
 </html>

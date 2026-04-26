@@ -1,56 +1,47 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 <title>socklog - installation</title>
+<style type="text/css">pre { padding: 0em 1em; overflow: auto; }</style>
 </head>
 <body>
-<a href="https://smarden.org/pape/">G. Pape</a><br>
-<a href="index.html">socklog</a><br>
-<hr>
-<h1>socklog - installation</h1>
-<hr>
-Since version 0.3.0, <i>socklog</i> installs into
-<a href="https://cr.yp.to/slashpackage.html">/package</a>.
-<p>
-Check that you have the recent version of
-<a href="https://smarden.org/runit/">runit</a> installed.
-<p>
-Download
-<a href="socklog-2.1.2.tar.gz">socklog-2.1.2.tar.gz</a> into
-<tt>/package</tt>
-(<a href="https://smarden.org/socklog/sha256sum.asc">sha256sum</a>)
-and unpack the archive
-<pre>
- # cd /package
+<p><a href="https://smarden.org/pape/">G. Pape</a><br />
+<a href="index.html">socklog</a></p>
+<hr />
+<h1 id="socklog---installation">socklog - installation</h1>
+<hr />
+<p>Since version 0.3.0, <em>socklog</em> installs into <a
+href="https://cr.yp.to/slashpackage.html">/package</a>.</p>
+<p>Check that you have the recent version of <a
+href="https://smarden.org/runit/">runit</a> installed.</p>
+<p>Download <a href="socklog-2.1.2.tar.gz">socklog-2.1.2.tar.gz</a> into
+<code>/package</code> (<a
+href="https://smarden.org/socklog/sha256sum.asc">sha256sum</a>) and
+unpack the archive</p>
+<pre><code> # cd /package
  # gunzip socklog-2.1.2.tar
  # tar -xpf socklog-2.1.2.tar
  # rm socklog-2.1.2.tar
- # cd admin/socklog-2.1.2
-</pre>
-On solaris read <a href="readme.solaris.html">using socklog on solaris</a>
-before proceeding.
-<p>
-Compile and install the <i>socklog</i> programs
-<pre>
- # package/install
-</pre>
-If you want to make the man pages available in the <tt>/usr/local/man/</tt>
-hierarchy, do:
-<pre>
- # package/install-man
-</pre>
-To report success:
-<pre>
- # mail pape-socklog-2.1.2@xxiv.smarden.org &lt;compile/sysdeps
-</pre>
-If you use <i>socklog</i> regularly, please
-<a href="https://smarden.org/pape/#contribution">contribute</a> to the project.
-<p>
-Refer to <a href="configuration.html">Configuration</a> for
-configuring and setting up <i>socklog</i> services.
-<hr>
-<address><a href="mailto:pape@smarden.org">
-Gerrit Pape &lt;pape@smarden.org&gt;
-</a></address>
+ # cd admin/socklog-2.1.2</code></pre>
+<p>On solaris read <a href="readme.solaris.html">using socklog on
+solaris</a> before proceeding.</p>
+<p>Compile and install the <em>socklog</em> programs</p>
+<pre><code> # package/install</code></pre>
+<p>If you want to make the man pages available in the
+<code>/usr/local/man/</code> hierarchy, do:</p>
+<pre><code> # package/install-man</code></pre>
+<p>To report success:</p>
+<pre><code> # mail pape-socklog-2.1.2@xxiv.smarden.org &lt;compile/sysdeps</code></pre>
+<p>If you use <em>socklog</em> regularly, please <a
+href="https://smarden.org/pape/#contribution">contribute</a> to the
+project.</p>
+<p>Refer to <a href="configuration.html">Configuration</a> for
+configuring and setting up <em>socklog</em> services.</p>
+<hr />
+<p><a href="mailto:pape@smarden.org">Gerrit Pape
+&lt;pape@smarden.org&gt;</a></p>
 </body>
 </html>

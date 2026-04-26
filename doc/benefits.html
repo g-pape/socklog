@@ -1,127 +1,115 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 <title>socklog - benefits</title>
+<style type="text/css">pre { padding: 0em 1em; overflow: auto; }</style>
 </head>
 <body>
-<a href="https://smarden.org/pape/">G. Pape</a><br>
-<a href="index.html">socklog</a>
-<hr>
-<h1>socklog - benefits</h1>
-<hr>
-<a href="#logrotation">Log file rotation based on file size</a><br>
-<a href="#selecting">Selecting and de-selecting log entries</a><br>
-<a href="#network">Modular, reliable network logging</a><br>
-<a href="#sortable">Sortable logs</a><br>
-<a href="#smallcode">Small code size</a>
-<hr>
-Most of the benefits described here are actually benefits of
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> and
-<a href="https://cr.yp.to/daemontools/multilog.html">multilog</a>.
-But since <i>socklog</i> uses
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
-as its back-end, the benefits apply
-to <i>syslogging</i> with <i>socklog</i>.
-<hr>
-<h2><a name="logrotation">Log file rotation based on file size</a></h2>
-<p>
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
-supports automatically rotated logs, there is no need for any other
-tool running from cron or similar to rotate the logs.
-<p>
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
-keeps a specified number of log files with a maximum file size, so it is
-possible to calculate a log file partition properly.
-<p>
-For example, this <tt>log/run</tt> file
-<pre>
-  #!/bin/sh
+<p><a href="https://smarden.org/pape/">G. Pape</a><br />
+<a href="index.html">socklog</a></p>
+<hr />
+<h1 id="socklog---benefits">socklog - benefits</h1>
+<hr />
+<p><a href="#logrotation">Log file rotation based on file size</a><br />
+<a href="#selecting">Selecting and de-selecting log entries</a><br />
+<a href="#network">Modular, reliable network logging</a><br />
+<a href="#sortable">Sortable logs</a><br />
+<a href="#smallcode">Small code size</a></p>
+<hr />
+<p>Most of the benefits described here are actually benefits of <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a> and <a
+href="https://cr.yp.to/daemontools/multilog.html">multilog</a>. But
+since <em>socklog</em> uses <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a> as its
+back-end, the benefits apply to <em>syslogging</em> with
+<em>socklog</em>.</p>
+<hr />
+<h2 id="log-file-rotation-based-on-file-size"><span id="logrotation">Log
+file rotation based on file size</span></h2>
+<p><a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> supports
+automatically rotated logs, there is no need for any other tool running
+from cron or similar to rotate the logs.</p>
+<p><a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> keeps a
+specified number of log files with a maximum file size, so it is
+possible to calculate a log file partition properly.</p>
+<p>For example, this <code>log/run</code> file</p>
+<pre><code>  #!/bin/sh
   LOGDIR=/var/log/socklog
-  exec setuidgid log svlogd ${LOGDIR}/main ${LOGDIR}/debug
-</pre>
-with these log <tt>config</tt> files
-<pre>
-  # cat /var/log/socklog/main/config
+  exec setuidgid log svlogd ${LOGDIR}/main ${LOGDIR}/debug</code></pre>
+<p>with these log <code>config</code> files</p>
+<pre><code>  # cat /var/log/socklog/main/config
   s4999999
   n10
   # cat /var/log/socklog/debug/config
   s999999
   n5
   -*
-  +*.debug*
-</pre>
-causes
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
-to hold maximal 10 log files, each of maximal size
-4999999 bytes in <tt>/var/log/socklog/main/</tt>, and maximal 5 log files,
-each of maximal size 999999 bytes in <tt>/var/log/socklog/debug/</tt>.
-<p>
-So the maximal used space for these both logs is less then:
-<p>
-<tt>(10 * 5000000) + (5 * 1000000) = 55000000 bytes < 55 MB</tt>
-<p>
-If there is any service acting up and filling up your logs rapidly,
+  +*.debug*</code></pre>
+<p>causes <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
+to hold maximal 10 log files, each of maximal size 4999999 bytes in
+<code>/var/log/socklog/main/</code>, and maximal 5 log files, each of
+maximal size 999999 bytes in <code>/var/log/socklog/debug/</code>.</p>
+<p>So the maximal used space for these both logs is less then:</p>
+<p><code>(10 * 5000000) + (5 * 1000000) = 55000000 bytes &lt; 55 MB</code></p>
+<p>If there is any service acting up and filling up your logs rapidly,
 you will never run into a filled up log partition, causing loss of new
-log entries, even of other services.
-You can lose old log entries from this service, but will ever have the
-recent ones.
-<p>
-Please note that above numbers could change if you use 
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
-with a <i>processor</i>.
-<hr>
-<h2><a name="selecting">Selecting and de-selecting log entries</a></h2>
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
-supports selecting and de-selecting log lines based on pattern matching.
-<p>
-This is much more flexible than the usual <i>syslogd</i> support for
-selecting log entries by <tt>facility</tt> and <tt>priority</tt>.
-Of course, selecting entries by <tt>facility</tt> or <tt>priority</tt> is
-still possible with <i>socklog</i> and
-<a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>,
-just like the default <i>socklog-unix</i> configuration shows.
-<p>
-This line selection feature is also used for <i>socklog</i>'s instant
-<a href="notify.html">Log events notification</a>.
-<hr>
-<h2><a name="network">Modular, reliable network logging</a></h2>
-The <i>socklog-inet</i> service can be used to replace a <i>syslog</i>
-network server, receiving log messages on UDP port 514.
-Usually <i>syslog</i> clients try to transmit their logs to that port
-using UDP.
-<p>
-<i>socklog</i> does not support this UDP network logging on the client
-side.
-<i>socklog</i> provides a different modular, reliable
-<a href="network.html">Network logging concept</a> instead.
-Logs are transmitted through network using a TCP connection in the default
-configuration, log transmission failures are handled.
-The modular design of
-<a href="https://smarden.org/runit/">runit</a> and
-<i>socklog</i> makes it possible to insert encryption, authentication,
-compression, and more, easily.
-<hr>
-<h2><a name="sortable">Sortable logs</a></h2>
-If <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> is
-told to prepend log lines with time-stamps, the resulting logs are sortable.
-So it is possible to merge different logs and sort them chronologically
-without special effort.
-<hr>
-<h2><a name="smallcode">Small code size</a></h2>
-One of the <i>socklog</i> project's principles is to keep the code size
-minimal. As of version 0.8.0 of <i>socklog</i>, the <tt>socklog.c</tt>
-source contains only about 400 lines of code; the <tt>uncat.c</tt> source is
-about 200 lines of code.
-<p>
-This minimizes the possibility of bugs introduced by programmer's fault,
-and makes it more easy for security related people to proofread the source
-code.
-<p>
-Of course this also means that <i>socklog</i> never will evolve to a
-multi-/over-featured, bloated project.
-<hr>
-<address><a href="mailto:pape@smarden.org">
-Gerrit Pape &lt;pape@smarden.org&gt;
-</a></address>
+log entries, even of other services. You can lose old log entries from
+this service, but will ever have the recent ones.</p>
+<p>Please note that above numbers could change if you use <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a> with a
+<em>processor</em>.</p>
+<hr />
+<h2 id="selecting-and-de-selecting-log-entries"><span
+id="selecting">Selecting and de-selecting log entries</span></h2>
+<p><a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> supports
+selecting and de-selecting log lines based on pattern matching.</p>
+<p>This is much more flexible than the usual <em>syslogd</em> support
+for selecting log entries by <code>facility</code> and
+<code>priority</code>. Of course, selecting entries by
+<code>facility</code> or <code>priority</code> is still possible with
+<em>socklog</em> and <a
+href="https://smarden.org/runit/svlogd.8.html">svlogd</a>, just like the
+default <em>socklog-unix</em> configuration shows.</p>
+<p>This line selection feature is also used for <em>socklog</em>'s
+instant <a href="notify.html">Log events notification</a>.</p>
+<hr />
+<h2 id="modular-reliable-network-logging"><span id="network">Modular,
+reliable network logging</span></h2>
+<p>The <em>socklog-inet</em> service can be used to replace a
+<em>syslog</em> network server, receiving log messages on UDP port 514.
+Usually <em>syslog</em> clients try to transmit their logs to that port
+using UDP.</p>
+<p><em>socklog</em> does not support this UDP network logging on the
+client side. <em>socklog</em> provides a different modular, reliable <a
+href="network.html">Network logging concept</a> instead. Logs are
+transmitted through network using a TCP connection in the default
+configuration, log transmission failures are handled. The modular design
+of <a href="https://smarden.org/runit/">runit</a> and <em>socklog</em>
+makes it possible to insert encryption, authentication, compression, and
+more, easily.</p>
+<hr />
+<h2 id="sortable-logs"><span id="sortable">Sortable logs</span></h2>
+<p>If <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a> is
+told to prepend log lines with time-stamps, the resulting logs are
+sortable. So it is possible to merge different logs and sort them
+chronologically without special effort.</p>
+<hr />
+<h2 id="small-code-size"><span id="smallcode">Small code
+size</span></h2>
+<p>One of the <em>socklog</em> project's principles is to keep the code
+size minimal. As of version 0.8.0 of <em>socklog</em>, the
+<code>socklog.c</code> source contains only about 400 lines of code; the
+<code>uncat.c</code> source is about 200 lines of code.</p>
+<p>This minimizes the possibility of bugs introduced by programmer's
+fault, and makes it more easy for security related people to proofread
+the source code.</p>
+<p>Of course this also means that <em>socklog</em> never will evolve to
+a multi-/over-featured, bloated project.</p>
+<hr />
+<p><a href="mailto:pape@smarden.org">Gerrit Pape
+&lt;pape@smarden.org&gt;</a></p>
 </body>
 </html>
