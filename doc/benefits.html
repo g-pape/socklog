@@ -36,18 +36,18 @@ from cron or similar to rotate the logs.</p>
 specified number of log files with a maximum file size, so it is
 possible to calculate a log file partition properly.</p>
 <p>For example, this <code>log/run</code> file</p>
-<pre><code>  #!/bin/sh
-  LOGDIR=/var/log/socklog
-  exec setuidgid log svlogd ${LOGDIR}/main ${LOGDIR}/debug</code></pre>
+<pre><code>#!/bin/sh
+LOGDIR=/var/log/socklog
+exec setuidgid log svlogd ${LOGDIR}/main ${LOGDIR}/debug</code></pre>
 <p>with these log <code>config</code> files</p>
-<pre><code>  # cat /var/log/socklog/main/config
-  s4999999
-  n10
-  # cat /var/log/socklog/debug/config
-  s999999
-  n5
-  -*
-  +*.debug*</code></pre>
+<pre><code># cat /var/log/socklog/main/config
+s4999999
+n10
+# cat /var/log/socklog/debug/config
+s999999
+n5
+-*
++*.debug*</code></pre>
 <p>causes <a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>
 to hold maximal 10 log files, each of maximal size 4999999 bytes in
 <code>/var/log/socklog/main/</code>, and maximal 5 log files, each of

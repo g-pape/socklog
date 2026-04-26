@@ -94,13 +94,13 @@ selecting by pattern.</p>
 <hr />
 <p>A proper <code>run</code> file for <a
 href="https://smarden.org/runit/runsv.8.html">runsv</a> is:</p>
-<pre><code>  #!/bin/sh
-  exec 2&gt;&amp;1
-  exec chpst -Unobody socklog unix /dev/log</code></pre>
+<pre><code>#!/bin/sh
+exec 2&gt;&amp;1
+exec chpst -Unobody socklog unix /dev/log</code></pre>
 <p>A proper <code>log/run</code> file for <a
 href="https://smarden.org/runit/runsv.8.html">runsv</a> is:</p>
-<pre><code>  #!/bin/sh
-  exec chpst -ulog svlogd -t main/*</code></pre>
+<pre><code>#!/bin/sh
+exec chpst -ulog svlogd -t main/*</code></pre>
 <hr />
 <p>See <a href="install.html">INSTALL</a> on how to install
 <em>socklog</em> and <a href="configuration.html">Configuration</a> for

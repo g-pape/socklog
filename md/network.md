@@ -53,21 +53,21 @@ Setup a *socklog-ucspi-tcp* service as described in
 
 socklog-ucspi-tcp/run:
 
-      #!/bin/sh
-      PORT=10116
-      exec 2>&1
-      exec tcpsvd -vl0 -unobody 0 "$PORT" socklog ucspi TCPREMOTEIP
+    #!/bin/sh
+    PORT=10116
+    exec 2>&1
+    exec tcpsvd -vl0 -unobody 0 "$PORT" socklog ucspi TCPREMOTEIP
 
 socklog-ucspi-tcp/log/run:
 
-      #!/bin/sh
-      exec chpst -ulog svlogd -t main/main main/10.0.0.236
+    #!/bin/sh
+    exec chpst -ulog svlogd -t main/main main/10.0.0.236
 
 and socklog-ucspi-tcp/log/main/10.0.0.236/config
 
-      # cat 10.0.0.236/config
-      -*
-      +10.0.0.236:*
+    # cat 10.0.0.236/config
+    -*
+    +10.0.0.236:*
 
 You will then find all log data from remote hosts that was successfully
 transmitted in `main/main/`. Log data from `10.0.0.236` will
@@ -80,18 +80,18 @@ log data:
 
 socklog-unix/log/run:
 
-      #!/bin/sh
-      exec chpst -ulog svlogd ./main/main
+    #!/bin/sh
+    exec chpst -ulog svlogd ./main/main
 
 socklog-unix/log/main/main/config
 
-      s4096
-      n20
-      !tryto -pv nc 10.0.0.16 10116
+    s4096
+    n20
+    !tryto -pv nc 10.0.0.16 10116
 
 and restart the log service:
 
-      # sv restart socklog-unix/log
+    # sv restart socklog-unix/log
 
 On each rotation of [svlogd](https://smarden.org/runit/svlogd.8.html)\'s
 `current`, the data will be transmitted to `10.0.0.16:10116` using
@@ -119,20 +119,20 @@ Setup a *socklog-inet* service as described in
 
 socklog-inet/run:
 
-      #!/bin/sh
-      exec 2>&1
-      exec chpst -Unobody socklog inet 0 514
+    #!/bin/sh
+    exec 2>&1
+    exec chpst -Unobody socklog inet 0 514
 
 socklog-inet/log/run:
 
-      #!/bin/sh
-      exec chpst -ulog svlogd -t main/main main/10.0.0.236
+    #!/bin/sh
+    exec chpst -ulog svlogd -t main/main main/10.0.0.236
 
 and socklog-inet/log/main/10.0.0.236/config:
 
-      # cat 10.0.0.236/config
-      -*
-      +10.0.0.236:*
+    # cat 10.0.0.236/config
+    -*
+    +10.0.0.236:*
 
 You will then find all log messages from remote hosts that were
 successfully transmitted in `main/main/`. Log messages from `10.0.0.236`
@@ -145,9 +145,9 @@ priority and facility to names by adding the -R option:
 
 socklog-unix/run:
 
-      #!/bin/sh
-      exec 2>&1
-      exec chpst -Unobody socklog -R unix /dev/log
+    #!/bin/sh
+    exec 2>&1
+    exec chpst -Unobody socklog -R unix /dev/log
 
 Then change the configuration of *socklog*\'s main log directory to tell
 [svlogd](https://smarden.org/runit/svlogd.8.html) to transmit log
@@ -155,15 +155,15 @@ messages through UDP:
 
 /var/log/socklog/main/config:
 
-      s9999
-      n2
-      U10.0.0.16:514
+    s9999
+    n2
+    U10.0.0.16:514
 
 Restart the service, and tell the log service to reload its
 configuration:
 
-      sv restart socklog-unix
-      sv hup socklog-unix/log
+    sv restart socklog-unix
+    sv hup socklog-unix/log
 
 Now each log message will be sent through UDP to `10.0.0.16:514`, and
 not written to the log directory. If

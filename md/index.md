@@ -96,15 +96,15 @@ pattern.
 A proper `run` file for [runsv](https://smarden.org/runit/runsv.8.html)
 is:
 
-      #!/bin/sh
-      exec 2>&1
-      exec chpst -Unobody socklog unix /dev/log
+    #!/bin/sh
+    exec 2>&1
+    exec chpst -Unobody socklog unix /dev/log
 
 A proper `log/run` file for
 [runsv](https://smarden.org/runit/runsv.8.html) is:
 
-      #!/bin/sh
-      exec chpst -ulog svlogd -t main/*
+    #!/bin/sh
+    exec chpst -ulog svlogd -t main/*
 
 ---
 

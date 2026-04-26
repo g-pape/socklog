@@ -54,7 +54,7 @@ decisions:
 Create the service directory and log directories by running the
 [`socklog-conf`](socklog-conf.8.html) program:
 
-      socklog-conf unix nobody log
+    socklog-conf unix nobody log
 
 If you are replacing another service providing system logging through
 the socket `/dev/log`, such as *syslogd*, stop this service now and
@@ -64,12 +64,12 @@ reboot.
 Tell [runsvdir](https://smarden.org/runit/runsvdir.8.html) about the new
 service:
 
-      ln -s /etc/sv/socklog-unix /var/service/
+    ln -s /etc/sv/socklog-unix /var/service/
 
 Wait five seconds for the service to start and then check the log
 directories, e.g.:
 
-      less /var/log/socklog/main/current
+    less /var/log/socklog/main/current
 
 Optionally configure the *socklog-unix* service by editing the
 corresponding `run` scripts and `config` files and
@@ -95,7 +95,7 @@ decisions:
 Create the service directory and log directories by running the
 [`socklog-conf`](socklog-conf.8.html) program:
 
-      socklog-conf inet nobody log
+    socklog-conf inet nobody log
 
 If you are replacing another service providing system logging through
 the syslog UDP port 514, such as *syslogd*, stop this service now and
@@ -105,12 +105,12 @@ reboot.
 Tell [runsvdir](https://smarden.org/runit/runsvdir.8.html) about the new
 service:
 
-      ln -s /etc/sv/socklog-inet /var/service/
+    ln -s /etc/sv/socklog-inet /var/service/
 
 Wait five seconds for the service to start and then check the log
 directory:
 
-      less /var/log/socklog-inet/main/current
+    less /var/log/socklog-inet/main/current
 
 Optionally configure the *socklog-inet* service by editing the
 corresponding `run` scripts and `config` file and
@@ -136,7 +136,7 @@ decisions:
 Create the service directory and log directories by running the
 [`socklog-conf`](socklog-conf.8.html) program:
 
-      socklog-conf klog nobody log
+    socklog-conf klog nobody log
 
 If you are replacing another service providing kernel logging, such as
 *klogd* on Linux or *syslogd* on BSD, stop this service now and ensure
@@ -145,12 +145,12 @@ that it will not be restarted on runlevel change or system reboot.
 Tell [runsvdir](https://smarden.org/runit/runsvdir.8.html) about the new
 service:
 
-      ln -s /etc/sv/socklog-klog /var/service/
+    ln -s /etc/sv/socklog-klog /var/service/
 
 Wait five seconds for the service to start and then check the log
 directory:
 
-      less /var/log/socklog-klog/main/current
+    less /var/log/socklog-klog/main/current
 
 Optionally configure the *socklog-klog* service by editing the
 corresponding `run` scripts and `config` file and
@@ -177,17 +177,17 @@ Make sure that you have the [ipsvd](https://smarden.org/ipsvd/) package
 installed. Then create the service directory and log directories by
 running the [`socklog-conf`](socklog-conf.8.html) program:
 
-      socklog-conf ucspi-tcp nobody log
+    socklog-conf ucspi-tcp nobody log
 
 Tell [runsvdir](https://smarden.org/runit/runsvdir.8.html) about the new
 service:
 
-      ln -s /etc/sv/socklog-ucspi-tcp /var/service/
+    ln -s /etc/sv/socklog-ucspi-tcp /var/service/
 
 Wait five seconds for the service to start and then check the log
 directory:
 
-      less /var/log/socklog-ucspi-tcp/main/current
+    less /var/log/socklog-ucspi-tcp/main/current
 
 Optionally configure the *socklog-ucspi-tcp* service by editing the
 corresponding `run` scripts and `config` file and
@@ -216,17 +216,17 @@ decisions:
 Create the service directory by running the
 [`socklog-conf`](socklog-conf.8.html) program:
 
-      socklog-conf notify log adm
+    socklog-conf notify log adm
 
 Tell [runsvdir](https://smarden.org/runit/runsvdir.8.html) about the new
 service:
 
-      ln -s /etc/sv/socklog-notify /var/service/
+    ln -s /etc/sv/socklog-notify /var/service/
 
 Wait five seconds for the service to start, you can test the service
 with:
 
-      echo test | tai64n > /var/log/socklog/.notify
+    echo test | tai64n > /var/log/socklog/.notify
 
 Optionally configure the *socklog-notify* service by editing the
 corresponding `run` script and

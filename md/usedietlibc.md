@@ -15,16 +15,16 @@ version of [dietlibc](http://www.fefe.de/dietlibc/) installed.
 
 Change to the package directory of *socklog*:
 
-      cd /package/admin/socklog/
+    cd /package/admin/socklog/
 
 Change the `conf-cc` and `conf-ld` to use `diet`:
 
-      echo 'diet -Os gcc -O2 -Wall' >src/conf-cc
-      echo 'diet -Os gcc -s -Os -pipe' >src/conf-ld
+    echo 'diet -Os gcc -O2 -Wall' >src/conf-cc
+    echo 'diet -Os gcc -s -Os -pipe' >src/conf-ld
 
 Rebuild and install the *socklog* programs:
 
-      package/install
+    package/install
 
 ---
 

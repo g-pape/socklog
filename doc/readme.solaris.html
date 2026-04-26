@@ -29,14 +29,14 @@ messages</h2>
 <p>Starting with Solaris 8, Sun introduced a new log message format
 containing so called message IDs (See <em>syslogd</em>(1) and
 <em>msgid</em>(1)).</p>
-<pre><code> [ID msgid facility.priority]
+<pre><code>[ID msgid facility.priority]
 
-  Jul  9 10:13:06 u5 pseudo: [ID 129642 kern.info] pseudo-device: tod0
-  Jul  9 16:14:51 u5 login: [ID 644210 auth.notice] ROOT LOGIN /dev/console</code></pre>
+Jul  9 10:13:06 u5 pseudo: [ID 129642 kern.info] pseudo-device: tod0
+Jul  9 16:14:51 u5 login: [ID 644210 auth.notice] ROOT LOGIN /dev/console</code></pre>
 <p>All Solaris versions up to Solaris 7 use the well known, good old
 syslog messages:</p>
-<pre><code>  Jul 10 16:24:21 u5 login: ROOT LOGIN /dev/console
-  Jul 10 16:35:19 u5 unix: se0 is /pci@1f,0/pci@1,1/ebus@1/se@14,400000</code></pre>
+<pre><code>Jul 10 16:24:21 u5 login: ROOT LOGIN /dev/console
+Jul 10 16:35:19 u5 unix: se0 is /pci@1f,0/pci@1,1/ebus@1/se@14,400000</code></pre>
 <p>The format is configurable. The <em>log</em>(7d) driver configuration
 file is <code>/kernel/drv/log.conf</code>. Set the variable "msgid" to
 either 1 or 0, to en- or disable message ID generation. Note: you must
@@ -47,9 +47,9 @@ IDs are used or not. This makes it easier to write svlogd or multilog
 filters. So this is how a log message processed by <em>socklog</em> will
 look like:</p>
 <p>without message IDs:</p>
-<pre><code>  auth.info: Jul 15 21:40:52 sshd[1576]: Accepted publickey for root from 195.71.100.159 port 36621 ssh2</code></pre>
+<pre><code>auth.info: Jul 15 21:40:52 sshd[1576]: Accepted publickey for root from 195.71.100.159 port 36621 ssh2</code></pre>
 <p>with message IDs enabled (default on Solaris 8 and later):</p>
-<pre><code>  auth.info: Jul 11 14:10:53 sshd[382]: [ID 800047 auth.info] Accepted rsa for ROOT from 195.71.100.159 port 36177</code></pre>
+<pre><code>auth.info: Jul 11 14:10:53 sshd[382]: [ID 800047 auth.info] Accepted rsa for ROOT from 195.71.100.159 port 36177</code></pre>
 <p>I prefer the first method, because it's much less visual clutter, and
 I don't need message IDs anyway.</p>
 <h2 id="kernel-messages">Kernel messages</h2>
@@ -57,9 +57,9 @@ I don't need message IDs anyway.</p>
 <code>/dev/klog</code>. Kernel log messages are provided by the same
 STREAMS device (<code>/dev/log</code>) as normal log messages. All
 kernel messages are logged with a facility of "kern":</p>
-<pre><code>  kern.info: unix: avail mem = 250077184
-  kern.info: unix: root nexus = Sun Ultra 5/10 UPA/PCI (UltraSPARC-IIi 360MHz)
-  kern.info: unix: pcipsy0 at root: UPA 0x1f 0x0</code></pre>
+<pre><code>kern.info: unix: avail mem = 250077184
+kern.info: unix: root nexus = Sun Ultra 5/10 UPA/PCI (UltraSPARC-IIi 360MHz)
+kern.info: unix: pcipsy0 at root: UPA 0x1f 0x0</code></pre>
 <p>The kernel messages do not contain timestamps. It seems that syslog
 does automatically prepend timestamps to kernel messages, so I might
 implement this in <em>socklog</em> as well.</p>
@@ -69,24 +69,24 @@ script which prints out the last 200 lines from
 easily write your own version :-).</p>
 <p>Note that if message IDs are enabled, kernel log messages contain the
 name of the loadable module or driver instead of just "unix:".</p>
-<pre><code>  kern.info: m64: [ID 308573 kern.info] m64#0: 1280x1024, 4M mappable, rev 4750.7c
-  kern.info: hme: [ID 517527 kern.info] SUNW,hme0 : PCI IO 2.0 (Rev Id = c1) Found</code></pre>
+<pre><code>kern.info: m64: [ID 308573 kern.info] m64#0: 1280x1024, 4M mappable, rev 4750.7c
+kern.info: hme: [ID 517527 kern.info] SUNW,hme0 : PCI IO 2.0 (Rev Id = c1) Found</code></pre>
 <p>Be sure to enable message IDs to get these.</p>
 <h2 id="how-to-compile-socklog-on-solaris">How to compile socklog on
 Solaris</h2>
 <p>You'll have to decide if you want "door" support or not.</p>
 <p>1. With syslog_door support</p>
-<pre><code>  echo &quot;gcc -O2 -Wall -DWANT_SUN_DOOR&quot; &gt; src/conf-cc
-  echo &quot;gcc -s -ldoor -lthread&quot; &gt; src/conf-ld</code></pre>
+<pre><code>echo &quot;gcc -O2 -Wall -DWANT_SUN_DOOR&quot; &gt; src/conf-cc
+echo &quot;gcc -s -ldoor -lthread&quot; &gt; src/conf-ld</code></pre>
 <p>2. Without syslog_door support (default) Just run package/install.
 Then follow the standard installation instructions.</p>
 <h2 id="how-to-configure-socklog-for-the-streams-log-driver">How to
 configure socklog for the STREAMS log driver</h2>
-<pre><code>  $ socklog-conf unix acct logacct [/rundir] [/logdir]</code></pre>
+<pre><code>$ socklog-conf unix acct logacct [/rundir] [/logdir]</code></pre>
 <p>This will create the following run script:</p>
-<pre><code>  #!/bin/sh
-  exec 2&gt;&amp;1
-  exec chpst -Uacct socklog sun_stream /dev/log /var/run/syslog_door</code></pre>
+<pre><code>#!/bin/sh
+exec 2&gt;&amp;1
+exec chpst -Uacct socklog sun_stream /dev/log /var/run/syslog_door</code></pre>
 <p>It is possible to run multiple <em>socklog</em> instances, but only
 one <em>socklog</em> can listen on the door file. If another process is
 in charge of the door file, <em>socklog</em> will exit immediately with

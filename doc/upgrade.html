@@ -28,12 +28,12 @@ default creates a <code>./check</code> script in the
 <em>runit</em>'s <a href="https://smarden.org/runit/sv.8.html">sv</a>
 program when starting or checking the service. To update existing
 installations, you can create the script manually:</p>
-<pre><code> # cd /var/service/socklog-unix
- # cat &gt;check &lt;&lt;EOT
- #!/bin/sh
- exec socklog-check unix /dev/log
- EOT
- # chmod 755 check</code></pre>
+<pre><code># cd /var/service/socklog-unix
+# cat &gt;check &lt;&lt;EOT
+#!/bin/sh
+exec socklog-check unix /dev/log
+EOT
+# chmod 755 check</code></pre>
 <h3 id="to-2.0.x">1.5.0 to 2.0.x</h3>
 <p>The <a href="tryto.1.html">tryto</a> program supports a new option -P
 to run the program given at the command line in a new session, and

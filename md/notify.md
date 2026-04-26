@@ -41,11 +41,11 @@ Redirect the standard error output of
 `exec 2> /var/log/socklog/.notify` as second line into
 `/var/service/socklog-unix/log/run`:
 
-      #!/bin/sh
-      exec 2> /var/log/socklog/.notify
-      exec setuidgid log svlogd \
-        main/main main/auth main/cron main/daemon main/debug main/ftp \
-        main/kern main/local main/mail main/news main/syslog main/user
+    #!/bin/sh
+    exec 2> /var/log/socklog/.notify
+    exec setuidgid log svlogd \
+      main/main main/auth main/cron main/daemon main/debug main/ftp \
+      main/kern main/local main/mail main/news main/syslog main/user
 
 [svlogd](https://smarden.org/runit/svlogd.8.html)\'s error messages are
 always log events.
@@ -57,13 +57,13 @@ to be notified about all log messages of the priority *alert*, add a
 corresponding `e` instruction to the `config` file
 `/var/log/socklog/main/config` like this:
 
-      s999999
-      n10
-      e*.alert: *
+    s999999
+    n10
+    e*.alert: *
 
 Then tell the log service to re-read the `config` files:
 
-      sv hup socklog-unix/log
+    sv hup socklog-unix/log
 
 ---
 
@@ -77,20 +77,20 @@ To configure the kind of notification, edit `/etc/sv/socklog-notify/run`
 and change the `prog` argument of [uncat](uncat.1.html) to your needs.
 This example uses *sms_client* to notify:
 
-      #!/bin/sh -e
-      PIPE=/var/log/socklog/.notify
-      if [ ! -p "$PIPE" ]; then mkfifo -m0620 "$PIPE"; chown log:adm "$PIPE"; fi
-      exec <> "$PIPE"
-      exec setuidgid log uncat -s49999 -t90 \
-        sh -c 'head -c140 | sms_client pager'
+    #!/bin/sh -e
+    PIPE=/var/log/socklog/.notify
+    if [ ! -p "$PIPE" ]; then mkfifo -m0620 "$PIPE"; chown log:adm "$PIPE"; fi
+    exec <> "$PIPE"
+    exec setuidgid log uncat -s49999 -t90 \
+      sh -c 'head -c140 | sms_client pager'
 
 Then restart the service:
 
-      sv restart socklog-notify
+    sv restart socklog-notify
 
 Another example using *wall*:
 
-      exec setuidgid log uncat -vs49999 -t180 sh -c 'head | wall'
+    exec setuidgid log uncat -vs49999 -t180 sh -c 'head | wall'
 
 ---
 
@@ -102,13 +102,13 @@ You need to disable all log event notifications before stopping the
 *socklog-notify* service. To check which services are configured for
 sending log events, run:
 
-      grep -F /var/log/socklog/.notify /var/service/*/log/run
+    grep -F /var/log/socklog/.notify /var/service/*/log/run
 
 For each of these services, edit the corresponding `log/run` script to
 remove the `exec 2>/var/log/socklog/.notify` line and the configured log
 event(s) and restart its log service:
 
-      sv restart <service>/log
+    sv restart <service>/log
 
 Now it is safe to stop the *socklog-notify* service.
 

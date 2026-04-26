@@ -37,20 +37,20 @@ calculate a log file partition properly.
 
 For example, this `log/run` file
 
-      #!/bin/sh
-      LOGDIR=/var/log/socklog
-      exec setuidgid log svlogd ${LOGDIR}/main ${LOGDIR}/debug
+    #!/bin/sh
+    LOGDIR=/var/log/socklog
+    exec setuidgid log svlogd ${LOGDIR}/main ${LOGDIR}/debug
 
 with these log `config` files
 
-      # cat /var/log/socklog/main/config
-      s4999999
-      n10
-      # cat /var/log/socklog/debug/config
-      s999999
-      n5
-      -*
-      +*.debug*
+    # cat /var/log/socklog/main/config
+    s4999999
+    n10
+    # cat /var/log/socklog/debug/config
+    s999999
+    n5
+    -*
+    +*.debug*
 
 causes [svlogd](https://smarden.org/runit/svlogd.8.html) to hold maximal
 10 log files, each of maximal size 4999999 bytes in

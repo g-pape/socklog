@@ -54,17 +54,17 @@ create it now.</li>
 </ul>
 <p>Create the service directory and log directories by running the <a
 href="socklog-conf.8.html"><code>socklog-conf</code></a> program:</p>
-<pre><code>  socklog-conf unix nobody log</code></pre>
+<pre><code>socklog-conf unix nobody log</code></pre>
 <p>If you are replacing another service providing system logging through
 the socket <code>/dev/log</code>, such as <em>syslogd</em>, stop this
 service now and ensure that it will not be restarted on runlevel change
 or system reboot.</p>
 <p>Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>
 about the new service:</p>
-<pre><code>  ln -s /etc/sv/socklog-unix /var/service/</code></pre>
+<pre><code>ln -s /etc/sv/socklog-unix /var/service/</code></pre>
 <p>Wait five seconds for the service to start and then check the log
 directories, e.g.:</p>
-<pre><code>  less /var/log/socklog/main/current</code></pre>
+<pre><code>less /var/log/socklog/main/current</code></pre>
 <p>Optionally configure the <em>socklog-unix</em> service by editing the
 corresponding <code>run</code> scripts and <code>config</code> files and
 <a href="https://smarden.org/runit/faq.html#control">restarting</a> the
@@ -89,17 +89,17 @@ create it now.</li>
 </ul>
 <p>Create the service directory and log directories by running the <a
 href="socklog-conf.8.html"><code>socklog-conf</code></a> program:</p>
-<pre><code>  socklog-conf inet nobody log</code></pre>
+<pre><code>socklog-conf inet nobody log</code></pre>
 <p>If you are replacing another service providing system logging through
 the syslog UDP port 514, such as <em>syslogd</em>, stop this service now
 and ensure that it will not be restarted on runlevel change or system
 reboot.</p>
 <p>Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>
 about the new service:</p>
-<pre><code>  ln -s /etc/sv/socklog-inet /var/service/</code></pre>
+<pre><code>ln -s /etc/sv/socklog-inet /var/service/</code></pre>
 <p>Wait five seconds for the service to start and then check the log
 directory:</p>
-<pre><code>  less /var/log/socklog-inet/main/current</code></pre>
+<pre><code>less /var/log/socklog-inet/main/current</code></pre>
 <p>Optionally configure the <em>socklog-inet</em> service by editing the
 corresponding <code>run</code> scripts and <code>config</code> file and
 <a href="https://smarden.org/runit/faq.html#control">restarting</a> the
@@ -124,17 +124,17 @@ create it now.</li>
 </ul>
 <p>Create the service directory and log directories by running the <a
 href="socklog-conf.8.html"><code>socklog-conf</code></a> program:</p>
-<pre><code>  socklog-conf klog nobody log</code></pre>
+<pre><code>socklog-conf klog nobody log</code></pre>
 <p>If you are replacing another service providing kernel logging, such
 as <em>klogd</em> on Linux or <em>syslogd</em> on BSD, stop this service
 now and ensure that it will not be restarted on runlevel change or
 system reboot.</p>
 <p>Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>
 about the new service:</p>
-<pre><code>  ln -s /etc/sv/socklog-klog /var/service/</code></pre>
+<pre><code>ln -s /etc/sv/socklog-klog /var/service/</code></pre>
 <p>Wait five seconds for the service to start and then check the log
 directory:</p>
-<pre><code>  less /var/log/socklog-klog/main/current</code></pre>
+<pre><code>less /var/log/socklog-klog/main/current</code></pre>
 <p>Optionally configure the <em>socklog-klog</em> service by editing the
 corresponding <code>run</code> scripts and <code>config</code> file and
 <a href="https://smarden.org/runit/faq.html#control">restarting</a> the
@@ -161,13 +161,13 @@ create it now.</li>
 href="https://smarden.org/ipsvd/">ipsvd</a> package installed. Then
 create the service directory and log directories by running the <a
 href="socklog-conf.8.html"><code>socklog-conf</code></a> program:</p>
-<pre><code>  socklog-conf ucspi-tcp nobody log</code></pre>
+<pre><code>socklog-conf ucspi-tcp nobody log</code></pre>
 <p>Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>
 about the new service:</p>
-<pre><code>  ln -s /etc/sv/socklog-ucspi-tcp /var/service/</code></pre>
+<pre><code>ln -s /etc/sv/socklog-ucspi-tcp /var/service/</code></pre>
 <p>Wait five seconds for the service to start and then check the log
 directory:</p>
-<pre><code>  less /var/log/socklog-ucspi-tcp/main/current</code></pre>
+<pre><code>less /var/log/socklog-ucspi-tcp/main/current</code></pre>
 <p>Optionally configure the <em>socklog-ucspi-tcp</em> service by
 editing the corresponding <code>run</code> scripts and
 <code>config</code> file and <a
@@ -196,13 +196,13 @@ of this group. If this group does not exist, create it now.</li>
 </ul>
 <p>Create the service directory by running the <a
 href="socklog-conf.8.html"><code>socklog-conf</code></a> program:</p>
-<pre><code>  socklog-conf notify log adm</code></pre>
+<pre><code>socklog-conf notify log adm</code></pre>
 <p>Tell <a href="https://smarden.org/runit/runsvdir.8.html">runsvdir</a>
 about the new service:</p>
-<pre><code>  ln -s /etc/sv/socklog-notify /var/service/</code></pre>
+<pre><code>ln -s /etc/sv/socklog-notify /var/service/</code></pre>
 <p>Wait five seconds for the service to start, you can test the service
 with:</p>
-<pre><code>  echo test | tai64n &gt; /var/log/socklog/.notify</code></pre>
+<pre><code>echo test | tai64n &gt; /var/log/socklog/.notify</code></pre>
 <p>Optionally configure the <em>socklog-notify</em> service by editing
 the corresponding <code>run</code> script and <a
 href="https://smarden.org/runit/faq.html#control">restarting</a> the

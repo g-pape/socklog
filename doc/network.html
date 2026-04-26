@@ -54,17 +54,17 @@ href="configuration.html#ucspi-tcp">Configuration</a> with the following
 <code>socklog-ucspi-tcp/run</code> and
 <code>socklog-ucspi-tcp/log/run</code> scripts:</p>
 <p>socklog-ucspi-tcp/run:</p>
-<pre><code>  #!/bin/sh
-  PORT=10116
-  exec 2&gt;&amp;1
-  exec tcpsvd -vl0 -unobody 0 &quot;$PORT&quot; socklog ucspi TCPREMOTEIP</code></pre>
+<pre><code>#!/bin/sh
+PORT=10116
+exec 2&gt;&amp;1
+exec tcpsvd -vl0 -unobody 0 &quot;$PORT&quot; socklog ucspi TCPREMOTEIP</code></pre>
 <p>socklog-ucspi-tcp/log/run:</p>
-<pre><code>  #!/bin/sh
-  exec chpst -ulog svlogd -t main/main main/10.0.0.236</code></pre>
+<pre><code>#!/bin/sh
+exec chpst -ulog svlogd -t main/main main/10.0.0.236</code></pre>
 <p>and socklog-ucspi-tcp/log/main/10.0.0.236/config</p>
-<pre><code>  # cat 10.0.0.236/config
-  -*
-  +10.0.0.236:*</code></pre>
+<pre><code># cat 10.0.0.236/config
+-*
++10.0.0.236:*</code></pre>
 <p>You will then find all log data from remote hosts that was
 successfully transmitted in <code>main/main/</code>. Log data from
 <code>10.0.0.236</code> will additionally be saved in
@@ -74,14 +74,14 @@ log data)</h3>
 <p>Change the <em>socklog</em> configuration to use a processor to
 transmit the log data:</p>
 <p>socklog-unix/log/run:</p>
-<pre><code>  #!/bin/sh
-  exec chpst -ulog svlogd ./main/main</code></pre>
+<pre><code>#!/bin/sh
+exec chpst -ulog svlogd ./main/main</code></pre>
 <p>socklog-unix/log/main/main/config</p>
-<pre><code>  s4096
-  n20
-  !tryto -pv nc 10.0.0.16 10116</code></pre>
+<pre><code>s4096
+n20
+!tryto -pv nc 10.0.0.16 10116</code></pre>
 <p>and restart the log service:</p>
-<pre><code>  # sv restart socklog-unix/log</code></pre>
+<pre><code># sv restart socklog-unix/log</code></pre>
 <p>On each rotation of <a
 href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s
 <code>current</code>, the data will be transmitted to
@@ -106,16 +106,16 @@ href="configuration.html#inet">Configuration</a> with the following
 scripts, and the following <code>socklog-inet/log/main/config</code> log
 configuration:</p>
 <p>socklog-inet/run:</p>
-<pre><code>  #!/bin/sh
-  exec 2&gt;&amp;1
-  exec chpst -Unobody socklog inet 0 514</code></pre>
+<pre><code>#!/bin/sh
+exec 2&gt;&amp;1
+exec chpst -Unobody socklog inet 0 514</code></pre>
 <p>socklog-inet/log/run:</p>
-<pre><code>  #!/bin/sh
-  exec chpst -ulog svlogd -t main/main main/10.0.0.236</code></pre>
+<pre><code>#!/bin/sh
+exec chpst -ulog svlogd -t main/main main/10.0.0.236</code></pre>
 <p>and socklog-inet/log/main/10.0.0.236/config:</p>
-<pre><code>  # cat 10.0.0.236/config
-  -*
-  +10.0.0.236:*</code></pre>
+<pre><code># cat 10.0.0.236/config
+-*
++10.0.0.236:*</code></pre>
 <p>You will then find all log messages from remote hosts that were
 successfully transmitted in <code>main/main/</code>. Log messages from
 <code>10.0.0.236</code> will additionally be saved in
@@ -125,21 +125,21 @@ sending log data)</h3>
 <p>Tell socklog to write raw syslog messages without converting syslog
 priority and facility to names by adding the -R option:</p>
 <p>socklog-unix/run:</p>
-<pre><code>  #!/bin/sh
-  exec 2&gt;&amp;1
-  exec chpst -Unobody socklog -R unix /dev/log</code></pre>
+<pre><code>#!/bin/sh
+exec 2&gt;&amp;1
+exec chpst -Unobody socklog -R unix /dev/log</code></pre>
 <p>Then change the configuration of <em>socklog</em>'s main log
 directory to tell <a
 href="https://smarden.org/runit/svlogd.8.html">svlogd</a> to transmit
 log messages through UDP:</p>
 <p>/var/log/socklog/main/config:</p>
-<pre><code>  s9999
-  n2
-  U10.0.0.16:514</code></pre>
+<pre><code>s9999
+n2
+U10.0.0.16:514</code></pre>
 <p>Restart the service, and tell the log service to reload its
 configuration:</p>
-<pre><code>  sv restart socklog-unix
-  sv hup socklog-unix/log</code></pre>
+<pre><code>sv restart socklog-unix
+sv hup socklog-unix/log</code></pre>
 <p>Now each log message will be sent through UDP to
 <code>10.0.0.16:514</code>, and not written to the log directory. If <a
 href="https://smarden.org/runit/svlogd.8.html">svlogd</a> has trouble

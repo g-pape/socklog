@@ -38,11 +38,11 @@ href="https://smarden.org/runit/svlogd.8.html">svlogd</a> to the named
 pipe <em>socklog-notify</em> is reading from. To do so, insert
 <code>exec 2&gt; /var/log/socklog/.notify</code> as second line into
 <code>/var/service/socklog-unix/log/run</code>:</p>
-<pre><code>  #!/bin/sh
-  exec 2&gt; /var/log/socklog/.notify
-  exec setuidgid log svlogd \
-    main/main main/auth main/cron main/daemon main/debug main/ftp \
-    main/kern main/local main/mail main/news main/syslog main/user</code></pre>
+<pre><code>#!/bin/sh
+exec 2&gt; /var/log/socklog/.notify
+exec setuidgid log svlogd \
+  main/main main/auth main/cron main/daemon main/debug main/ftp \
+  main/kern main/local main/mail main/news main/syslog main/user</code></pre>
 <p><a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s error
 messages are always log events.</p>
 <p>To configure additional log events in
@@ -53,12 +53,12 @@ example, if you want to be notified about all log messages of the
 priority <em>alert</em>, add a corresponding <code>e</code> instruction
 to the <code>config</code> file
 <code>/var/log/socklog/main/config</code> like this:</p>
-<pre><code>  s999999
-  n10
-  e*.alert: *</code></pre>
+<pre><code>s999999
+n10
+e*.alert: *</code></pre>
 <p>Then tell the log service to re-read the <code>config</code>
 files:</p>
-<pre><code>  sv hup socklog-unix/log</code></pre>
+<pre><code>sv hup socklog-unix/log</code></pre>
 <hr />
 <h2 id="how-to-configure-the-notification">How to configure the
 notification</h2>
@@ -70,16 +70,16 @@ example.</p>
 <code>/etc/sv/socklog-notify/run</code> and change the <code>prog</code>
 argument of <a href="uncat.1.html">uncat</a> to your needs. This example
 uses <em>sms_client</em> to notify:</p>
-<pre><code>  #!/bin/sh -e
-  PIPE=/var/log/socklog/.notify
-  if [ ! -p &quot;$PIPE&quot; ]; then mkfifo -m0620 &quot;$PIPE&quot;; chown log:adm &quot;$PIPE&quot;; fi
-  exec &lt;&gt; &quot;$PIPE&quot;
-  exec setuidgid log uncat -s49999 -t90 \
-    sh -c &#39;head -c140 | sms_client pager&#39;</code></pre>
+<pre><code>#!/bin/sh -e
+PIPE=/var/log/socklog/.notify
+if [ ! -p &quot;$PIPE&quot; ]; then mkfifo -m0620 &quot;$PIPE&quot;; chown log:adm &quot;$PIPE&quot;; fi
+exec &lt;&gt; &quot;$PIPE&quot;
+exec setuidgid log uncat -s49999 -t90 \
+  sh -c &#39;head -c140 | sms_client pager&#39;</code></pre>
 <p>Then restart the service:</p>
-<pre><code>  sv restart socklog-notify</code></pre>
+<pre><code>sv restart socklog-notify</code></pre>
 <p>Another example using <em>wall</em>:</p>
-<pre><code>  exec setuidgid log uncat -vs49999 -t180 sh -c &#39;head | wall&#39;</code></pre>
+<pre><code>exec setuidgid log uncat -vs49999 -t180 sh -c &#39;head | wall&#39;</code></pre>
 <hr />
 <p><span id="disable"></span></p>
 <h2 id="disable-log-event-notifications">Disable log event
@@ -87,12 +87,12 @@ notifications</h2>
 <p>You need to disable all log event notifications before stopping the
 <em>socklog-notify</em> service. To check which services are configured
 for sending log events, run:</p>
-<pre><code>  grep -F /var/log/socklog/.notify /var/service/*/log/run</code></pre>
+<pre><code>grep -F /var/log/socklog/.notify /var/service/*/log/run</code></pre>
 <p>For each of these services, edit the corresponding
 <code>log/run</code> script to remove the
 <code>exec 2&gt;/var/log/socklog/.notify</code> line and the configured
 log event(s) and restart its log service:</p>
-<pre><code>  sv restart &lt;service&gt;/log</code></pre>
+<pre><code>sv restart &lt;service&gt;/log</code></pre>
 <p>Now it is safe to stop the <em>socklog-notify</em> service.</p>
 <hr />
 <p><a href="mailto:pape@smarden.org">Gerrit Pape
