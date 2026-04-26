@@ -2,20 +2,16 @@ DESTDIR=
 
 PACKAGE=socklog-2.1.2
 DIRS=doc man package src
-MANPAGES=man/socklog.8 man/socklog-check.8 man/socklog-conf.8 man/tryto.1 \
-man/uncat.1
 
-all: clean .manpages $(PACKAGE).tar.gz
+all: clean .doc .man $(PACKAGE).tar.gz
 
-.manpages:
-	for i in $(MANPAGES); do \
-	  rman -S -f html -r '' < $$i | \
-	  sed -e "s}name='sect\([0-9]*\)' href='#toc[0-9]*'>\(.*\)}name='sect\1'>\2}g ; \
-	  s}<a href='#toc'>Table of Contents</a>}<a href='https://smarden.org/pape/'>G. Pape</a><br><a href='index.html'>socklog</A><hr>}g ; \
-	  s}<!--.*-->}}g" \
-	  > doc/`basename $$i`.html ; \
-	done ; \
-	touch .manpages
+.doc:
+	cd md && ./gen-html ../doc
+	touch .doc
+
+.man:
+	cd md && ./gen-man ../man
+	touch .man
 
 $(PACKAGE).tar.gz:
 	rm -rf TEMP
@@ -36,5 +32,4 @@ clean:
 
 cleaner: clean
 	rm -f $(PACKAGE).tar.gz
-	for i in $(MANPAGES); do rm -f doc/`basename $$i`.html; done
-	rm -f .manpages
+	rm -f doc/*.html man/*.[0-9] .doc .man
