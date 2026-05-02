@@ -47,7 +47,7 @@ main features syslogd provides:
 [network logging concept](network.html), and additionally does [log
 event notification](notify.html).
 
-[svlogd](https://smarden.org/runit/svlogd.8.html) has a built in [log
+[svlogd](https://smarden.org/runit/svlogd.8.html) has a built-in [log
 file rotation based on file size](benefits.html#logrotation), so there
 is no need for any cron jobs or similar to rotate the logs. Log
 partitions can be calculated properly.
@@ -113,7 +113,7 @@ See [INSTALL](install.html) on how to install *socklog* and
 
 ---
 
-See <https://smarden.org/socklog/> for recent informations.
+See <https://smarden.org/socklog/> for recent information.
 
 ---
 

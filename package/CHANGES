@@ -1,3 +1,4 @@
+  * doc/index.html: spelling.
   * doc/install.html: how to install as non-root user.
   * doc/examples.html, doc/notify.html: upper and lower case, format.
   * doc/*.html, man/*.?: replace; converted from markdown source.
