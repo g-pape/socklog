@@ -1,4 +1,4 @@
-name: make check
+name: compile-check
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
       - next
 
 jobs:
-  make-check:
+  compile-check:
     strategy:
       matrix:
         runners:
@@ -24,44 +24,41 @@ jobs:
     runs-on: ${{ matrix.runners }}
     steps:
     - uses: actions/checkout@v4
-    - name: make check
-      run: cd src && make check
+    - name: compile-check
+      run: package/compile && package/check
 
-  make-check-freebsd:
+  compile-check-on-freebsd:
     runs-on: ubuntu-latest
-    name: make check FreeBSD
     steps:
     - uses: actions/checkout@v4
-    - name: make check
+    - name: compile-check
       uses: vmactions/freebsd-vm@v1
       with:
         usesh: true
         run: |
           echo 'cc -O2 -Wall' > src/conf-cc
           echo 'cc -s' > src/conf-ld
-          cd src && make check
+          package/compile && package/check
 
-  make-check-openbsd:
+  compile-check-on-openbsd:
     runs-on: ubuntu-latest
-    name: make check OpenBSD
     steps:
     - uses: actions/checkout@v4
-    - name: make check
+    - name: compile-check
       uses: vmactions/openbsd-vm@v1
       with:
         usesh: true
         run: |
           echo 'cc -O2 -Wall' > src/conf-cc
           echo 'cc -s' > src/conf-ld
-          cd src && make check
+          package/compile && package/check
 
-  make-check-netbsd:
+  compile-check-on-netbsd:
     runs-on: ubuntu-latest
-    name: make check NetBSD
     steps:
     - uses: actions/checkout@v4
-    - name: make check
+    - name: compile-check
       uses: vmactions/netbsd-vm@v1
       with:
         usesh: true
-        run: cd src && make check
+        run: package/compile && package/check
