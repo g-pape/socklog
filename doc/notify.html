@@ -37,7 +37,7 @@ Make sure that the <em>socklog-notify</em> service is running.</p>
 href="https://smarden.org/runit/svlogd.8.html">svlogd</a> to the named
 pipe <em>socklog-notify</em> is reading from. To do so, insert
 <code>exec 2&gt; /var/log/socklog/.notify</code> as second line into
-<code>/var/service/socklog-unix/log/run</code>:</p>
+<code>/service/socklog-unix/log/run</code>:</p>
 <pre><code>#!/bin/sh
 exec 2&gt; /var/log/socklog/.notify
 exec setuidgid log svlogd \
@@ -87,7 +87,7 @@ notifications</h2>
 <p>You need to disable all log event notifications before stopping the
 <em>socklog-notify</em> service. To check which services are configured
 for sending log events, run:</p>
-<pre><code>grep -F /var/log/socklog/.notify /var/service/*/log/run</code></pre>
+<pre><code>grep -F /var/log/socklog/.notify /service/*/log/run</code></pre>
 <p>For each of these services, edit the corresponding
 <code>log/run</code> script to remove the
 <code>exec 2&gt;/var/log/socklog/.notify</code> line and the configured

@@ -39,7 +39,7 @@ Redirect the standard error output of
 [svlogd](https://smarden.org/runit/svlogd.8.html) to the named pipe
 *socklog-notify* is reading from. To do so, insert
 `exec 2> /var/log/socklog/.notify` as second line into
-`/var/service/socklog-unix/log/run`:
+`/service/socklog-unix/log/run`:
 
     #!/bin/sh
     exec 2> /var/log/socklog/.notify
@@ -102,7 +102,7 @@ You need to disable all log event notifications before stopping the
 *socklog-notify* service. To check which services are configured for
 sending log events, run:
 
-    grep -F /var/log/socklog/.notify /var/service/*/log/run
+    grep -F /var/log/socklog/.notify /service/*/log/run
 
 For each of these services, edit the corresponding `log/run` script to
 remove the `exec 2>/var/log/socklog/.notify` line and the configured log
