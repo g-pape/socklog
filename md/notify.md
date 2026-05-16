@@ -43,7 +43,7 @@ Redirect the standard error output of
 
     #!/bin/sh
     exec 2> /var/log/socklog/.notify
-    exec setuidgid log svlogd \
+    exec chpst -ulog svlogd \
       main/main main/auth main/cron main/daemon main/debug main/ftp \
       main/kern main/local main/mail main/news main/syslog main/user
 
@@ -81,7 +81,7 @@ This example uses *sms_client* to notify:
     PIPE=/var/log/socklog/.notify
     if [ ! -p "$PIPE" ]; then mkfifo -m0620 "$PIPE"; chown log:adm "$PIPE"; fi
     exec <> "$PIPE"
-    exec setuidgid log uncat -s49999 -t90 \
+    exec chpst -ulog uncat -s49999 -t90 \
       sh -c 'head -c140 | sms_client pager'
 
 Then restart the service:
@@ -90,7 +90,7 @@ Then restart the service:
 
 Another example using *wall*:
 
-    exec setuidgid log uncat -vs49999 -t180 sh -c 'head | wall'
+    exec chpst -ulog uncat -vs49999 -t180 sh -c 'head | wall'
 
 ---
 

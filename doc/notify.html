@@ -40,7 +40,7 @@ pipe <em>socklog-notify</em> is reading from. To do so, insert
 <code>/service/socklog-unix/log/run</code>:</p>
 <pre><code>#!/bin/sh
 exec 2&gt; /var/log/socklog/.notify
-exec setuidgid log svlogd \
+exec chpst -ulog svlogd \
   main/main main/auth main/cron main/daemon main/debug main/ftp \
   main/kern main/local main/mail main/news main/syslog main/user</code></pre>
 <p><a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s error
@@ -74,12 +74,12 @@ uses <em>sms_client</em> to notify:</p>
 PIPE=/var/log/socklog/.notify
 if [ ! -p &quot;$PIPE&quot; ]; then mkfifo -m0620 &quot;$PIPE&quot;; chown log:adm &quot;$PIPE&quot;; fi
 exec &lt;&gt; &quot;$PIPE&quot;
-exec setuidgid log uncat -s49999 -t90 \
+exec chpst -ulog uncat -s49999 -t90 \
   sh -c &#39;head -c140 | sms_client pager&#39;</code></pre>
 <p>Then restart the service:</p>
 <pre><code>sv restart socklog-notify</code></pre>
 <p>Another example using <em>wall</em>:</p>
-<pre><code>exec setuidgid log uncat -vs49999 -t180 sh -c &#39;head | wall&#39;</code></pre>
+<pre><code>exec chpst -ulog uncat -vs49999 -t180 sh -c &#39;head | wall&#39;</code></pre>
 <hr />
 <p><span id="disable"></span></p>
 <h2 id="disable-log-event-notifications">Disable log event
