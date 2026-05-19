@@ -39,7 +39,7 @@ For example, this `log/run` file
 
     #!/bin/sh
     LOGDIR=/var/log/socklog
-    exec setuidgid log svlogd ${LOGDIR}/main ${LOGDIR}/debug
+    exec chpst -ulog svlogd ${LOGDIR}/main ${LOGDIR}/debug
 
 with these log `config` files
 

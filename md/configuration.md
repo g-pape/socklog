@@ -64,7 +64,7 @@ reboot.
 Tell [runsvdir](https://smarden.org/runit/runsvdir.8.html) about the new
 service:
 
-    ln -s /etc/sv/socklog-unix /var/service/
+    ln -s /etc/sv/socklog-unix /service/
 
 Wait five seconds for the service to start and then check the log
 directories, e.g.:
@@ -75,8 +75,8 @@ Optionally configure the *socklog-unix* service by editing the
 corresponding `run` scripts and `config` files and
 [restarting](https://smarden.org/runit/faq.html#control) the service:
 
--   /var/service/socklog-unix/run
--   /var/service/socklog-unix/log/run
+-   /service/socklog-unix/run
+-   /service/socklog-unix/log/run
 -   /var/log/socklog/\*/config
 
 ---
@@ -105,7 +105,7 @@ reboot.
 Tell [runsvdir](https://smarden.org/runit/runsvdir.8.html) about the new
 service:
 
-    ln -s /etc/sv/socklog-inet /var/service/
+    ln -s /etc/sv/socklog-inet /service/
 
 Wait five seconds for the service to start and then check the log
 directory:
@@ -116,8 +116,8 @@ Optionally configure the *socklog-inet* service by editing the
 corresponding `run` scripts and `config` file and
 [restarting](https://smarden.org/runit/faq.html#control) the service:
 
--   /var/service/socklog-inet/run
--   /var/service/socklog-inet/log/run
+-   /service/socklog-inet/run
+-   /service/socklog-inet/log/run
 -   /var/log/socklog-inet/main/config
 
 ---
@@ -145,7 +145,7 @@ that it will not be restarted on runlevel change or system reboot.
 Tell [runsvdir](https://smarden.org/runit/runsvdir.8.html) about the new
 service:
 
-    ln -s /etc/sv/socklog-klog /var/service/
+    ln -s /etc/sv/socklog-klog /service/
 
 Wait five seconds for the service to start and then check the log
 directory:
@@ -156,8 +156,8 @@ Optionally configure the *socklog-klog* service by editing the
 corresponding `run` scripts and `config` file and
 [restarting](https://smarden.org/runit/faq.html#control) the service:
 
--   /var/service/socklog-klog/run
--   /var/service/socklog-klog/log/run
+-   /service/socklog-klog/run
+-   /service/socklog-klog/log/run
 -   /var/log/socklog-klog/config
 
 ---
@@ -182,7 +182,7 @@ running the [`socklog-conf`](socklog-conf.8.html) program:
 Tell [runsvdir](https://smarden.org/runit/runsvdir.8.html) about the new
 service:
 
-    ln -s /etc/sv/socklog-ucspi-tcp /var/service/
+    ln -s /etc/sv/socklog-ucspi-tcp /service/
 
 Wait five seconds for the service to start and then check the log
 directory:
@@ -193,8 +193,8 @@ Optionally configure the *socklog-ucspi-tcp* service by editing the
 corresponding `run` scripts and `config` file and
 [restarting](https://smarden.org/runit/faq.html#control) the service:
 
--   /var/service/socklog-ucspi-tcp/run
--   /var/service/socklog-ucspi-tcp/log/run
+-   /service/socklog-ucspi-tcp/run
+-   /service/socklog-ucspi-tcp/log/run
 -   /var/log/socklog-ucspi-tcp/main/config
 
 Refer to [Network logging](network.html) for setting up clients.
@@ -221,7 +221,7 @@ Create the service directory by running the
 Tell [runsvdir](https://smarden.org/runit/runsvdir.8.html) about the new
 service:
 
-    ln -s /etc/sv/socklog-notify /var/service/
+    ln -s /etc/sv/socklog-notify /service/
 
 Wait five seconds for the service to start, you can test the service
 with:
@@ -232,7 +232,7 @@ Optionally configure the *socklog-notify* service by editing the
 corresponding `run` script and
 [restarting](https://smarden.org/runit/faq.html#control) the service:
 
--   /var/service/socklog-notify/run
+-   /service/socklog-notify/run
 
 Read [Log events notification](notify.html) before disabling this
 service and for configuring arbitrary log services to notify events.

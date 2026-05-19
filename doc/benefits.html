@@ -38,7 +38,7 @@ possible to calculate a log file partition properly.</p>
 <p>For example, this <code>log/run</code> file</p>
 <pre><code>#!/bin/sh
 LOGDIR=/var/log/socklog
-exec setuidgid log svlogd ${LOGDIR}/main ${LOGDIR}/debug</code></pre>
+exec chpst -ulog svlogd ${LOGDIR}/main ${LOGDIR}/debug</code></pre>
 <p>with these log <code>config</code> files</p>
 <pre><code># cat /var/log/socklog/main/config
 s4999999

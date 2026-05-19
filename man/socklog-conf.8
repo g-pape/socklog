@@ -39,9 +39,9 @@ The corresponding \f[B]svlogd\f[R](8) process runs under the uid and gid
 of \f[I]logacct\f[R].
 .PP
 You can run the service under \f[B]runsvdir\f[R](8) by creating a
-symbolic link in the service directory:
+symbolic link in the services directory:
 .PP
-ln \-s /etc/sv/socklog\-unix /var/service/
+ln \-s /etc/sv/socklog\-unix /service/
 .SH INET SERVICE
 \f[B]socklog\-conf\f[R] inet \f[I]acct\f[R] \f[I]logacct\f[R]
 .PP
@@ -61,9 +61,9 @@ The corresponding \f[B]svlogd\f[R](8) process runs under the uid and gid
 of \f[I]logacct\f[R].
 .PP
 You can run the service under \f[B]runsvdir\f[R](8) by creating a
-symbolic link in the service directory:
+symbolic link in the services directory:
 .PP
-ln \-s /etc/sv/socklog\-inet /var/service/
+ln \-s /etc/sv/socklog\-inet /service/
 .SH KLOG SERVICE
 \f[B]socklog\-conf\f[R] klog \f[I]acct\f[R] \f[I]logacct\f[R]
 .PP
@@ -83,9 +83,9 @@ The corresponding \f[B]svlogd\f[R](8) process runs under the uid and gid
 of \f[I]logacct\f[R].
 .PP
 You can run the service under \f[B]runsvdir\f[R](8) by creating a
-symbolic link in the service directory:
+symbolic link in the services directory:
 .PP
-ln \-s /etc/sv/socklog\-klog /var/service/
+ln \-s /etc/sv/socklog\-klog /service/
 .SH UCSPI\-TCP SERVICE
 \f[B]socklog\-conf\f[R] ucspi\-tcp \f[I]acct\f[R] \f[I]logacct\f[R]
 .PP
@@ -105,9 +105,9 @@ The corresponding \f[B]svlogd\f[R](8) process runs under the uid and gid
 of \f[I]logacct\f[R].
 .PP
 You can run the service under \f[B]runsvdir\f[R](8) by creating a
-symbolic link in the service directory:
+symbolic link in the services directory:
 .PP
-ln \-s /etc/sv/socklog\-ucspi\-tcp /var/service/
+ln \-s /etc/sv/socklog\-ucspi\-tcp /service/
 .SH NOTIFY SERVICE
 \f[B]socklog\-conf\f[R] notify \f[I]acct\f[R] \f[I]grp\f[R]
 .PP
@@ -125,9 +125,9 @@ All uids running a log service that is configured to push log events to
 the socklog\-notify service must be member of the group \f[I]grp\f[R].
 .PP
 You can run the service under \f[B]runsvdir\f[R](8) by creating a
-symbolic link in the service directory:
+symbolic link in the services directory:
 .PP
-ln \-s /etc/sv/socklog\-notify /var/service/
+ln \-s /etc/sv/socklog\-notify /service/
 .SH SEE ALSO
 socklog(8), svlogd(8), nc(1), tryto(1), uncat(1), socklog\-check(8),
 tcpsvd(8), sv(8), runsv(8), runsvdir(8)

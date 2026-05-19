@@ -37,10 +37,10 @@ Make sure that the <em>socklog-notify</em> service is running.</p>
 href="https://smarden.org/runit/svlogd.8.html">svlogd</a> to the named
 pipe <em>socklog-notify</em> is reading from. To do so, insert
 <code>exec 2&gt; /var/log/socklog/.notify</code> as second line into
-<code>/var/service/socklog-unix/log/run</code>:</p>
+<code>/service/socklog-unix/log/run</code>:</p>
 <pre><code>#!/bin/sh
 exec 2&gt; /var/log/socklog/.notify
-exec setuidgid log svlogd \
+exec chpst -ulog svlogd \
   main/main main/auth main/cron main/daemon main/debug main/ftp \
   main/kern main/local main/mail main/news main/syslog main/user</code></pre>
 <p><a href="https://smarden.org/runit/svlogd.8.html">svlogd</a>'s error
@@ -74,12 +74,12 @@ uses <em>sms_client</em> to notify:</p>
 PIPE=/var/log/socklog/.notify
 if [ ! -p &quot;$PIPE&quot; ]; then mkfifo -m0620 &quot;$PIPE&quot;; chown log:adm &quot;$PIPE&quot;; fi
 exec &lt;&gt; &quot;$PIPE&quot;
-exec setuidgid log uncat -s49999 -t90 \
+exec chpst -ulog uncat -s49999 -t90 \
   sh -c &#39;head -c140 | sms_client pager&#39;</code></pre>
 <p>Then restart the service:</p>
 <pre><code>sv restart socklog-notify</code></pre>
 <p>Another example using <em>wall</em>:</p>
-<pre><code>exec setuidgid log uncat -vs49999 -t180 sh -c &#39;head | wall&#39;</code></pre>
+<pre><code>exec chpst -ulog uncat -vs49999 -t180 sh -c &#39;head | wall&#39;</code></pre>
 <hr />
 <p><span id="disable"></span></p>
 <h2 id="disable-log-event-notifications">Disable log event
@@ -87,7 +87,7 @@ notifications</h2>
 <p>You need to disable all log event notifications before stopping the
 <em>socklog-notify</em> service. To check which services are configured
 for sending log events, run:</p>
-<pre><code>grep -F /var/log/socklog/.notify /var/service/*/log/run</code></pre>
+<pre><code>grep -F /var/log/socklog/.notify /service/*/log/run</code></pre>
 <p>For each of these services, edit the corresponding
 <code>log/run</code> script to remove the
 <code>exec 2&gt;/var/log/socklog/.notify</code> line and the configured

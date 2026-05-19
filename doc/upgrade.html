@@ -28,7 +28,7 @@ default creates a <code>./check</code> script in the
 <em>runit</em>'s <a href="https://smarden.org/runit/sv.8.html">sv</a>
 program when starting or checking the service. To update existing
 installations, you can create the script manually:</p>
-<pre><code># cd /var/service/socklog-unix
+<pre><code># cd /service/socklog-unix
 # cat &gt;check &lt;&lt;EOT
 #!/bin/sh
 exec socklog-check unix /dev/log
