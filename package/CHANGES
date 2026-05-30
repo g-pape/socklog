@@ -1,3 +1,6 @@
+  * doc/benefits.html, doc/notify.html: use chpst -u instead of setuidgid.
+  * doc/configuration.html, doc/notify.html, doc/upgrade.html,
+    man/socklog-conf.8: use /service instead of /var/service.
   * doc/index.html: spelling.
   * doc/install.html: how to install as non-root user.
   * doc/examples.html, doc/notify.html: upper and lower case, format.

@@ -26,7 +26,7 @@ utilized by *runit*\'s [sv](https://smarden.org/runit/sv.8.html) program
 when starting or checking the service. To update existing installations,
 you can create the script manually:
 
-    # cd /var/service/socklog-unix
+    # cd /service/socklog-unix
     # cat >check <<EOT
     #!/bin/sh
     exec socklog-check unix /dev/log

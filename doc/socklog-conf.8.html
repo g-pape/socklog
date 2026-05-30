@@ -40,8 +40,8 @@ directory <em>/etc/sv/socklog-unix</em> and the log directory
 corresponding <strong>svlogd</strong>(8) process runs under the uid and
 gid of <em>logacct</em>.</p>
 <p>You can run the service under <strong>runsvdir</strong>(8) by
-creating a symbolic link in the service directory:</p>
-<p>ln -s /etc/sv/socklog-unix /var/service/</p>
+creating a symbolic link in the services directory:</p>
+<p>ln -s /etc/sv/socklog-unix /service/</p>
 <h3 id="inet-service">INET SERVICE</h3>
 <p><strong>socklog-conf</strong> inet <em>acct</em> <em>logacct</em></p>
 <p>Running <strong>socklog-conf</strong> with the 1st argument
@@ -57,8 +57,8 @@ directory <em>/etc/sv/socklog-inet</em> and the log directory
 The corresponding <strong>svlogd</strong>(8) process runs under the uid
 and gid of <em>logacct</em>.</p>
 <p>You can run the service under <strong>runsvdir</strong>(8) by
-creating a symbolic link in the service directory:</p>
-<p>ln -s /etc/sv/socklog-inet /var/service/</p>
+creating a symbolic link in the services directory:</p>
+<p>ln -s /etc/sv/socklog-inet /service/</p>
 <h3 id="klog-service">KLOG SERVICE</h3>
 <p><strong>socklog-conf</strong> klog <em>acct</em> <em>logacct</em></p>
 <p>Running <strong>socklog-conf</strong> with the 1st argument
@@ -74,8 +74,8 @@ Linux, or <em>/dev/socklog-klog</em> on BSD.</p>
 The corresponding <strong>svlogd</strong>(8) process runs under the uid
 and gid of <em>logacct</em>.</p>
 <p>You can run the service under <strong>runsvdir</strong>(8) by
-creating a symbolic link in the service directory:</p>
-<p>ln -s /etc/sv/socklog-klog /var/service/</p>
+creating a symbolic link in the services directory:</p>
+<p>ln -s /etc/sv/socklog-klog /service/</p>
 <h3 id="ucspi-tcp-service">UCSPI-TCP SERVICE</h3>
 <p><strong>socklog-conf</strong> ucspi-tcp <em>acct</em>
 <em>logacct</em></p>
@@ -92,8 +92,8 @@ to run <strong>socklog</strong>(8) under the uid and gid of
 <em>logacct</em>. The corresponding <strong>svlogd</strong>(8) process
 runs under the uid and gid of <em>logacct</em>.</p>
 <p>You can run the service under <strong>runsvdir</strong>(8) by
-creating a symbolic link in the service directory:</p>
-<p>ln -s /etc/sv/socklog-ucspi-tcp /var/service/</p>
+creating a symbolic link in the services directory:</p>
+<p>ln -s /etc/sv/socklog-ucspi-tcp /service/</p>
 <h3 id="notify-service">NOTIFY SERVICE</h3>
 <p><strong>socklog-conf</strong> notify <em>acct</em> <em>grp</em></p>
 <p>Running <strong>socklog-conf</strong> with the 1st argument
@@ -107,8 +107,8 @@ pipe <em>/var/log/socklog/.notify</em>. The named pipe will have mode
 to the socklog-notify service must be member of the group
 <em>grp</em>.</p>
 <p>You can run the service under <strong>runsvdir</strong>(8) by
-creating a symbolic link in the service directory:</p>
-<p>ln -s /etc/sv/socklog-notify /var/service/</p>
+creating a symbolic link in the services directory:</p>
+<p>ln -s /etc/sv/socklog-notify /service/</p>
 <h3 id="see-also">SEE ALSO</h3>
 <p>socklog(8), svlogd(8), nc(1), tryto(1), uncat(1), socklog-check(8),
 tcpsvd(8), sv(8), runsv(8), runsvdir(8)</p>

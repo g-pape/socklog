@@ -34,9 +34,9 @@ It also creates automatically rotated log directories in
 **svlogd**(8) process runs under the uid and gid of *logacct*.
 
 You can run the service under **runsvdir**(8) by creating a symbolic
-link in the service directory:
+link in the services directory:
 
-ln -s /etc/sv/socklog-unix /var/service/
+ln -s /etc/sv/socklog-unix /service/
 
 # INET SERVICE
 
@@ -56,9 +56,9 @@ corresponding **svlogd**(8) process runs under the uid and gid of
 *logacct*.
 
 You can run the service under **runsvdir**(8) by creating a symbolic
-link in the service directory:
+link in the services directory:
 
-ln -s /etc/sv/socklog-inet /var/service/
+ln -s /etc/sv/socklog-inet /service/
 
 # KLOG SERVICE
 
@@ -78,9 +78,9 @@ corresponding **svlogd**(8) process runs under the uid and gid of
 *logacct*.
 
 You can run the service under **runsvdir**(8) by creating a symbolic
-link in the service directory:
+link in the services directory:
 
-ln -s /etc/sv/socklog-klog /var/service/
+ln -s /etc/sv/socklog-klog /service/
 
 # UCSPI-TCP SERVICE
 
@@ -101,9 +101,9 @@ corresponding **svlogd**(8) process runs under the uid and gid of
 *logacct*.
 
 You can run the service under **runsvdir**(8) by creating a symbolic
-link in the service directory:
+link in the services directory:
 
-ln -s /etc/sv/socklog-ucspi-tcp /var/service/
+ln -s /etc/sv/socklog-ucspi-tcp /service/
 
 # NOTIFY SERVICE
 
@@ -121,9 +121,9 @@ All uids running a log service that is configured to push log events to
 the socklog-notify service must be member of the group *grp*.
 
 You can run the service under **runsvdir**(8) by creating a symbolic
-link in the service directory:
+link in the services directory:
 
-ln -s /etc/sv/socklog-notify /var/service/
+ln -s /etc/sv/socklog-notify /service/
 
 # SEE ALSO
 
