@@ -1,3 +1,4 @@
+  * doc/*.html: add color-scheme.
   * doc/benefits.html, doc/notify.html: use chpst -u instead of setuidgid.
   * doc/configuration.html, doc/notify.html, doc/upgrade.html,
     man/socklog-conf.8: use /service instead of /var/service.
